@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="web:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/web_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Subscription/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Subscription" />
+          <element id="library" level="project" name="config" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="javax.mail" />
+          <element id="library" level="project" name="javax.servlet.jsp.jstl-api-1.2.1" />
+          <element id="library" level="project" name="log4j-core-2.8" />
+          <element id="library" level="project" name="mysql-connector-java-5.1.43-bin" />
+          <element id="library" level="project" name="testng-6.8.7" />
+          <element id="library" level="project" name="log4j-api-2.8" />
+          <element id="library" level="project" name="javax.servlet.jsp.jstl-1.2.1" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
