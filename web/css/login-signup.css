@@ -68,13 +68,7 @@ h1 {
     font-weight: 500;
     color: lightgray;
 }
-#formID{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-}
+
 label {
     position: absolute;
     -webkit-transform: translateY(6px);
