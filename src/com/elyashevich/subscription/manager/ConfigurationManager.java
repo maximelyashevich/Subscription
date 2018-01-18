@@ -1,4 +1,4 @@
-package com.elyashevich.subscription.resource;
+package com.elyashevich.subscription.manager;
 
 import java.util.ResourceBundle;
 

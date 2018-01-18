@@ -1,9 +1,9 @@
 package com.elyashevich.subscription.servlet;
 
 import com.elyashevich.subscription.command.ActionCommand;
-import com.elyashevich.subscription.factory.ActionFactory;
-import com.elyashevich.subscription.resource.ConfigurationManager;
-import com.elyashevich.subscription.resource.MessageManager;
+import com.elyashevich.subscription.command.ActionFactory;
+import com.elyashevich.subscription.manager.ConfigurationManager;
+import com.elyashevich.subscription.manager.MessageManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,7 +36,7 @@ public class Controller extends HttpServlet {
         } else {
             page = ConfigurationManager. getProperty("path.page.index");
             request.getSession().setAttribute("nullPage",
-                    MessageManager. getProperty("message.nullpage"));
+                    MessageManager.EN.getMessage("message.nullpage"));
             response.sendRedirect(request.getContextPath() + page);
         }
     }

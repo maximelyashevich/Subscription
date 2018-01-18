@@ -3,8 +3,8 @@ package com.elyashevich.subscription.command;
 import com.elyashevich.subscription.dao.TransactionHelper;
 import com.elyashevich.subscription.dao.UserDAO;
 import com.elyashevich.subscription.entity.User;
-import com.elyashevich.subscription.resource.ConfigurationManager;
-import com.elyashevich.subscription.resource.MessageManager;
+import com.elyashevich.subscription.manager.ConfigurationManager;
+import com.elyashevich.subscription.manager.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -56,7 +56,7 @@ public class RegistrationCommand implements ActionCommand {
         }
         else {
             request.setAttribute("errorLoginPassMessage",
-                    MessageManager. getProperty("message.loginerror"));
+                    MessageManager.EN.getMessage("message.loginerror"));
             page = ConfigurationManager.getProperty("path.page.error");
         }
         transactionHelper.commit();

@@ -52,7 +52,7 @@ public class ConnectionPool {
         try {
             connection = connectionQueue.take();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            e.printStackTrace();//connection->daoexception->receiver-service->command_exception->error_page
         }
         return connection;
     }

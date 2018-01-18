@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="language" value="en_US" scope="session" />
-<fmt:setLocale value="${language}"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<fmt:setLocale value="${userLocale}"/>
 <fmt:setBundle basename="resources.pagecontent" var="rb"/>
 <!DOCTYPE html>
 <html>
@@ -9,14 +9,11 @@
 
     <title>Log In or Sign Up</title>
     <style>
-        @import "/css/header-login-signup.css" screen;
+        @import "/css/header-login.css" screen;
         @import "/css/login-signup.css" screen;
     </style>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
     <script type="text/javascript">
-        function changeLocale(){
-            <fmt:setLocale value="en_US"/>
-        }
         function viewDiv(idMain, idClose) {
             var mainForm = document.getElementsByClassName("form")[0];
             var signupForm = document.getElementById("signupForm");
@@ -87,8 +84,17 @@
             <li class="tab"><a href="#signup" onclick="viewDiv('signup', 'login');">
                 <fmt:message key="label.signup" bundle="${ rb }"/>
             </a></li>
+            <li class="tab">
+                <form method="post" action="/controller">
+                    <input type="hidden" name="command" value="language"/>
+                    <select name="locale_language" onchange="this.form.submit()">
+                        <option value="en_US" selected="">Language</option>
+                        <option value="en_US">English</option>
+                        <option value="ru_RU">Русский</option>
+                    </select>
+                </form>
+            </li>
         </ul>
-
     </div>
 </header>
 <div class="form">
@@ -102,13 +108,13 @@
                         <label>
                             <fmt:message key="label.first_name" bundle="${ rb }"/><span class="req">*</span>
                         </label>
-                        <input type="text" id="first_name" required/>
+                        <input type="text" name="first_name" id="first_name" required/>
                     </div>
                     <div class="field-wrap">
                         <label>
                             <fmt:message key="label.last_name" bundle="${ rb }"/><span class="req">*</span>
                         </label>
-                        <input type="text" id="last_name" required/>
+                        <input type="text" name="last_name" id="last_name" required/>
                     </div>
                 </div>
 
@@ -287,19 +293,19 @@
                     <label>
                         <fmt:message key="label.login" bundle="${ rb }"/><span class="req">*</span>
                     </label>
-                    <input type="text" id="loginID" required/>
+                    <input type="text" name="login" id="loginID" required/>
                 </div>
                 <div class="field-wrap">
                     <label>
                         <fmt:message key="label.email" bundle="${ rb }"/><span class="req">*</span>
                     </label>
-                    <input type="email" id="email" required/>
+                    <input type="email" name="email" id="email" required/>
                 </div>
                 <div class="field-wrap">
                     <label>
                         <fmt:message key="label.password" bundle="${ rb }"/><span class="req">*</span>
                     </label>
-                    <input type="password" id="password" required/>
+                    <input type="password" name="password" id="password" required/>
                 </div>
                 <p>
                     <button class="button button-block"><fmt:message key="label.get_started" bundle="${ rb }"/></button>
@@ -320,13 +326,13 @@
                         <fmt:message key="label.login" bundle="${ rb }"/>
                         <span class="req">*</span>
                     </label>
-                    <input type="text" id="loginID2" required/>
+                    <input type="text" name="login" id="loginID2" required/>
                 </div>
                 <div class="field-wrap">
                     <label>
                         <fmt:message key="label.set_a_password" bundle="${ rb }"/><span class="req">*</span>
                     </label>
-                    <input type="password" id="password2" required/>
+                    <input type="password" name="password" id="password2" required/>
                 </div>
 
                 <p class="forgot">

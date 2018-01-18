@@ -1,7 +1,7 @@
 package com.elyashevich.subscription.command;
 
 import com.elyashevich.subscription.action.MailThread;
-import com.elyashevich.subscription.resource.ConfigurationManager;
+import com.elyashevich.subscription.manager.ConfigurationManager;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
