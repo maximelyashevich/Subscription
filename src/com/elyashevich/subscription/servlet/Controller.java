@@ -4,6 +4,7 @@ import com.elyashevich.subscription.command.ActionCommand;
 import com.elyashevich.subscription.command.ActionFactory;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
+import com.elyashevich.subscription.proxy.ConnectionPool;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,5 +40,8 @@ public class Controller extends HttpServlet {
                     MessageManager.EN.getMessage("message.nullpage"));
             response.sendRedirect(request.getContextPath() + page);
         }
+    }
+    public void destroy(){
+        ConnectionPool.getInstance().destroyConnection();
     }
 }

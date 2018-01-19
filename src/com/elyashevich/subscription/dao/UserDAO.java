@@ -1,6 +1,7 @@
 package com.elyashevich.subscription.dao;
 
 import com.elyashevich.subscription.entity.User;
+import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.proxy.ConnectionPool;
 import com.elyashevich.subscription.proxy.ProxyConnection;
 
@@ -14,12 +15,13 @@ public class UserDAO extends AbstractDAO<User>{
     private static final String INSERT_USER = "INSERT INTO USER(user_name, password,email,first_name, last_name, dob) VALUES (?,?,?,?,?,?)";
     private static final String SQL_SELECT_USER_BY_PASSWORD = "SELECT user_name, password, first_name, last_name FROM USER WHERE user_name=? and password=?";
     @Override
+
     public List<User> findAll() {
         return null;
     }
-    public String findUserByPassword(String login, String password) {
+    public String findUserByPassword(String login, String password) throws DAOTechnicalException {
         String name = null;
-        ProxyConnection cn;
+        ProxyConnection cn = null;
         PreparedStatement st = null;
         try {
             cn = ConnectionPool.getInstance().getConnection();
@@ -32,9 +34,12 @@ public class UserDAO extends AbstractDAO<User>{
                 name = resultSet.getString(3)+" "+resultSet.getString(4);
             }
         } catch (SQLException e) {
-            System.err.println("SQL exception (request or table failed): " + e);
+           throw new DAOTechnicalException(e.getCause());
         } finally {
             close(st);
+            if (cn!=null) {
+                close(cn);
+            }
         }
         return name;
     }
@@ -49,11 +54,11 @@ public class UserDAO extends AbstractDAO<User>{
     }
 
     @Override
-    public boolean create(User user) {
+    public boolean create(User user) throws DAOTechnicalException {
         boolean flag = false;
 
         ProxyConnection connection = null;
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
 
         try{
             connection = ConnectionPool.getInstance().getConnection();
@@ -68,15 +73,12 @@ public class UserDAO extends AbstractDAO<User>{
             flag = true;
         }
         catch(SQLException e) {
-            e.printStackTrace();
+            throw new DAOTechnicalException(e.getCause());
         }
         finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    System.err. println("Сonnection close error: " + e);
-                }
+            close(preparedStatement);
+            if (connection!=null) {
+                close(connection);
             }
         }
         return flag;

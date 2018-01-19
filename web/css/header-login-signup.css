@@ -78,8 +78,7 @@
 }
 
 /* The sign up button */
-
-.header-login-signup .header-limiter ul li:last-child a {
+.header-login-signup .header-limiter ul li:nth-child(2n) a {
     font-weight: bold;
     background-color: #3a3c3e;
     padding: 10px 15px;

@@ -7,7 +7,7 @@
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css'>
     <style>
         @import "/css/mainwindow.css" screen;
-        @import "/css/header-login.css" screen;
+        @import "/css/header-login-signup.css" screen;
     </style>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
     <script>

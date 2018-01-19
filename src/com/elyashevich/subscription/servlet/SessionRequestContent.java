@@ -9,7 +9,6 @@ public class SessionRequestContent {
     private HashMap<String, Object> sessionAttributes;
 
     public void extractValues(HttpServletRequest request) {
-
     }
     public void insertAttributes(HttpServletRequest request) {
 

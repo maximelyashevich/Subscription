@@ -92,4 +92,5 @@ public class User extends Entity {
                 ", password='" + password + '\'' +
                 '}';
     }
+
 }

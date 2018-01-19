@@ -12,24 +12,27 @@ public class MailCommand implements ActionCommand {
     @Override
     public String execute(HttpServletRequest request) {
         String page = null;
+        if (sendFromEmail(request, request.getParameter("to"),
+                request.getParameter("subject"), request.getParameter("body"))){
+            page = ConfigurationManager.getProperty("path.page.send");
+        }
+        return page;
+    }
+    public static boolean sendFromEmail(HttpServletRequest request, String sendToEmail, String mailSubject, String mailText){
+        boolean result = false;
         try {
-        Properties properties = new Properties();
+            Properties properties = new Properties();
+            ServletContext context = request.getServletContext();
+            String filename = context.getInitParameter("mail");
 
-        ServletContext context = request.getServletContext();
-        String filename = context.getInitParameter("mail");
-// загрузка параметров почтового сервера в объект свойств
             properties.load(context.getResourceAsStream(filename));
-        String sendToEmail = request.getParameter("to");
-        String mailSubject = request.getParameter("subject");
-        String mailText = request.getParameter("body");
-        MailThread mailOperator=new MailThread(sendToEmail, mailSubject, mailText, properties);
-// запуск процесса отправки письма в отдельном потоке
-        mailOperator.start();
-// переход на страницу с предложением о создании нового письма
-        page = ConfigurationManager.getProperty("path.page.send");
+
+            MailThread mailOperator=new MailThread(sendToEmail, mailSubject, mailText, properties);
+            mailOperator.start();
+            result = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return page;
+        return result;
     }
 }

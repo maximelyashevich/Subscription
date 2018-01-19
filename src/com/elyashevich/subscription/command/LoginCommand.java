@@ -1,15 +1,12 @@
 package com.elyashevich.subscription.command;
 
-
+import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.logic.UserService;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
 import com.elyashevich.subscription.validator.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
-
-import static com.elyashevich.subscription.util.RegexComponent.LOGIN_REGEX;
-import static com.elyashevich.subscription.util.RegexComponent.PASSWORD_REGEX;
 
 public class LoginCommand implements ActionCommand {
     private static final String PARAM_NAME_LOGIN = "login";
@@ -26,22 +23,40 @@ public class LoginCommand implements ActionCommand {
         String login = request.getParameter(PARAM_NAME_LOGIN);
         String password = request.getParameter(PARAM_NAME_PASSWORD);
         UserValidator validator = new UserValidator();
-        if (validator.isDataCorrect(login, LOGIN_REGEX) && validator.isDataCorrect(password, PASSWORD_REGEX)){
-                String name = userService.checkUser(login, password);
+        String name = null;
+        if (validator.isLoginAndPasswordCorrect(login, password)){
+            try {
+                name = userService.checkUser(login, password);
                 if (name!=null){
                     request.setAttribute("user", name);
-                    page = ConfigurationManager.getProperty("path.page.main");
+                    request.setAttribute("titleMessage", "");
                 } else{
-                    request.setAttribute("errorLoginPassMessage",
-                            MessageManager.EN.getMessage("message.loginerror"));
-                    page = ConfigurationManager.getProperty("path.page.error");
+                    request.setAttribute("titleMessage", getLocaleBySessionLocale(request).getMessage("message.loginerror"));
                 }
+                page = ConfigurationManager.getProperty("path.page.login");
+            }catch (ServiceTechnicalException e){
+                request.setAttribute("errorLoginPassMessage", getLocaleBySessionLocale(request).getMessage("message.loginerror"));
+                page = ConfigurationManager.getProperty("path.page.error");
+            }
         }else{
             //throw new RuntimeException();
-            request.setAttribute("errorLoginPassMessage",
-                    MessageManager.EN.getMessage("message.loginerror"));
-            page = ConfigurationManager.getProperty("path.page.error");
+            request.setAttribute("titleMessage", getLocaleBySessionLocale(request).getMessage("message.loginerror"));
+            page = ConfigurationManager.getProperty("path.page.login");
         }
         return page;
+    }
+
+    ////!!!!!!!!!!!!!!!!!!!!!!!!////////
+    private MessageManager getLocaleBySessionLocale(HttpServletRequest request){
+        MessageManager messageManager = null;
+        switch (request.getLocale().getCountry()){
+            case "US":
+                messageManager = MessageManager.EN;
+                break;
+            case "RU":
+                messageManager = MessageManager.RU;
+                break;
+        }
+        return messageManager;
     }
 }
