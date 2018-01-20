@@ -8,68 +8,11 @@
 <head>
     <title>Log In or Sign Up</title>
     <style>
-        @import "/css/header-login-signup.css" screen;
-        @import "/css/login-signup.css" screen;
+        @import "/resource/css/header-login.css" screen;
+        @import "/resource/css/login-signup-main.css" screen;
     </style>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-    <script type="text/javascript">
-        function viewDiv(idMain, idClose) {
-            var mainForm = document.getElementsByClassName("form")[0];
-            var signupForm = document.getElementById("signupForm");
-            var loginForm = document.getElementById("loginForm");
-            var first_name = document.getElementById("first_name");
-            var last_name = document.getElementById("last_name");
-            var login = document.getElementById("loginID");
-            var dob = document.getElementById("dob");
-            var email = document.getElementById("email");
-            var password = document.getElementById("password");
-            var login2 = document.getElementById("loginID2");
-            var password2 = document.getElementById("password2");
-            var componentEl = document.getElementById(idMain);
-            var componentClose = document.getElementById(idClose);
-            if (idMain === 'signup') {
-                first_name.setAttribute("required", "");
-                last_name.setAttribute("required", "");
-                login.setAttribute("required", "");
-                dob.setAttribute("required", "");
-                email.setAttribute("required", "");
-                password.setAttribute("required", "");
-            } else {
-                login2.setAttribute("required", "");
-                password2.setAttribute("required", "");
-            }
-            signupForm.reset();
-            loginForm.reset();
-            mainForm.style.display = "block";
-            componentClose.style.display = "none";
-            componentEl.style.display = "block";
-        }
-
-        function closeDiv(idMain) {
-            var mainForm = document.getElementsByClassName("form")[0];
-            var first_name = document.getElementById("first_name");
-            var last_name = document.getElementById("last_name");
-            var login = document.getElementById("loginID");
-            var email = document.getElementById("email");
-            var dob = document.getElementById("dob");
-            var password = document.getElementById("password");
-            var login2 = document.getElementById("loginID2");
-            var password2 = document.getElementById("password2");
-            var componentEl = document.getElementById(idMain);
-            first_name.removeAttribute("required");
-            last_name.removeAttribute("required");
-            login.removeAttribute("required");
-            email.removeAttribute("required");
-            dob.removeAttribute("required");
-            password.removeAttribute("required");
-            login2.removeAttribute("required");
-            password2.removeAttribute("required");
-            mainForm.style.display = "none";
-            componentEl.style.display = "none";
-            //    el.style.display="block";
-            //    el.style.display="none";
-        }
-    </script>
+    <script type="text/javascript" src="<c:url value="${pageContext.request.contextPath}/resource/js/login-signup.js"/>"></script>
 </head>
 <body translate="no">
 <header class="header-login-signup">
@@ -163,7 +106,7 @@
                     <div>
                     <fmt:message key="label.birthday" bundle="${ rb }"/>
                     </div>
-                <input type="date" id="dob" min="1905-01-01" max="2018-01-01" required>
+                <input type="date" name="dob" id="dob" min="1905-01-01" max="2018-01-01" required>
                 </div>
                 <div class="field-wrap">
                     <label>

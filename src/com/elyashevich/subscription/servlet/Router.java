@@ -16,7 +16,7 @@ public class Router {
         return route;
     }
     public void setRoute(RouteType route){
-        if (route!=null){
+        if (route!=null){ 
             this.route = RouteType.FORWARD;
         }
         this.route = route;

@@ -19,7 +19,7 @@ public class UserDAO extends AbstractDAO<User>{
     public List<User> findAll() {
         return null;
     }
-    public String findUserByPassword(String login, String password) throws DAOTechnicalException {
+    public String findUser(String login, String password) throws DAOTechnicalException {
         String name = null;
         ProxyConnection cn = null;
         PreparedStatement st = null;
@@ -69,8 +69,14 @@ public class UserDAO extends AbstractDAO<User>{
             preparedStatement.setString(4, user.getFirstName());
             preparedStatement.setString(5, user.getLastName());
             preparedStatement.setDate(6, Date.valueOf(user.getBirthday()));
-            preparedStatement.executeUpdate();
-            flag = true;
+
+            if (findUser(user.getUserName(), user.getPassword())==null){
+                /////////////
+                //CHECK EMAIL
+                /////////////
+                preparedStatement.executeUpdate();
+                flag = true;
+            }
         }
         catch(SQLException e) {
             throw new DAOTechnicalException(e.getCause());

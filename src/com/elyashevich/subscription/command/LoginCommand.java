@@ -1,20 +1,20 @@
 package com.elyashevich.subscription.command;
 
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
-import com.elyashevich.subscription.logic.UserService;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
-import com.elyashevich.subscription.validator.UserValidator;
+import com.elyashevich.subscription.service.LoginService;
+import com.elyashevich.subscription.service.PaperService;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class LoginCommand implements ActionCommand {
     private static final String PARAM_NAME_LOGIN = "login";
     private static final String PARAM_NAME_PASSWORD = "password";
-    private UserService userService;
+    private LoginService userReceiver;
 
-    public LoginCommand(UserService userService){
-        this.userService = userService;
+    public LoginCommand(LoginService userReceiver){
+        this.userReceiver = userReceiver;
     }
     @Override
     public String execute(HttpServletRequest request) {
@@ -22,18 +22,20 @@ public class LoginCommand implements ActionCommand {
 
         String login = request.getParameter(PARAM_NAME_LOGIN);
         String password = request.getParameter(PARAM_NAME_PASSWORD);
-        UserValidator validator = new UserValidator();
         String name = null;
-        if (validator.isLoginAndPasswordCorrect(login, password)){
+        if (userReceiver.checkUserData(login, password)){
             try {
-                name = userService.checkUser(login, password);
+                name = userReceiver.findUserWithEncryption(login, password);
                 if (name!=null){
+                    PaperService service = new PaperService();
                     request.setAttribute("user", name);
-                    request.setAttribute("titleMessage", "");
+                    request.setAttribute("papers", service.findAll());
+                    page = ConfigurationManager.getProperty("path.page.main");
                 } else{
                     request.setAttribute("titleMessage", getLocaleBySessionLocale(request).getMessage("message.loginerror"));
+                    page = ConfigurationManager.getProperty("path.page.login");
                 }
-                page = ConfigurationManager.getProperty("path.page.login");
+
             }catch (ServiceTechnicalException e){
                 request.setAttribute("errorLoginPassMessage", getLocaleBySessionLocale(request).getMessage("message.loginerror"));
                 page = ConfigurationManager.getProperty("path.page.error");

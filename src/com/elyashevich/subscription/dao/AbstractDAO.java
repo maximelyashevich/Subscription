@@ -15,7 +15,7 @@ public abstract class AbstractDAO<T extends Entity> {
     private static final Logger LOGGER = LogManager.getLogger();
     private Connection connection ;
 
-    public abstract List<T> findAll();
+    public abstract List<T> findAll() throws DAOTechnicalException;
 
     public abstract boolean delete(int id);
 
