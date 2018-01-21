@@ -28,5 +28,7 @@
     <orderEntry type="library" name="mysql-connector-java-5.1.43-bin" level="project" />
     <orderEntry type="library" name="testng-6.8.7" level="project" />
     <orderEntry type="library" name="config" level="project" />
+    <orderEntry type="library" name="stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
 </module>

@@ -2,6 +2,7 @@ package com.elyashevich.subscription.command;
 
 import com.elyashevich.subscription.action.MailThread;
 import com.elyashevich.subscription.manager.ConfigurationManager;
+import com.elyashevich.subscription.servlet.Router;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -10,13 +11,15 @@ import java.util.Properties;
 
 public class MailCommand implements ActionCommand {
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
+        Router router = new Router();
         String page = null;
         if (sendFromEmail(request, request.getParameter("to"),
                 request.getParameter("subject"), request.getParameter("body"))){
             page = ConfigurationManager.getProperty("path.page.send");
         }
-        return page;
+        router.setPagePath(page);
+        return router;
     }
     public static boolean sendFromEmail(HttpServletRequest request, String sendToEmail, String mailSubject, String mailText){
         boolean result = false;

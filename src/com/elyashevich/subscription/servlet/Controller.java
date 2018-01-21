@@ -27,19 +27,25 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request,
                                 HttpServletResponse response)
             throws ServletException, IOException {
-        String page = null;
         ActionFactory client = new ActionFactory();
         ActionCommand command = client.defineCommand(request);
-        page = command.execute(request);
+        Router router = command.execute(request);
+        String page = router.getPagePath();
         if (page != null) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            dispatcher.forward(request, response);
+            switch (router.getRoute()){
+                case FORWARD:
+                    dispatcher.forward(request, response);
+                    break;
+                case REDIRECT:
+                    response.sendRedirect(request.getContextPath() + page);
+                    break;
+            }
         } else {
-            page = ConfigurationManager. getProperty("path.page.index");
-            request.getSession().setAttribute("nullPage",
-                    MessageManager.EN.getMessage("message.nullpage"));
+            page = ConfigurationManager.getProperty("path.page.index");
+            request.getSession().setAttribute("nullPage", MessageManager.EN.getMessage("message.nullpage"));
             response.sendRedirect(request.getContextPath() + page);
-        }
+              }
     }
     public void destroy(){
         ConnectionPool.getInstance().destroyConnection();

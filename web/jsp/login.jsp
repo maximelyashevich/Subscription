@@ -1,26 +1,27 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<fmt:setLocale value="${userLocale}"/>
+<fmt:setLocale value="${userLocale}" />
 <fmt:setBundle basename="resources.pagecontent" var="rb"/>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Log In or Sign Up</title>
     <style>
-        @import "/resource/css/header-login.css" screen;
-        @import "/resource/css/login-signup-main.css" screen;
+        @import "/resource/css/header.css" screen;
+        @import "/resource/css/login.css" screen;
+        @import "/resource/css/footer.css" screen;
     </style>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="<c:url value="${pageContext.request.contextPath}/resource/js/login-signup.js"/>"></script>
 </head>
 <body translate="no">
-<header class="header-login-signup">
+<header class="header-main">
     <div class="header-limiter">
         <h1><a href="#"><span>Subscription</span></a></h1>
         <nav>
             <a href="#"> <fmt:message key="label.home" bundle="${ rb }"/></a>
-            <a href="#" class="selected" onclick="changeLocale()">Blog</a>
+            <a href="#" class="selected">Blog</a>
             <a href="#">Pricing</a>
         </nav>
         <ul>
@@ -43,6 +44,7 @@
         </ul>
     </div>
 </header>
+<main>
 <div class="form">
     <div class="tab-content">
         <div id="login">
@@ -143,6 +145,7 @@
 <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
 <script>
+
     $('.form').find('input, textarea').on('keyup blur focus', function (e) {
         var $this = $(this),
             label = $this.prev('label');
@@ -177,5 +180,9 @@
         $(target).fadeIn(600);
     });
 </script>
+</main>
+<footer class="footer-centered">
+    <p class="footer-name">Elyashevich Maxim, Subscription &copy; 2018</p>
+</footer>
 </body>
 </html>

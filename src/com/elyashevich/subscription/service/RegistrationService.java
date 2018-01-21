@@ -5,7 +5,6 @@ import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.util.Encryption;
-import com.elyashevich.subscription.validator.UserValidator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,12 +18,6 @@ public class RegistrationService {
         } catch (DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
         }
-    }
-
-    public boolean checkUserData(String userName, String password, String firstName, String lastName, String email){
-        UserValidator validator = new UserValidator();
-        return validator.isLoginAndPasswordCorrect(userName, password) &&
-                validator.isUserDataCorrect(firstName, lastName, email);
     }
 
     public User getUser(String date, String firstName, String lastName, String email, String login, String password){

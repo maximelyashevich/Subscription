@@ -5,6 +5,8 @@ import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
 import com.elyashevich.subscription.service.RegistrationService;
+import com.elyashevich.subscription.servlet.Router;
+import com.elyashevich.subscription.validator.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,7 +24,8 @@ public class RegistrationCommand implements ActionCommand {
         this.userReceiver = userReceiver;
     }
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
+        Router router = new Router();
         String page = null;
 
         String firstName = request.getParameter(FIRST_NAME);
@@ -32,12 +35,15 @@ public class RegistrationCommand implements ActionCommand {
         String userName = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
 
-        if (userReceiver.checkUserData(userName, password, firstName, lastName, email)){
+        UserValidator validator = new UserValidator();
+        if (validator.isLoginAndPasswordCorrect(userName, password) &&
+                validator.isUserDataCorrect(firstName, lastName, email)){
             try {
                 User user = userReceiver.getUser(dob, firstName, lastName, email, userName, password);
                 if (userReceiver.createUserWithEncryption(user)){
                     MailCommand.sendFromEmail(request, email, MessageManager.EN.getMessage("message.welcome"),
                             "Здравствуйте, "+firstName+"! Мы очень рады, что Вы решили попробовать Subscription!");
+                    request.setAttribute("titleMessage", LoginCommand.defineMessageManager(request).getMessage("message.registrationsuccess"));
                     page = ConfigurationManager.getProperty("path.page.login");
                 } else{
                     request.setAttribute("errorLoginPassMessage", MessageManager.EN.getMessage("message.loginerror"));
@@ -50,7 +56,8 @@ public class RegistrationCommand implements ActionCommand {
             request.setAttribute("titleMessage", MessageManager.EN.getMessage("message.loginerror"));
             page = ConfigurationManager.getProperty("path.page.login");
         }
-        return page;
+        router.setPagePath(page);
+        return router;
     }
 
 }

@@ -5,6 +5,8 @@ import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
 import com.elyashevich.subscription.service.LoginService;
 import com.elyashevich.subscription.service.PaperService;
+import com.elyashevich.subscription.servlet.Router;
+import com.elyashevich.subscription.validator.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,13 +19,15 @@ public class LoginCommand implements ActionCommand {
         this.userReceiver = userReceiver;
     }
     @Override
-    public String execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) {
+        Router router = new Router();
         String page = null;
 
         String login = request.getParameter(PARAM_NAME_LOGIN);
         String password = request.getParameter(PARAM_NAME_PASSWORD);
         String name = null;
-        if (userReceiver.checkUserData(login, password)){
+        UserValidator validator = new UserValidator();
+        if (validator.isLoginAndPasswordCorrect(login, password)){
             try {
                 name = userReceiver.findUserWithEncryption(login, password);
                 if (name!=null){
@@ -32,30 +36,36 @@ public class LoginCommand implements ActionCommand {
                     request.setAttribute("papers", service.findAll());
                     page = ConfigurationManager.getProperty("path.page.main");
                 } else{
-                    request.setAttribute("titleMessage", getLocaleBySessionLocale(request).getMessage("message.loginerror"));
+                    request.setAttribute("titleMessage", defineMessageManager(request).getMessage("message.loginerror"));
                     page = ConfigurationManager.getProperty("path.page.login");
                 }
 
             }catch (ServiceTechnicalException e){
-                request.setAttribute("errorLoginPassMessage", getLocaleBySessionLocale(request).getMessage("message.loginerror"));
+                request.setAttribute("errorLoginPassMessage", defineMessageManager(request).getMessage("message.loginerror"));
                 page = ConfigurationManager.getProperty("path.page.error");
             }
         }else{
             //throw new RuntimeException();
-            request.setAttribute("titleMessage", getLocaleBySessionLocale(request).getMessage("message.loginerror"));
+            request.setAttribute("titleMessage", defineMessageManager(request).getMessage("message.loginerror"));
             page = ConfigurationManager.getProperty("path.page.login");
         }
-        return page;
+        router.setPagePath(page);
+        return router;
     }
 
     ////!!!!!!!!!!!!!!!!!!!!!!!!////////
-    private MessageManager getLocaleBySessionLocale(HttpServletRequest request){
+    public static MessageManager defineMessageManager(HttpServletRequest request){
         MessageManager messageManager = null;
-        switch (request.getLocale().getCountry()){
-            case "US":
+        System.out.println(request.getSession().getAttribute("userLocale"));
+        Object userLocale = request.getSession().getAttribute("userLocale");
+        if (userLocale==null){
+            userLocale = "ru_RU";
+        }
+        switch (userLocale.toString()){
+            case "en_US":
                 messageManager = MessageManager.EN;
                 break;
-            case "RU":
+            case "ru_RU":
                 messageManager = MessageManager.RU;
                 break;
         }

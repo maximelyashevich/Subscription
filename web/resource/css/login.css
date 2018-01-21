@@ -7,6 +7,12 @@ html {
     overflow-y: scroll;
 }
 
+main {
+    margin:0;
+    padding: 50px 0 50px;
+    background: url("/resource/image/background/3.jpg") no-repeat;
+}
+
 a {
     text-decoration: none;
     color: #ffffff;
@@ -21,7 +27,7 @@ a:hover {
     background: rgba(41, 44, 47, 0.89);
     padding: 40px;
     max-width: 600px;
-    margin: 40px auto;
+    margin: 50px auto;
 }
 
 .tab-group {
@@ -217,5 +223,10 @@ textarea {
 }
 .error{
     color: indianred;
-    padding: 5px; /* Поля вокруг текста */
+    padding: 5px;
+}
+
+body{
+    margin: 0;
+    padding: 0;
 }
