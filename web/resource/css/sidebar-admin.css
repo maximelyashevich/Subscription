@@ -1,0 +1,65 @@
+#parent {
+    padding: 5% 0;
+}
+ul{
+    margin: 0;
+}
+ul.sidebar-menu {
+    margin: 1px 0;
+    padding: 0;
+    width: 20%;
+    list-style: none none;
+    float: left;
+}
+
+.sidebar-menu li a span {
+    margin-right: 20px;
+    color: #dbdcdc;
+}
+.sidebar-menu li a  {
+    background-color: #393d41;
+    padding: 20px 25px;
+    display: block;
+    text-decoration: none;
+    color: #85abc5;
+}
+.sidebar-menu li a:hover  {
+    background-color: #393d41;
+    padding: 20px 25px;
+    display: block;
+    text-decoration: none;
+    color: #85abc5;
+}
+li.have-children ul {
+    padding: 0px;
+}
+li.have-children ul li a {
+    background-color: #2f3235;
+    color: #dbdcdc;
+    padding-left: 62px;
+}
+li.have-children ul li a:hover {
+    color: #dbdcdc;
+    background-color: #2f3235;
+    padding-left: 62px;
+}
+li.have-children, li {
+    position: relative;
+    border: 1px solid #3f4144;
+}
+.have-children span::after {
+    position: absolute;
+    right: 30px;
+    content: "\f054";
+    color: #dbdcdc;
+    transition: all .5s;
+}
+li.active.have-children span::after {
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+.sidebar-menu .have-children > ul {
+    display: none;
+}

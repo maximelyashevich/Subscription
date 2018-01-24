@@ -1,5 +1,8 @@
 package com.elyashevich.subscription.entity;
 
+import com.elyashevich.subscription.command.client.ClientType;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -10,8 +13,25 @@ public class User extends Entity {
     private String userName;
     private String email;
     private String password;
+    private ClientType type;
+    private BigDecimal amount;
+    private long addressId;
+    private boolean availability;
 
     public User() {
+    }
+
+    public User(String userName, String password,  ClientType type, String email, boolean availability, String firstName, String lastName, long addressId, LocalDate birthday,  BigDecimal amount ) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.type = type;
+        this.amount = amount;
+        this.addressId = addressId;
+        this.availability = availability;
     }
 
     public String getFirstName() {
@@ -62,23 +82,59 @@ public class User extends Entity {
         this.password = password;
     }
 
+    public ClientType getType() {
+        return type;
+    }
+
+    public void setType(ClientType type) {
+        this.type = type;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
+    }
+
+    public boolean isAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) &&
+        return addressId == user.addressId &&
+                availability == user.availability &&
+                Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(birthday, user.birthday) &&
                 Objects.equals(userName, user.userName) &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password);
+                Objects.equals(password, user.password) &&
+                type == user.type &&
+                Objects.equals(amount, user.amount);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(firstName, lastName, birthday, userName, email, password);
+        return Objects.hash(firstName, lastName, birthday, userName, email, password, type, amount, addressId, availability);
     }
 
     @Override
@@ -90,7 +146,10 @@ public class User extends Entity {
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", type=" + type +
+                ", amount=" + amount +
+                ", addressId=" + addressId +
+                ", availability=" + availability +
                 '}';
     }
-
 }

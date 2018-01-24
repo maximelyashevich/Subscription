@@ -52,3 +52,9 @@ function closeDiv(idMain) {
     mainForm.style.display = "none";
     componentEl.style.display = "none";
 }
+function showDivBlock(id, idPagination) {
+    var block = document.getElementById(id);
+    var pagination = document.getElementById(idPagination);
+    block.style.display="block";
+    pagination.style.display="block";
+}

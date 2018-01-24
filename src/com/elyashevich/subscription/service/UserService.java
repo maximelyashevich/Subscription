@@ -4,14 +4,14 @@ import com.elyashevich.subscription.dao.UserDAO;
 import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
-import com.elyashevich.subscription.util.Encryption;
 
-public class LoginService {
-    public User findUserWithEncryption(String login, String password) throws ServiceTechnicalException {
+import java.util.List;
+
+public class UserService {
+    public List<User> findAll() throws ServiceTechnicalException {
         UserDAO userDAO = new UserDAO();
-        password = Encryption.encryptPassword(password);
         try {
-            return userDAO.findUser(login, password);
+            return userDAO.findAll();
         } catch (DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
         }

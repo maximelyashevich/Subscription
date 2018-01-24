@@ -1,10 +1,12 @@
 .header-main {
     background-color:#292c2f;
     box-shadow:0 1px 1px #ccc;
+    width: 100%;
     padding: 20px 40px;
     height: 80px;
     color: #ffffff;
     box-sizing: border-box;
+    z-index: 100;
 }
 
 .header-main .header-limiter {
@@ -23,13 +25,13 @@
 }
 
 .header-main .header-limiter h1 span {
-    color: #5383d3;
+    color: #599ac6;
 }
 
 /* The header links */
 
 .header-main .header-limiter a {
-    color: #ffffff;
+    color: #dbdcdc;
     text-decoration: none;
 }
 
@@ -75,8 +77,18 @@
 }
 
 /* The sign up button */
-.header-main .header-limiter ul li:nth-child(2n) a {
+.header-main .header-limiter ul li a {
+    font-weight: normal;
+    color: #dbdcdc;
+    padding: 10px 15px;
+    border-radius: 3px;
+}
+.header-main .header-limiter ul li a:hover {
     font-weight: bold;
+    color: #d8e8f3;
+    background-color: #3a3c3e;
+}
+.header-main .header-limiter ul li:nth-child(2n) a {
     background-color: #3a3c3e;
     padding: 10px 15px;
     border-radius: 3px;
@@ -87,6 +99,9 @@
 .header-main .header-limiter .header-user-menu{
     position: relative;
     float:right;
+    /*
+    #dbdcdc
+    */
     background-color:#3a3c3e;
     width:200px;
     height:40px;
@@ -168,12 +183,10 @@
     .header-main .header-limiter nav {
         margin-left: 20px;
     }
-
 }
 
 @media all and (max-width: 600px) {
     .header-main .header-limiter nav {
         display: none;
     }
-
 }

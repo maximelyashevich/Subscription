@@ -4,6 +4,7 @@ import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
+import com.elyashevich.subscription.service.LocaleService;
 import com.elyashevich.subscription.service.RegistrationService;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.validator.UserValidator;
@@ -43,7 +44,7 @@ public class RegistrationCommand implements ActionCommand {
                 if (userReceiver.createUserWithEncryption(user)){
                     MailCommand.sendFromEmail(request, email, MessageManager.EN.getMessage("message.welcome"),
                             "Здравствуйте, "+firstName+"! Мы очень рады, что Вы решили попробовать Subscription!");
-                    request.setAttribute("titleMessage", LoginCommand.defineMessageManager(request).getMessage("message.registrationsuccess"));
+                    request.setAttribute("titleMessage", LocaleService.defineMessageManager(request).getMessage("message.registrationsuccess"));
                     page = ConfigurationManager.getProperty("path.page.login");
                 } else{
                     request.setAttribute("errorLoginPassMessage", MessageManager.EN.getMessage("message.loginerror"));

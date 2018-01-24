@@ -4,14 +4,16 @@
 <fmt:setLocale value="en_US" scope="session" />
 <!DOCTYPE html>
 <head>
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css'>
+    <link rel='stylesheet prefetch' href='<c:url value="${pageContext.request.contextPath}/resource/css/cdnjs.css"/>'>
+    <title>Welcome, user</title>
     <style>
-        @import "/resource/css/header.css" screen;
-        @import "/resource/css/login.css" screen;
+        @import "/resource/css/header-main.css" screen;
+        @import "/resource/css/login-main.css" screen;
         @import "/resource/css/footer.css" screen;
-        @import "/resource/css/main.css" screen;
+        @import "/resource/css/main-style.css" screen;
     </style>
-    <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+    <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
+
     <script>
         window.console = window.console || function(t) {};
         if (document.location.search.match(/type=embed/gi)) {
@@ -20,7 +22,7 @@
     </script>
 </head>
 <body>
-<header class="header-main">
+<header class="header-main" style="position: fixed; width: 100%">
     <div class="header-limiter">
         <h1><a href="#"><span>Subscription</span></a></h1>
         <nav>
@@ -30,7 +32,7 @@
             <a href="#">Roles</a>
         </nav>
         <div class="header-user-menu">
-            ${user}
+            ${user.firstName}
             <img src="<c:url value="${pageContext.request.contextPath}/resource/image/user/2.jpg"/>" alt="User Image"/>
             <ul>
                 <li><a href="#">Settings</a></li>
@@ -108,7 +110,8 @@
     </div><!-- /.row -->
 </div><!-- /.container -->
 </main>
-<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js'></script>
+<script src='<c:url value="${pageContext.request.contextPath}/resource/js/jquery.js"/>'></script>
+<script src='<c:url value="${pageContext.request.contextPath}/resource/js/lib-carousel.js"/>'></script>
 <script >// Carousel Auto-Cycle
 $(document).ready(function() {
     $('.carousel').carousel({
@@ -116,8 +119,6 @@ $(document).ready(function() {
     })
 });
 </script>
-<footer class="footer-centered">
-    <p class="footer-name">Elyashevich Maxim, Subscription &copy; 2018</p>
-</footer>
-
-</body></html>
+    <c:import url="../jsp/common/footer.jsp" />
+</body>
+</html>

@@ -9,7 +9,8 @@ html {
 
 main {
     margin:0;
-    padding: 50px 0 50px;
+    height: 100%;
+    padding: 100px 0 122px;
     background: url("/resource/image/background/3.jpg") no-repeat;
 }
 
