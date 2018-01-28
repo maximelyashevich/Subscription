@@ -4,14 +4,14 @@
 <fmt:setLocale value="en_US" scope="session" />
 <html>
 <head>
-    <link rel='stylesheet prefetch' href='<c:url value="${pageContext.request.contextPath}/resource/css/stylecdnjm.css"/>'>
+    <link rel='stylesheet prefetch' href='<c:url value="${pageContext.request.contextPath}/resource/css/stylecdnj.css"/>'>
     <title>Welcome, user</title>
     <style>
         @import "/resource/css/header-main.css" screen;
         @import "/resource/css/own-login-styling.css" screen;
         @import "/resource/css/footer.css" screen;
         @import "/resource/css/mainstyle.css" screen;
-        @import "/resource/font/google-api.css" screen;
+        @import "/resource/css/popup.css" screen;
     </style>
     <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
@@ -47,19 +47,36 @@
     </div>
 </header>
 <main style="background-color: #D5DDE5; padding: 50px 55px;">
-
-    <div id="cart_content">
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <span>Your order basket, dear user!</span>
+            <div id="empty_basket">
+            </div>
+            <div id="cart_content">
+            </div>
+        </div>
     </div>
-    <button id="clear_cart">Очистить корзину</button>
-    <div id="search">
-        <form class="example" method="post" action="/controller">
-            <input type="hidden" name="command" value="search"/>
-            <input type="hidden" name="criteria" id="criteria">
-            <input type="text" placeholder="Search.." name="searchData" id="searchData">
-            <button type="submit" onclick="doIT()"><i class="fa fa-search"></i></button>
-        </form>
+    <div id="modalPaperWindow" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content-order">
+            <span class="close">&times;</span>
+            <div id="paperInformation"></div>
+        </div>
     </div>
     <div id="right_container">
+        <input type="button" id="basketButton" style="
+background-color: #f1f1f1a6;
+    border: 1px solid #ccc;
+    color: #62666a;
+    font-weight: 520;
+    font-size: 18;
+    width: 100%;
+    height: 45px;
+    font: 16px Arial, Helvetica, sans-serif;" value="Корзина">
+        </input>
         <fieldset class="group">
             <legend>Select genres for searching</legend>
             <ul class="checkbox">
@@ -79,17 +96,34 @@
         </fieldset>
     </div>
     <div class="content" id="userTable" style="width: 80%; margin-left: 0px">
+        <div id="search">
+            <form class="example" method="post" action="/controller">
+                <input type="hidden" name="command" value="search"/>
+                <input type="hidden" name="criteria" id="criteria">
+                <input type="text" placeholder="Search.." name="searchData" id="searchData">
+                <button type="submit" onclick="doIT()"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
         <table id="uTable">
             <tbody>
             <c:forEach begin="0" end="${papers.size()/4}" varStatus="loop">
                 <tr>
                     <c:forEach items="${papers}" var="paper" varStatus="status" begin="${loop.index*4}" end="${loop.index*4+3}" step="1">
                         <td class="item_box text-center">
-                            <img src="${paper.imagePath}">
-                            <h4 class="item_title">${paper.title}</h4>
-                            <p>${paper.description}</p>
-                            <p>Price:  <span class="item_price">${paper.price}</span>$</p>
-                            <button id="checkout" class="add_item" data-id="${status.index}">Add to basket</button>
+                                <img id="${status.index}" src="${paper.imagePath}">
+                            <a href="#" onclick="showMoreInformation(
+                                    '<c:out value="${paper.type}"/>',
+                                    '<c:out value="${paper.title}"/>',
+                                    '<c:out value="${paper.description}"/>',
+                                    '<c:out value="${paper.price}"/>',
+                                    '<c:url value="${status.index}"/>',
+                                    '<c:out value="${paper.publishingPeriodicity}"/>',
+                                    '<c:out value="${paper.ageRestriction}"/>',
+                                    '<c:out value="${paper.availability}"/>')"
+                               style="color: #466a7b;"><h4 class="item_title">${paper.title}</h4></a>
+                                <p>${paper.description}</p>
+                                <p>Price:  <span class="item_price">${paper.price}</span>$</p>
+                                <button id="checkout" class="add_item" data-id="${status.index}">Add to basket</button>
                         </td>
                     </c:forEach>
                 </tr>
@@ -99,6 +133,50 @@
         <div id="pagination" style="display:block;"></div>
     </div>
     <script>
+        var modal = document.getElementById('myModal');
+        var modalPaper = document.getElementById('modalPaperWindow');
+        var btn = document.getElementById("basketButton");
+        var span = document.getElementsByClassName("close")[0];
+        var spanPaper = document.getElementsByClassName("close")[1];
+        btn.onclick = function() {
+            modal.style.display = "block";
+        };
+
+        function showMoreInformation(type, title, description, price, image, periodicity, age_restr, is_available) {
+            var totalPaperItem='';
+            modalPaper.style.display = "block";
+            totalPaperItem+='<div><img src="'+
+                 document.getElementById(image).src+'" style="height: 390px; width: 280px;' +
+                'float:left; margin: 10px 10px 10px 0;" />' +
+                '<h3>Title: '+title+'</h3>' +
+                '<br>Type: '+type+'</br>'+
+                '<br>Title: '+title+'</br>'+
+                '<br>Age restriction: '+age_restr+'+</br>'+
+                '<br>Description: '+description+'</br>'+
+                '<br>Periodicity: '+periodicity+'per month</br>'+
+                '<br>Availability: '+is_available+'</br>'+
+                '<h3>Price: '+price+'$</h3></div>';
+            document.getElementById("paperInformation").innerHTML = totalPaperItem;
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+            document.getElementById("paperInformation").innerText='';
+        };
+
+        spanPaper.onclick = function() {
+            modalPaper.style.display = "none";
+        };
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+            if (event.target === modalPaper) {
+                modalPaper.style.display = "none";
+            }
+        }
         var d = document,
             itemBox = d.querySelectorAll('.item_box'), // блок каждого товара
             cartCont = d.getElementById('cart_content'); // блок вывода данных корзины
@@ -145,15 +223,17 @@
                 totalItems = '';
             // если что-то в корзине уже есть, начинаем формировать данные для вывода
             if(cartData !== null){
-                totalItems = '<table id="basketTable" class="shopping_list"><tr><th>Наименование</th><th>Цена</th><th>Удалить</th></tr>';
+                totalItems = '<table id="basketTable" class="shopping_list" style="width:100%;"><tr><th>Наименование</th><th>Цена</th><th>Удалить</th></tr>';
                 for(var items in cartData){
                     totalItems += '<tr>';
                     totalItems += '<td>'+cartData[items][0]+'</td>'+'<td class="price">'+cartData[items][1]+'</td>';
-                    totalItems += '<td><a href="#" onclick="someDeleteRowFunction(this)">X</a></td></tr>';
+                    totalItems += '<td><a href="#" onclick="someDeleteRowFunction(this)" ' +
+                        'style="color: #c14340f5; font-weight: 800">X</a></td></tr>';
                 }
 
-                totalItems += '<td>Итого: </td>'+'<td id="totalPrice" value="">'+
-                    '</td>'+'<td></td></table>';
+                totalItems += '<td>Итого: </td>'+'<td id="totalPrice" value="" colspan="2">'+
+                    '</td>'+'</table>';
+                totalItems+='<button id="paySubscription">Оплатить подписку</button><button id="getCredit">Взять в кредит</button>';
                 cartCont.innerHTML = totalItems;
                 defineFinalPrice();
             } else {
@@ -162,11 +242,6 @@
             }
             return false;
         }
-        /* Очистить корзину */
-        addEvent(d.getElementById('clear_cart'), 'click', function(e){
-            localStorage.removeItem('cart');
-            cartCont.innerHTML = 'Корзина очишена.';
-        });
         function someDeleteRowFunction(o) {
             //no clue what to put here?
             var p=o.parentNode.parentNode;
@@ -175,15 +250,30 @@
         }
 
         function defineFinalPrice(){
-            var cls = document.getElementById("basketTable").getElementsByTagName("td");
+            var table = document.getElementById("basketTable");
+            var cls = table.getElementsByTagName("td");
             var sum = 0;
             for (var i = 0; i < cls.length; i++){
                 if(cls[i].className === "price"){
                     sum += isNaN(cls[i].innerHTML) ? 0 : parseFloat(cls[i].innerHTML);
                 }
             }
-            document.getElementById("totalPrice").innerText=sum.toFixed(5);
+            sum=sum.toFixed(5);
+            document.getElementById("totalPrice").innerText=sum;
+            if (table.rows.length==2){
+                localStorage.removeItem('cart');
+                document.getElementById("empty_basket").innerText="Sorry, your basket is empty :(";
+                var buttonPay=document.getElementById("paySubscription");
+                buttonPay.parentNode.removeChild(buttonPay);
+                var buttonCredit=document.getElementById("getCredit");
+                buttonCredit.parentNode.removeChild(buttonCredit);
+
+            } else{
+                document.getElementById("empty_basket").innerText="";
+            }
+            document.getElementById("basketButton").value = " Товаров "+(table.rows.length - 2);
         }
+
     </script>
     <script>
         function getCheckedCheckBoxes() {
@@ -202,10 +292,8 @@
             // no callback function used this time
             var opts = getCheckedCheckBoxes();
             var criteriaField = document.getElementById('criteria');
-
             criteriaField.value=opts;
-            alert( 'The number of options selected is: ' + opts.length ); //  number of selected options
-        };
+        }
     </script>
     <%--<script>--%>
     <%--var $table = document.getElementById("uTable"),--%>
@@ -257,11 +345,6 @@
     <%--}--%>
     <%--</script>--%>
     <script src='<c:url value="${pageContext.request.contextPath}/resource/js/jquery.js"/>'></script>
-    <script>
-        $('i.glyphicon-remove').on('click', function(e){
-            $(e.target).closest("tr").remove();
-        });
-    </script>
     <script src='<c:url value="${pageContext.request.contextPath}/resource/js/lib-carousel.js"/>'></script>
 </main>
 <c:import url="../jsp/common/footer.jsp" />
