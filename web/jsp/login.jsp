@@ -9,11 +9,11 @@
     <title>Log In or Sign Up</title>
     <style>
         @import "/resource/css/header-main.css" screen;
-        @import "/resource/css/login-main.css" screen;
+        @import "/resource/css/own-login-styling.css" screen;
         @import "/resource/css/footer.css" screen;
     </style>
     <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="<c:url value="${pageContext.request.contextPath}/resource/js/login-main.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="${pageContext.request.contextPath}/resource/js/main.js"/>"></script>
 </head>
 <body translate="no">
 <header class="header-main" style="position: fixed; width: 100%">
@@ -44,7 +44,7 @@
         </ul>
     </div>
 </header>
-<main>
+<main style="   background: url('/resource/image/background/3.jpg') no-repeat;">
     <div class="form">
         <div class="tab-content">
             <div id="login">
@@ -145,7 +145,6 @@
     <script src='<c:url value="${pageContext.request.contextPath}/resource/js/jquery.js"/>'></script>
 
     <script>
-
         $('.form').find('input, textarea').on('keyup blur focus', function (e) {
             var $this = $(this),
                 label = $this.prev('label');

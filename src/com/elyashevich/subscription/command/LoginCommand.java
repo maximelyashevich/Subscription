@@ -3,6 +3,7 @@ package com.elyashevich.subscription.command;
 import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
+import com.elyashevich.subscription.service.GenreService;
 import com.elyashevich.subscription.service.LoginService;
 import com.elyashevich.subscription.service.PaperService;
 import com.elyashevich.subscription.service.UserService;
@@ -29,15 +30,18 @@ public class LoginCommand implements ActionCommand {
         String login = request.getParameter(PARAM_NAME_LOGIN);
         String password = request.getParameter(PARAM_NAME_PASSWORD);
         UserValidator validator = new UserValidator();
+        System.out.println(login);
         if (validator.isLoginAndPasswordCorrect(login, password)){
             try {
                 User user = userReceiver.findUserWithEncryption(login, password);
                 if (user!=null){
                     PaperService service = new PaperService();
                     UserService userService = new UserService();
+                    GenreService genreService = new GenreService();
                     request.getSession().setAttribute("user", user);
-                    request.setAttribute("papers", service.findAll());
-                    request.setAttribute("users", userService.findAll());
+                    request.getSession().setAttribute("papers", service.findAll());
+                    request.getSession().setAttribute("users", userService.findAll());
+                    request.getSession().setAttribute("genres", genreService.findAll());
                     switch (user.getType()){
                         case ADMIN:
                             page = ConfigurationManager.getProperty("path.page.admin");

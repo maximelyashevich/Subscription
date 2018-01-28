@@ -9,9 +9,9 @@ html {
 
 main {
     margin:0;
-    height: 100%;
-    padding: 100px 0 122px;
-    background: url("/resource/image/background/3.jpg") no-repeat;
+    min-height: 100%;
+    padding: 100px 55px;
+    overflow: auto;
 }
 
 a {
@@ -230,4 +230,5 @@ textarea {
 body{
     margin: 0;
     padding: 0;
+    height: 100%;
 }

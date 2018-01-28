@@ -2,6 +2,7 @@ package com.elyashevich.subscription.command.client;
 
 import com.elyashevich.subscription.command.*;
 import com.elyashevich.subscription.service.LoginService;
+import com.elyashevich.subscription.service.PaperService;
 import com.elyashevich.subscription.service.RegistrationService;
 
 public enum CommandType {
@@ -9,7 +10,8 @@ public enum CommandType {
     LOGOUT(new LogoutCommand()),
     REGISTRATION(new RegistrationCommand(new RegistrationService())),
     MAIL(new MailCommand()),
-    LANGUAGE(new LocaleCommand());
+    LANGUAGE(new LocaleCommand()),
+    SEARCH(new SearchCommand(new PaperService()));
 
     private ActionCommand command;
 
