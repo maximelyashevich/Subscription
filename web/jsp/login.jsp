@@ -45,6 +45,11 @@
     </div>
 </header>
 <main style="   background: url('/resource/image/background/3.jpg') no-repeat;">
+    <%--<form action="upload" enctype="multipart/form-data" method="post">--%>
+        <%--&lt;%&ndash;<input id="profile-image-upload" class="hidden" type="file">&ndash;%&gt;--%>
+        <%--Upload file: <input type="file" name="content">--%>
+        <%--<input type="submit" value="Upload File">--%>
+    <%--</form>--%>
     <div class="form">
         <div class="tab-content">
             <div id="login">

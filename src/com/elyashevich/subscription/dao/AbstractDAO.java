@@ -23,7 +23,7 @@ public abstract class AbstractDAO<T extends Entity> {
 
     public abstract boolean create(T entity) throws DAOTechnicalException;
 
-    public abstract T update(T entity);
+    public abstract boolean update(T entity) throws DAOTechnicalException;
 
     void close(Statement statement){
         try {

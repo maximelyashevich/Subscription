@@ -24,7 +24,7 @@
     </style>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="/resource/js/admin-main.js"></script>
+    <script type="text/javascript" src="/resource/js/admin.js"></script>
 </head>
 <body>
 <header class="header-main">
@@ -53,7 +53,7 @@
         <li><span class="nav-section-title"></span></li>
         <li class="have-children"><a href="#"><span class="fa fa-briefcase"></span>Content</a>
             <ul>
-                <li><a onclick="showDivBlock('paperTable', 'pagination', 'userTable')">View papers</a></li>
+                <li><a onclick="showDivBlock('paperTable', 'pagination', 'userTable', 'subscriptionTable')">View papers</a></li>
                 <li><a href="#">Add papers</a></li>
                 <li><a href="#">Edit papers</a></li>
                 <li><a href="#">Delete papers</a></li>
@@ -62,7 +62,7 @@
         </li>
         <li class="have-children"><a href="#"><span class="fa fa-user"></span>User</a>
             <ul>
-                <li><a href="#" onclick="showDivBlock('userTable', 'pagination', 'paperTable')">View users</a></li>
+                <li><a href="#" onclick="showDivBlock('userTable', 'pagination', 'paperTable', 'subscriptionTable')">View users</a></li>
                 <li><a href="#">Edit users</a></li>
                 <li><a href="#">Your profile</a></li>
             </ul>
@@ -75,7 +75,7 @@
         </li>
         <li class="have-children"><a href="#"><span class="fa fa-check-square-o"></span>Subscription</a>
             <ul>
-                <li><a href="#">View</a></li>
+                <li><a href="#" onclick="showDivBlock('subscriptionTable', 'pagination', 'paperTable', 'userTable')">View</a></li>
                 <li><a href="#">Edit</a></li>
             </ul>
         </li>
@@ -148,6 +148,33 @@
                     <td class="text-left">${paper.ageRestriction}</td>
                     <td class="text-left">${paper.availability}</td>
                     <td class="text-left">${paper.price}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+            <tbody>
+        </table>
+    </div>
+    <div class="content" id="subscriptionTable">
+        <table id="sTable" class="table-fill">
+            <thead>
+            <tr>
+                <th class="text-left">Subscription ID</th>
+                <th class="text-left">User ID</th>
+                <th class="text-left">User name</th>
+                <th class="text-left">User surname</th>
+                <th class="text-left">Registration date</th>
+                <th class="text-left">Price</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover">
+            <c:forEach items="${subscriptions}" var="subscription">
+                <tr>
+                    <td class="text-left">${subscription.id}</td>
+                    <td class="text-left">${subscription.user.id}</td>
+                    <td class="text-left">${subscription.user.firstName}</td>
+                    <td class="text-left">${subscription.user.lastName}</td>
+                    <td class="text-left">${subscription.subscriptionRegistration}</td>
+                    <td class="text-left">${subscription.price}$</td>
                 </tr>
             </c:forEach>
             </tbody>

@@ -13,10 +13,11 @@ public class User extends Entity {
     private String userName;
     private String email;
     private String password;
-    private ClientType type;
-    private BigDecimal amount;
+    private ClientType type=ClientType.USER;
+    private BigDecimal amount=new BigDecimal(10);
     private long addressId;
-    private boolean availability;
+    private boolean availability=true;
+    private long id;
 
     public User() {
     }
@@ -112,6 +113,14 @@ public class User extends Entity {
 
     public void setAvailability(boolean availability) {
         this.availability = availability;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override

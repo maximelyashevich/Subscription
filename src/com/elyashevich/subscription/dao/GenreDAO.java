@@ -54,7 +54,7 @@ public class GenreDAO extends AbstractDAO<Genre> {
     }
 
     @Override
-    public Genre update(Genre entity) {
-        return null;
+    public boolean update(Genre entity) {
+        return false;
     }
 }

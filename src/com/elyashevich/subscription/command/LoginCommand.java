@@ -3,10 +3,7 @@ package com.elyashevich.subscription.command;
 import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
-import com.elyashevich.subscription.service.GenreService;
-import com.elyashevich.subscription.service.LoginService;
-import com.elyashevich.subscription.service.PaperService;
-import com.elyashevich.subscription.service.UserService;
+import com.elyashevich.subscription.service.*;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.validator.UserValidator;
 
@@ -35,15 +32,19 @@ public class LoginCommand implements ActionCommand {
             try {
                 User user = userReceiver.findUserWithEncryption(login, password);
                 if (user!=null){
-                    PaperService service = new PaperService();
-                    UserService userService = new UserService();
-                    GenreService genreService = new GenreService();
                     request.getSession().setAttribute("user", user);
-                    request.getSession().setAttribute("papers", service.findAll());
+                    PaperService service = new PaperService();
+                    GenreService genreService = new GenreService();
+                    UserService userService = new UserService();
+                    SubscriptionService subscriptionService = new SubscriptionService();
                     request.getSession().setAttribute("users", userService.findAll());
+                    request.getSession().setAttribute("subscriptions", subscriptionService.findAll());
+                    request.getSession().setAttribute("papers", service.findAll());
                     request.getSession().setAttribute("genres", genreService.findAll());
+                    request.getSession().setAttribute("subscriptionsForUser", subscriptionService.findAllByUserId(user.getId()));
                     switch (user.getType()){
                         case ADMIN:
+
                             page = ConfigurationManager.getProperty("path.page.admin");
                             break;
                         case USER:

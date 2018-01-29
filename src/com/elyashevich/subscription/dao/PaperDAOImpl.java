@@ -15,6 +15,7 @@ import java.util.List;
 
 public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO {
     private static final String SQL_SELECT_PAPERS = "SELECT type, title, price, description, publishing_periodicity, age_restriction, is_available, image_path FROM PAPERS";
+    private static final String SQL_SELECT_PAPERS_BY_ID = "SELECT id, type, title, price, description, publishing_periodicity, age_restriction, is_available, image_path FROM PAPERS WHERE id=?";
     private static final String SQL_SELECT_PAPERS_BY_GENRES = "SELECT type, title, price, description, publishing_periodicity, age_restriction, is_available, image_path,  " +
             "GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ',') AS 'papers' FROM SUBSCRIPTION_DB.PAPERS " +
             "JOIN SUBSCRIPTION_DB.genres_papers " +
@@ -74,8 +75,8 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
     }
 
     @Override
-    public PaperEdition update(PaperEdition entity) {
-        return null;
+    public boolean update(PaperEdition entity) {
+        return false;
     }
 
     @Override
@@ -122,5 +123,36 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
             }
         }
         return paperEditions;
+    }
+
+    public PaperEdition findPaperById(long id) throws DAOTechnicalException {
+        PaperEdition paperEdition = null;
+        ProxyConnection cn = null;
+        PreparedStatement st = null;
+        try {
+            cn = ConnectionPool.getInstance().getConnection();
+            st = cn.prepareStatement(SQL_SELECT_PAPERS_BY_ID);
+            st.setLong(1, id);
+            ResultSet resultSet = st.executeQuery();
+            if (resultSet.next()) {
+                paperEdition = new PaperEdition(
+                        PaperType.valueOf(resultSet.getString(2).toUpperCase()),
+                        resultSet.getString(3).toUpperCase(),
+                        resultSet.getBigDecimal(4),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getInt(7),
+                        resultSet.getBoolean(8),
+                        resultSet.getString(9));
+            }
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getCause());
+        } finally {
+            close(st);
+            if (cn!=null) {
+                close(cn);
+            }
+        }
+        return paperEdition;
     }
 }

@@ -52,14 +52,14 @@ function closeDiv(idMain) {
     mainForm.style.display = "none";
     componentEl.style.display = "none";
 }
-function showDivBlock(id, idPagination, id1) {
+function showDivBlock(id, idPagination, id1, id2) {
     var block = document.getElementById(id);
     var pagination = document.getElementById(idPagination);
-    clearDivBlock(id1);
+    clearDivBlock(id1, id2);
     block.style.display="block";
     pagination.style.display="block";
 }
-function clearDivBlock(id1) {
+function clearDivBlock(id1, id2) {
     document.getElementById(id1).style.display="none";
-
+    document.getElementById(id2).style.display="none";
 }

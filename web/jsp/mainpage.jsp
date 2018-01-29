@@ -16,7 +16,7 @@
     <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="/resource/js/admin-main.js"></script>
+    <script type="text/javascript" src="/resource/js/admin.js"></script>
     <script>
         window.console = window.console || function(t) {};
         if (document.location.search.match(/type=embed/gi)) {
@@ -29,7 +29,7 @@
     <div class="header-limiter">
         <h1><a href="#"><span>Subscription</span></a></h1>
         <nav>
-            <a href="#">Overview</a>
+            <a href="controller?command=user">Моя страница</a>
             <a href="#">Surveys</a>
             <a href="#">Reports</a>
             <a href="#">Roles</a>

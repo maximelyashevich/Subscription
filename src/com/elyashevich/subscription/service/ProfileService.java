@@ -6,12 +6,12 @@ import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.util.Encryption;
 
-public class RegistrationService {
-    public boolean createUserWithEncryption(User user) throws ServiceTechnicalException {
+public class ProfileService {
+    public boolean updateUser(User user) throws ServiceTechnicalException {
         UserDAOImpl userDAO = new UserDAOImpl();
         user.setPassword(Encryption.encryptPassword(user.getPassword()));
         try {
-            return userDAO.create(user);
+            return userDAO.update(user);
         } catch (DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
         }

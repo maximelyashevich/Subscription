@@ -3,6 +3,7 @@ package com.elyashevich.subscription.command.client;
 import com.elyashevich.subscription.command.*;
 import com.elyashevich.subscription.service.LoginService;
 import com.elyashevich.subscription.service.PaperService;
+import com.elyashevich.subscription.service.ProfileService;
 import com.elyashevich.subscription.service.RegistrationService;
 
 public enum CommandType {
@@ -11,7 +12,9 @@ public enum CommandType {
     REGISTRATION(new RegistrationCommand(new RegistrationService())),
     MAIL(new MailCommand()),
     LANGUAGE(new LocaleCommand()),
-    SEARCH(new SearchCommand(new PaperService()));
+    PROFILE(new ProfileCommand(new ProfileService())),
+    SEARCH(new SearchCommand(new PaperService())),
+    USER(new UserCommand());
 
     private ActionCommand command;
 
