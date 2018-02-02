@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-        <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://java.sun.com/xml/ns/javaee"
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
         xsi:schemaLocation= "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
         id="WebApp_ID" version="3.0">
         <display-name> FirstJspServletJsp </display-name>
         <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
         </welcome-file-list>
+        <error-page>
+                <exception-type>java.lang.Exception</exception-type>
+                <location>/jsp/error/error.jsp</location>
+        </error-page>
         <filter>
                 <filter-name>encodingfilter</filter-name>
                 <filter-class>com.elyashevich.subscription.filter.EncodingFilter</filter-class>
@@ -23,4 +26,25 @@
         <param-name>mail</param-name>
         <param-value>/WEB-INF/classes/config/mail.properties</param-value>
         </context-param>
+        <context-param>
+                <param-name>quartz:config-file</param-name>
+                <param-value>quartz.properties</param-value>
+        </context-param>
+        <context-param>
+                <param-name>quartz:shutdown-on-unload</param-name>
+                <param-value>true</param-value>
+        </context-param>
+        <context-param>
+                <param-name>quartz:wait-on-shutdown</param-name>
+                <param-value>true</param-value>
+        </context-param>
+        <context-param>
+                <param-name>quartz:start-on-load</param-name>
+                <param-value>true</param-value>
+        </context-param>
+        <listener>
+                <listener-class>
+                        org.quartz.ee.servlet.QuartzInitializerListener
+                </listener-class>
+        </listener>
         </web-app>

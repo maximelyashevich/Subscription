@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class PaperEdition extends Entity{
+    private long id;
     private PaperType type;
     private String title;
     private BigDecimal price;
@@ -12,7 +13,7 @@ public class PaperEdition extends Entity{
     private int ageRestriction;
     private boolean availability;
     private String imagePath;
-
+    private int durationMonth = 3;
     public PaperEdition() {
     }
 
@@ -25,6 +26,14 @@ public class PaperEdition extends Entity{
         this.ageRestriction = ageRestriction;
         this.availability = availability;
         this.imagePath = imagePath;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public PaperType getType() {
@@ -91,6 +100,14 @@ public class PaperEdition extends Entity{
         this.imagePath = imagePath;
     }
 
+    public int getDurationMonth() {
+        return durationMonth;
+    }
+
+    public void setDurationMonth(int durationMonth) {
+        this.durationMonth = durationMonth;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,7 +118,6 @@ public class PaperEdition extends Entity{
                 availability == that.availability &&
                 type == that.type &&
                 Objects.equals(title, that.title) &&
-                Objects.equals(price, that.price) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(imagePath, that.imagePath);
     }
@@ -109,20 +125,21 @@ public class PaperEdition extends Entity{
     @Override
     public int hashCode() {
 
-        return Objects.hash(type, title, price, description, publishingPeriodicity, ageRestriction, availability, imagePath);
+        return Objects.hash(type, title, description, publishingPeriodicity, ageRestriction, availability, imagePath);
     }
 
     @Override
     public String toString() {
-        return "PaperEdition{" +
-                "type=" + type +
+        return "\n\tPaperEdition{" +
+                "id= "+id +
+                ", type=" + type +
                 ", title='" + title + '\'' +
                 ", price=" + price +
-                ", description='" + description + '\'' +
+                ", description='" + description + '\n' +
                 ", publishingPeriodicity=" + publishingPeriodicity +
                 ", ageRestriction=" + ageRestriction +
                 ", availability=" + availability +
                 ", imagePath='" + imagePath + '\'' +
-                '}';
+                "}\n";
     }
 }

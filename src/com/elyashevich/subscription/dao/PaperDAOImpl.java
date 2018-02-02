@@ -14,9 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO {
-    private static final String SQL_SELECT_PAPERS = "SELECT type, title, price, description, publishing_periodicity, age_restriction, is_available, image_path FROM PAPERS";
+    private static final String SQL_SELECT_PAPERS = "SELECT id FROM PAPERS";
     private static final String SQL_SELECT_PAPERS_BY_ID = "SELECT id, type, title, price, description, publishing_periodicity, age_restriction, is_available, image_path FROM PAPERS WHERE id=?";
-    private static final String SQL_SELECT_PAPERS_BY_GENRES = "SELECT type, title, price, description, publishing_periodicity, age_restriction, is_available, image_path,  " +
+    private static final String SQL_DELETE_PAPERS_BY_ID = "DELETE FROM PAPERS WHERE id=?";
+    private static final String SQL_SELECT_PAPERS_BY_GENRES = "SELECT SUBSCRIPTION_DB.papers.id, description, " +
             "GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ',') AS 'papers' FROM SUBSCRIPTION_DB.PAPERS " +
             "JOIN SUBSCRIPTION_DB.genres_papers " +
             "ON papers.id=GENRES_PAPERS.papers_id " +
@@ -35,29 +36,17 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
             st = cn.createStatement();
 
             ResultSet resultSet = st.executeQuery(SQL_SELECT_PAPERS);
-
             while (resultSet.next()) {
-                paperEditions.add(new PaperEdition(
-                        PaperType.valueOf(resultSet.getString(1).toUpperCase()),
-                        resultSet.getString(2).toUpperCase(),
-                        resultSet.getBigDecimal(3),
-                        resultSet.getString(4),
-                        resultSet.getInt(5),
-                        resultSet.getInt(6),
-                        resultSet.getBoolean(7),
-                        resultSet.getString(8)));
+                paperEditions.add(findPaperById(resultSet.getLong(1)));
             }
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-            close(st);
-            if (cn != null) {
+                close(st);
                 close(cn);
-            }
         }
         return paperEditions;
     }
-
 
     @Override
     public boolean delete(int id) {
@@ -87,7 +76,6 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
         StringBuilder sql = new StringBuilder(SQL_SELECT_PAPERS_BY_GENRES);
         try {
             cn = ConnectionPool.getInstance().getConnection();
-
             sql.append(" description LIKE ? AND papers ");
             if (criteria.size()>1) {
                 for (int i = 0; i < criteria.size() - 1; i++) {
@@ -104,19 +92,12 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
             }
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                paperEditions.add(new PaperEdition(
-                        PaperType.valueOf(resultSet.getString(1).toUpperCase()),
-                        resultSet.getString(2).toUpperCase(),
-                        resultSet.getBigDecimal(3),
-                        resultSet.getString(4),
-                        resultSet.getInt(5),
-                        resultSet.getInt(6),
-                        resultSet.getBoolean(7),
-                        resultSet.getString(8)));
+                paperEditions.add(findPaperById(resultSet.getLong(1)));
             }
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
+            if (preparedStatement!=null)
             close(preparedStatement);
             if (cn != null) {
                 close(cn);
@@ -144,15 +125,32 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
                         resultSet.getInt(7),
                         resultSet.getBoolean(8),
                         resultSet.getString(9));
+                paperEdition.setId(resultSet.getLong(1));
             }
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-            close(st);
-            if (cn!=null) {
+                close(st);
                 close(cn);
-            }
         }
         return paperEdition;
     }
+    public boolean deleteById(long paperId) throws DAOTechnicalException {
+        ProxyConnection cn = null;
+        PreparedStatement st = null;
+        boolean result = false;
+        try {
+            cn = ConnectionPool.getInstance().getConnection();
+            st = cn.prepareStatement(SQL_DELETE_PAPERS_BY_ID);
+            st.setLong(1, paperId);
+            result = st.executeUpdate()>0;
+        } catch (SQLException e) {
+            throw new DAOTechnicalException(e.getMessage(), e.getCause());
+        } finally {
+            close(st);
+            close(cn);
+        }
+        return result;
+    }
+
 }

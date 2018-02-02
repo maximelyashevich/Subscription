@@ -13,7 +13,6 @@ import java.util.List;
 
 public abstract class AbstractDAO<T extends Entity> {
     private static final Logger LOGGER = LogManager.getLogger();
-    private Connection connection ;
 
     public abstract List<T> findAll() throws DAOTechnicalException;
 
@@ -43,9 +42,5 @@ public abstract class AbstractDAO<T extends Entity> {
             throw new DAOTechnicalException(e.getMessage(), e.getCause());
         }
     }
-    void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
 }
 

@@ -2,6 +2,7 @@ package com.elyashevich.subscription.servlet;
 
 import com.elyashevich.subscription.command.ActionCommand;
 import com.elyashevich.subscription.command.ActionFactory;
+import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
 import com.elyashevich.subscription.proxy.ConnectionPool;
@@ -29,7 +30,14 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         ActionFactory client = new ActionFactory();
         ActionCommand command = client.defineCommand(request);
-        Router router = command.execute(request);
+        Router router = null;
+        try {
+            router = command.execute(request);
+        } catch (CommandTechnicalException e) {
+            request.setAttribute("exceptionCause", e.getCause());
+            request.setAttribute("exceptionMessage", e.getMessage());
+            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+        }
         String page = router.getPagePath();
         if (page != null) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
@@ -48,6 +56,7 @@ public class Controller extends HttpServlet {
               }
     }
     public void destroy(){
+
         ConnectionPool.getInstance().destroyConnection();
     }
 }

@@ -15,14 +15,17 @@
     <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resource/css/bootstrap.css"/>">
+    <script type="text/javascript" src="/resource/js/adminStyle.js"></script>
 </head>
 <body style="   background: url('/resource/image/background/3.jpg') no-repeat;">
 <header class="header-main" style="margin-bottom: 25px">
     <div class="header-limiter">
         <h1><a href="#"><span>Subscription</span></a></h1>
         <nav>
-            <a href="#" onclick="showMoreSubscriptionInformation()">My subscriptions</a>
-            <a href="#">My credit history</a>
+            <a href="#" onclick="showDivBlock('userProfile', 'userProfile', 'sSubscriptions', 'cCredit', 'cCredit')">My profile</a>
+            <a href="#" onclick="showDivBlock('sSubscriptions', 'sSubscriptions', 'userProfile', 'cCredit', 'cCredit')">My subscriptions</a>
+            <a href="#" onclick="showDivBlock('cCredit', 'cCredit', 'userProfile', 'sSubscriptions',  'sSubscriptions')">My credit history</a>
             <a href="/jsp/mainpage.jsp">Main page</a>
             <a href="#">Roles</a>
         </nav>
@@ -32,7 +35,13 @@
             </div>
             <ul>
                 <li><a href="#" onclick="showMoreInformation()">Edit profile</a></li>
-                <li><a href="#">Payments</a></li>
+                <li>
+                    <form method="post" action="/controller">
+                        <input type="hidden" name="command" value="money"/>
+                        <input type="hidden" name="currentUserId" value="${user.id}">
+                        <button type="submit">Top up the balance</button>
+                    </form>
+                </li>
                 <li><a href="controller?command=logout">Logout</a></li>
             </ul>
         </div>
@@ -41,13 +50,13 @@
 <div class="container">
     <div id="modalUserWindow" class="modal" style="background-color: rgba(0,0,0,0.35);">
         <!-- Modal content -->
-        <div class="modal-content" style="margin-top: 150px;">
+        <div id="photoModal" class="modal-content" style="margin-top: 150px;">
             <span class="close">&times;</span>
-            <form method="POST" action="${pageContext.request.contextPath}/controller">
+                <form method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="profile"/>
-                <input type="hidden" name="amount" value="${user.amount}"/>
-                <input type="hidden" name="type" value="${user.type}"/>
-                <input type="hidden" name="id" value="${user.id}"/>
+                    <input type="hidden" name="amount" value="${user.amount}"/>
+                    <input type="hidden" name="type" value="${user.type}"/>
+                    <input type="hidden" name="id" value="${user.id}"/>
                 <div class="field-wrap"><label>Login:</label>
                   <input type="text" name="login" value="${user.userName}"/>
                     </div>
@@ -61,7 +70,7 @@
                 <div class="field-wrap">
                     <label>First name:</label>
                   <input type="text" name="firstName" value="${user.firstName}"/>
-                  </div>
+                   </div>
                  <div class="field-wrap">
                  <label>Last name:</label>
                    <input type="text" name="lastName" value="${user.lastName}"/>
@@ -72,39 +81,85 @@
             <div id="userInformation"></div>
         </div>
     </div>
-    <div id="modalSubscriptions" class="modal" style="background-color: rgba(0,0,0,0.35);">
+    <div id="sSubscriptions" class="componentUserBlock" style="display: none">
         <!-- Modal content -->
-        <div class="modal-content" style="margin-top: 100px; height: 65%;">
-            <span class="close">&times;</span>
-            <div class="content" id="subscriptionsTable"
-                 style="width: 100%; height: 100%; margin-left: 0%;  margin-top: 7%;  overflow: auto;">
-                <table id="subTable" class="table-fill">
-                    <thead>
-                    <tr>
-                        <th class="text-center">Subscription ID</th>
-                        <th class="text-center">Paper title</th>
-                        <th class="text-center">Subscription/start</th>
-                        <th class="text-center">Subscription/finish</th>
-                        <th class="text-center">Price</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table-hover">
-                    <c:forEach items="${subscriptionsForUser}" var="subscription">
-                        <tr>
-                            <td class="text-center">${subscription.id}</td>
-                            <td class="text-center">${subscription.paperEdition.title}</td>
-                            <td class="text-center">${subscription.subscriptionRegistration}</td>
-                            <td class="text-center">${subscription.subscriptionFinish}</td>
-                            <td class="text-center">${subscription.price}$</td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                    <tbody>
-                </table>
+        <div class="modal-content" style="height: 75%; width: 65%;">
+            <div class="componentContent" id="subscriptionsTable"
+                 style="width: 100%; height: 100%; margin-left: 0;  margin-top: 7%;  overflow: auto;">
+                <%--<c:choose>--%>
+                    <%--<c:when test="${empty subscriptionForUser}">--%>
+                        <%--<br>--%>
+                        <%--${user.firstName}, your subscription list is empty.--%>
+                        <%--<br/>--%>
+                    <%--</c:when>--%>
+                    <%--<c:otherwise>--%>
+                        <table id="subTable" class="table-fill">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Subscription ID</th>
+                                <th class="text-center">Paper title</th>
+                                <th class="text-center">Subscription/start</th>
+                                <th class="text-center">Subscription/finish</th>
+                                <th class="text-center">Price</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-hover">
+                            <c:forEach items="${subscriptionsForUser}" var="subscription">
+                                <tr>
+                                    <td class="text-center">${subscription.id}</td>
+                                    <td class="text-center">${subscription.paperEdition.title}</td>
+                                    <td class="text-center">${subscription.subscriptionRegistration}</td>
+                                    <td class="text-center">${subscription.subscriptionFinish}</td>
+                                    <td class="text-center">${subscription.price}$</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    <%--</c:otherwise>--%>
+                <%--</c:choose>--%>
             </div>
         </div>
     </div>
-    <div class="row" style="margin-right: -40px;
+    <div id="cCredit" class="componentUserBlock" style="display: none">
+        <!-- Modal content -->
+        <div class="modal-content" style="height: 75%; width: 65%;">
+            <div class="componentContent" id="creditsTable"
+                 style="width: 100%; height: 100%; margin-left: 0;  margin-top: 7%;  overflow: auto;">
+                <c:choose>
+                    <c:when test="${empty creditsForUser}">
+                        <br>
+                        ${user.firstName}, your credit history is empty.
+                        <br/>
+                    </c:when>
+                    <c:otherwise>
+                        <table id="creditTable" class="table-fill">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Credit ID</th>
+                                <th class="text-center">Debt</th>
+                                <th class="text-center">Interest rate (%)</th>
+                                <th class="text-center">Payoff (days)</th>
+                                <th class="text-center">Is active</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table-hover">
+                            <c:forEach items="${creditsForUser}" var="credit">
+                                <tr>
+                                    <td class="text-center">${credit.id}</td>
+                                    <td class="text-center">${credit.debt}$</td>
+                                    <td class="text-center">${credit.interestRate}%</td>
+                                    <td class="text-center">${credit.payoff}</td>
+                                    <td class="text-center">${credit.availability}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="userProfile" style="margin-right: -40px;
     margin-left: 250px;">
         <div class="col-md-7 ">
             <div class="panel panel-default">
@@ -113,18 +168,19 @@
                     <div class="box box-info">
                         <div class="box-body">
                             <div class="col-sm-6">
-                                <div  align="center"> <img alt="User Pic" src="/resource/image/user/user.jpg" id="profile-image1" class="img-circle img-responsive">
-                                    <%--<form enctype="multipart/form-data" method="post" action="/upload">--%>
-                                        <%--&lt;%&ndash;<input id="profile-image-upload" class="hidden" type="file">&ndash;%&gt;--%>
-                                        <%--Upload file: <input type="file" name="content">--%>
-                                        <%--<input type="submit" value="Upload File">--%>
-                                    <%--</form>--%>
+                                <div  align="center">
+                                    <form id="editForm" enctype="multipart/form-data" method="post" action="/upload">
+                                        <input id="profile-image-upload" class="hidden" type="file">
+                                        <input type="hidden" id="userID" name="userID" value="${user.id}"/>
+                                        <img src="${user.imagePath}"     class="img-circle img-responsive" width="164"
+                                             height="163" id="contactImage" onclick="photoFunctionsAndParams.addPhoto()">
 
-                                    <div style="color:#999;" >click here to change profile image</div>
-                                    <!--Upload Image Js And Css-->
+                                        <div style="color:#999;" >click here to change profile image</div>
+                                        <input type="submit" value="Save photo">
+                                    </form>
                                 </div>
+
                                 <br>
-                                <!-- /input-group -->
                             </div>
                             <div class="col-sm-6">
                                 <h4 style="color:#00b1b1;">${user.firstName} ${user.lastName}</h4></span>
@@ -173,35 +229,22 @@
         </div>
         <script>
             var modalUser = document.getElementById('modalUserWindow'),
-            modalSubscriptions = document.getElementById('modalSubscriptions'),
-            span = document.getElementsByClassName("close")[0],
-            span2 = document.getElementsByClassName("close")[1];
+            span = document.getElementsByClassName("close")[0];
             function showMoreInformation() {
                 modalUser.style.display = "block";
                 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-               //Сделать валидатор!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //Сделать валидатор!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            }
-
-            function showMoreSubscriptionInformation(){
-                modalSubscriptions.style.display="block";
             }
 
             span.onclick = function() {
                 modalUser.style.display = "none";
             };
 
-            span2.onclick = function () {
-                modalSubscriptions.style.display = "none";
-            };
-
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
                 if (event.target === modalUser) {
                     modalUser.style.display = "none";
-                }
-                if (event.target === modalSubscriptions) {
-                    modalSubscriptions.style.display = "none";
                 }
             }
         </script>
@@ -216,6 +259,7 @@
         </script>
     </div>
 </div>
+<script type="text/javascript" src="/resource/js/photo.js"></script>
 <c:import url="/jsp/common/footer.jsp" />
 </body>
 </html>

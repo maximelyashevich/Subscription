@@ -4,6 +4,7 @@ import com.elyashevich.subscription.dao.UserDAOImpl;
 import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
+import com.elyashevich.subscription.util.Encryption;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,5 +34,32 @@ public class UserService {
         user.setUserName(login);
         user.setPassword(password);
         return user;
+    }
+    public boolean updateUser(User user) throws ServiceTechnicalException {
+        UserDAOImpl userDAO = new UserDAOImpl();
+        user.setPassword(Encryption.encryptPassword(user.getPassword()));
+        try {
+            return userDAO.update(user);
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
+    }
+
+    public User findUserByID(long id) throws ServiceTechnicalException {
+        UserDAOImpl userDAO = new UserDAOImpl();
+        try {
+            return userDAO.findUserById(id);
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
+    }
+
+    public User updateUserAmount(long id) throws ServiceTechnicalException {
+        UserDAOImpl userDAO = new UserDAOImpl();
+        try {
+            return userDAO.updateAmount(id);
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
     }
 }

@@ -1,6 +1,9 @@
 package com.elyashevich.subscription.action;
 
 import com.elyashevich.subscription.creator.SessionCreator;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,6 +16,7 @@ import java.util.Properties;
 
 
 public class MailThread extends Thread {
+    private static final Logger LOGGER = LogManager.getLogger();
     private MimeMessage message;
     private String sendToEmail;
     private String mailSubject;
@@ -37,10 +41,10 @@ public class MailThread extends Thread {
             message.setContent(mailText, "text/html; charset=utf-8");
             message.setRecipient(Message.RecipientType. TO, new InternetAddress(sendToEmail));
         } catch (AddressException e) {
-            System. err.print("Некорректный адрес:" + sendToEmail + " " + e);
+            LOGGER.log(Level.ERROR, "Некорректный адрес:" + sendToEmail + " " + e);
 // in log file
         } catch (MessagingException e) {
-            System. err.print("Ошибка формирования сообщения" + e);
+            LOGGER.log(Level.ERROR, "Ошибка формирования сообщения" + e);
 // in log file
         }
     }
@@ -50,7 +54,7 @@ public class MailThread extends Thread {
 // отправка почтового сообщения
             Transport.send(message);
         } catch (MessagingException e) {
-            System. err. print("Ошибка при отправлении сообщения" + e);
+            LOGGER.log(Level.ERROR, "Ошибка при отправлении сообщения" + e);
 // in log file
         }
     }

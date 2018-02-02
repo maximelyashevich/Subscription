@@ -24,7 +24,7 @@
     </style>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="/resource/js/admin.js"></script>
+    <script type="text/javascript" src="/resource/js/adminStyle.js"></script>
 </head>
 <body>
 <header class="header-main">
@@ -53,7 +53,7 @@
         <li><span class="nav-section-title"></span></li>
         <li class="have-children"><a href="#"><span class="fa fa-briefcase"></span>Content</a>
             <ul>
-                <li><a onclick="showDivBlock('paperTable', 'pagination', 'userTable', 'subscriptionTable')">View papers</a></li>
+                <li><a onclick="showDivBlock('paperTable', 'pagination', 'userTable','creditTable', 'subscriptionTable')">View papers</a></li>
                 <li><a href="#">Add papers</a></li>
                 <li><a href="#">Edit papers</a></li>
                 <li><a href="#">Delete papers</a></li>
@@ -62,20 +62,20 @@
         </li>
         <li class="have-children"><a href="#"><span class="fa fa-user"></span>User</a>
             <ul>
-                <li><a href="#" onclick="showDivBlock('userTable', 'pagination', 'paperTable', 'subscriptionTable')">View users</a></li>
+                <li><a href="#" onclick="showDivBlock('userTable', 'pagination', 'creditTable', 'paperTable', 'subscriptionTable')">View users</a></li>
                 <li><a href="#">Edit users</a></li>
                 <li><a href="#">Your profile</a></li>
             </ul>
         </li>
         <li class="have-children"><a href="#"><span class="fa fa-credit-card"></span>Credit</a>
             <ul>
-                <li><a href="#">View history</a></li>
+                <li><a href="#" onclick="showDivBlock('creditTable', 'pagination','paperTable', 'userTable', 'subscriptionTable')">View history</a></li>
                 <li><a href="#">Edit</a></li>
             </ul>
         </li>
         <li class="have-children"><a href="#"><span class="fa fa-check-square-o"></span>Subscription</a>
             <ul>
-                <li><a href="#" onclick="showDivBlock('subscriptionTable', 'pagination', 'paperTable', 'userTable')">View</a></li>
+                <li><a href="#" onclick="showDivBlock('subscriptionTable', 'pagination', 'paperTable', 'userTable', 'creditTable')">View</a></li>
                 <li><a href="#">Edit</a></li>
             </ul>
         </li>
@@ -87,7 +87,7 @@
         </li>
         <li><a href="#"><span class="fa fa-picture-o"></span>Gallery</a></li>
     </ul>
-    <div class="content" id="userTable">
+    <div class="content" id="userTable" style="display: none">
         <table id="uTable" class="table-fill">
             <thead>
             <tr>
@@ -121,7 +121,7 @@
             </tbody>
         </table>
     </div>
-    <div class="content" id="paperTable">
+    <div class="content" id="paperTable" style="display: none">
         <table id="pTable" class="table-fill">
             <thead>
             <tr>
@@ -154,7 +154,7 @@
             <tbody>
         </table>
     </div>
-    <div class="content" id="subscriptionTable">
+    <div class="content" id="subscriptionTable" style="display: none">
         <table id="sTable" class="table-fill">
             <thead>
             <tr>
@@ -181,7 +181,37 @@
             <tbody>
         </table>
     </div>
-    <div id="pagination"></div>
+
+    <div class="content" id="creditTable" style="display: none">
+        <table id="cTable" class="table-fill">
+            <thead>
+            <tr>
+                <th class="text-left">Credit ID</th>
+                <th class="text-left">User ID</th>
+                <th class="text-left">debt</th>
+                <th class="text-left">Interest rate (%)</th>
+                <th class="text-left">Payoff (days)</th>
+            </tr>
+            </thead>
+            <tbody class="table-hover">
+            <c:forEach items="${credits}" var="credit">
+                <tr>
+                    <td class="text-left">${credit.id}</td>
+                    <td class="text-left">
+                        <c:forEach items="${credit.users}" var="user">
+                            ${user.id}-${user.firstName}-${user.lastName}-${credit.availability};
+                        </c:forEach></td>
+                    <td class="text-left">${credit.debt}$</td>
+                    <td class="text-left">${credit.interestRate}%</td>
+                    <td class="text-left">${credit.payoff}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+            <tbody>
+        </table>
+    </div>
+
+    <div id="pagination" style="display: none"></div>
     <script>
     var $table = document.getElementById('uTable'),
         $tablePagination = document.getElementById("pagination"),

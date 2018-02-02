@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class User extends Entity {
+    private long id;
     private String firstName;
     private String lastName;
     private LocalDate birthday;
@@ -17,7 +18,7 @@ public class User extends Entity {
     private BigDecimal amount=new BigDecimal(10);
     private long addressId;
     private boolean availability=true;
-    private long id;
+    private String imagePath;
 
     public User() {
     }
@@ -107,6 +108,14 @@ public class User extends Entity {
         this.addressId = addressId;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public boolean isAvailability() {
         return availability;
     }
@@ -149,7 +158,8 @@ public class User extends Entity {
     @Override
     public String toString() {
         return "User{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id+
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthday=" + birthday +
                 ", userName='" + userName + '\'' +

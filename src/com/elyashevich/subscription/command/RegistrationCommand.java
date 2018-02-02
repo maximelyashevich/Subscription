@@ -1,6 +1,7 @@
 package com.elyashevich.subscription.command;
 
 import com.elyashevich.subscription.entity.User;
+import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
@@ -26,7 +27,7 @@ public class RegistrationCommand implements ActionCommand {
         this.userReceiver = userReceiver;
     }
     @Override
-    public Router execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) throws CommandTechnicalException {
         Router router = new Router();
         String page = null;
 
@@ -51,9 +52,8 @@ public class RegistrationCommand implements ActionCommand {
                 } else{
                     request.setAttribute("errorLoginPassMessage", MessageManager.EN.getMessage("message.loginerror"));
                 }
-            } catch (ServiceTechnicalException e) {
-                request.setAttribute("errorLoginPassMessage", MessageManager.EN.getMessage("message.loginerror"));
-               // page = ConfigurationManager.getProperty("path.page.error");
+            } catch (ServiceTechnicalException e){
+                throw new CommandTechnicalException(e.getMessage(), e.getCause());
             }
         } else{
             request.setAttribute("titleMessage", MessageManager.EN.getMessage("message.loginerror"));

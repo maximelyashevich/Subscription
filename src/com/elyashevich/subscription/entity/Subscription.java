@@ -91,10 +91,10 @@ public class Subscription extends Entity{
         return "Subscription{" +
                 "id=" + id +
                 ", user=" + user +
+                ", paperEdition"+paperEdition+
                 ", subscriptionRegistration=" + subscriptionRegistration +
                 ", subscriptionFinish=" + subscriptionFinish +
                 ", price=" + price +
-                ", paperEdition=" + paperEdition +
-                '}';
+                "}\n";
     }
 }

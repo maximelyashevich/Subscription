@@ -38,6 +38,7 @@ public class ConnectionPool {
             }
             connectionQueue.offer(connection);
         }
+
     }
 
     public static ConnectionPool getInstance() {

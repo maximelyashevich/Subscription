@@ -1,5 +1,6 @@
 package com.elyashevich.subscription.command;
 
+import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.service.PaperService;
@@ -17,15 +18,15 @@ public class SearchCommand implements ActionCommand {
     }
 
     @Override
-    public Router execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) throws CommandTechnicalException {
         Router router = new Router();
         String page = ConfigurationManager.getProperty("path.page.main");
         String dataCriteria = request.getParameter(CRITERIA);
         String data = request.getParameter(SEARCH);
         try {
                 request.setAttribute("papers", userReceiver.findAllByDescription(data, dataCriteria));
-        } catch (ServiceTechnicalException e) {
-            e.printStackTrace();
+        } catch (ServiceTechnicalException e){
+            throw new CommandTechnicalException(e.getMessage(), e.getCause());
         }
         router.setPagePath(page);
         return router;

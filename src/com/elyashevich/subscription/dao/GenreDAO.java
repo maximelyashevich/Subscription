@@ -30,7 +30,9 @@ public class GenreDAO extends AbstractDAO<Genre> {
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-            close(st);
+            if (st!=null) {
+                close(st);
+            }
             if (cn!=null) {
                 close(cn);
             }
