@@ -16,8 +16,6 @@ div.table-title {
 
 /*** Table Styles **/
 
-
-
 tr:hover td {
     background:#4E5066;
     color:#FFFFFF;
@@ -31,8 +29,6 @@ tr:nth-child(odd) td {
 tr:nth-child(odd):hover td {
     background:#292c2f;
 }
-
-
 
 td {
     background:#FFFFFF;
@@ -85,9 +81,6 @@ td.text-right {
     padding: 1.5em 0;
     font-size: 2em;
 }
-#userTable{
-    display: none;
-}
-#paperTable{
-    display: none;
+input{
+    height: 35px;
 }

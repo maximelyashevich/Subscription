@@ -24,7 +24,7 @@ public abstract class AbstractDAO<T extends Entity> {
 
     public abstract boolean update(T entity) throws DAOTechnicalException;
 
-    void close(Statement statement){
+    public void close(Statement statement){
         try {
             if (statement != null) {
                 statement.close();
@@ -33,11 +33,12 @@ public abstract class AbstractDAO<T extends Entity> {
             LOGGER.log(Level.ERROR, e.getMessage());
         }
     }
-    void close(Connection connection) throws DAOTechnicalException {
+
+    public void close(Connection connection) throws DAOTechnicalException {
         try {
             if (connection != null) {
                 connection.close();
-            }
+             }
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage(), e.getCause());
         }

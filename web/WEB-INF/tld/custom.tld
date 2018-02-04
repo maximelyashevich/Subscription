@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>ctd</short-name>
+    <uri>customtags</uri>
+
+    <tag>
+        <name>userRole</name>
+        <tag-class>com.elyashevich.subscription.customtag.UserRoleTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>user</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>com.elyashevich.subscription.entity.User</type>
+        </attribute>
+    </tag>
+    <function>
+        <name>notnull</name>
+        <function-class>com.elyashevich.subscription.customtag.NotNullTag</function-class>
+        <function-signature>com.elyashevich.subscription.entity.Genre notNull(java.lang.Object)</function-signature>
+    </function>
+</taglib>

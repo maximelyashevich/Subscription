@@ -1,0 +1,344 @@
+abkhazia
+australia
+austria
+azerbaijan
+aland islands
+albania
+algeria
+anguilla
+angola
+andorra
+argentina
+armenia
+aruba
+afghanistan
+bahamas
+bangladesh
+barbados
+bahrain
+belarus
+belize
+belgium
+benin
+bulgaria
+bolivia
+bosnia &  herzegovina
+botswana
+brazil
+brunei darussalam
+burundi
+bhutan
+vatican    city
+united kingdom
+hungary
+venezuela
+timor, east
+viet   nam
+gabon
+haiti
+gambia
+ghana
+guadeloupe
+guatemala
+guinea
+guinea-bissau
+germany
+gibraltar
+hong   kong
+honduras
+grenada
+greenland
+greece
+georgia
+guam
+denmark
+dominica
+dominican  republic
+egypt
+zambia
+western    sahara
+zimbabwe
+israel
+india
+indonesia
+jordan
+iraq
+iran
+ireland
+iceland
+spain
+italy
+yemen
+kazakhstan
+cambodia
+cameroon
+canada
+qatar
+kenya
+cyprus
+kyrgyzstan
+kiribati
+china
+colombia
+korea, d.p.r.
+korea
+costa  rica
+cote   d'ivoire
+cuba
+kuwait
+lao    p.d.r.
+latvia
+lesotho
+liberia
+lebanon
+libyan arab   jamahiriya
+lithuania
+liechtenstein
+luxembourg
+mauritius
+mauritania
+madagascar
+macedonia
+malawi
+malaysia
+mali
+maldives
+malta
+morocco
+mexico
+mozambique
+moldova
+monaco
+mongolia
+namibia
+nepal
+niger
+nigeria
+netherlands
+nicaragua
+new    zealand
+norway
+united arab emirates
+oman
+pakistan
+panama
+paraguay
+peru
+poland
+portugal
+russia
+romania
+san    marino
+saudi arabia
+senegal
+serbia
+singapore
+syrian arab republic
+slovakia
+slovenia
+somalia
+sudan
+usa
+tajikistan
+thailand
+tanzania
+togo
+tunisia
+turkmenistan
+turkey
+uganda
+uzbekistan
+ukraine
+uruguay
+micronesia
+fiji
+philippines
+finland
+france
+croatia
+chad
+montenegro
+czech  republic
+chile
+switzerland
+sweden
+sri    lanka
+ecuador
+eritrea
+estonia
+ethiopia
+south  africa
+jamaica
+japan
+абхазия
+австралия
+австрия
+азербайджан
+аландские острова
+албания
+алжир
+ангилья
+ангола
+андорра
+аргентина
+армения
+аруба
+афганистан
+багамские острова
+бангладеш
+барбадос
+бахрейн
+беларусь
+белиз
+бельгия
+бенин
+болгария
+боливия
+босния и герцеговина
+ботсвана
+бразилия
+бруней
+бурунди
+бутан
+ватикан
+великобритания
+венгрия
+венесуэла
+восточный тимор
+вьетнам
+габон
+гаити
+гамбия
+гана
+гваделупа
+гватемала
+гвинея
+гвинея-бисау
+германия
+гибралтар
+гонконг
+гондурас
+гренада
+гренландия
+греция
+грузия
+гуам
+дания
+доминика
+доминиканская республика
+египет
+замбия
+западная сахара
+зимбабве
+израиль
+индия
+индонезия
+иордания
+ирак
+иран
+ирландия
+исландия
+испания
+италия
+йемен
+казахстан
+камбоджа
+камерун
+канада
+катар
+кения
+кипр
+киргизия
+кирибати
+китай
+колумбия
+корея северная
+корея южная
+коста-рика
+кот-д'ивуар
+куба
+кувейт
+лаос
+латвия
+лесото
+либерия
+ливан
+ливия
+литва
+лихтенштейн
+люксембург
+маврикий
+мавритания
+мадагаскар
+македония
+малави
+малайзия
+мали
+мальдивы
+мальта
+марокко
+мексика
+мозамбик
+молдавия
+монако
+монголия
+намибия
+непал
+нигер
+нигерия
+нидерланды
+никарагуа
+новая зеландия
+норвегия
+оаэ
+оман
+пакистан
+панама
+парагвай
+перу
+польша
+португалия
+россия
+румыния
+сан-марино
+саудовская аравия
+сенегал
+сербия
+сингапур
+сирия
+словакия
+словения
+сомали
+судан
+сша
+таджикистан
+таиланд
+танзания
+того
+тунис
+туркменистан
+турция
+уганда
+узбекистан
+украина
+уругвай
+федеративные штаты микронезии
+фиджи
+филиппины
+финляндия
+франция
+хорватия
+чад
+черногория
+чехия
+чили
+швейцария
+швеция
+шри-ланка
+эквадор
+эритрея
+эстония
+эфиопия
+юар
+ямайка
+япония

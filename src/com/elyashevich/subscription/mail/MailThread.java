@@ -1,6 +1,5 @@
-package com.elyashevich.subscription.action;
+package com.elyashevich.subscription.mail;
 
-import com.elyashevich.subscription.creator.SessionCreator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

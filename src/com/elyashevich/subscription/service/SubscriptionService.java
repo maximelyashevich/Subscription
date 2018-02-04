@@ -1,7 +1,6 @@
 package com.elyashevich.subscription.service;
 
-import com.elyashevich.subscription.dao.SubscriptionDAO;
-import com.elyashevich.subscription.dao.UserDAOImpl;
+import com.elyashevich.subscription.dao.impl.SubscriptionDAOImpl;
 import com.elyashevich.subscription.entity.PaperEdition;
 import com.elyashevich.subscription.entity.Subscription;
 import com.elyashevich.subscription.entity.User;
@@ -15,17 +14,24 @@ import java.util.List;
 
 public class SubscriptionService {
     public List<Subscription> findAll() throws ServiceTechnicalException {
-        SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
+        SubscriptionDAOImpl subscriptionDAOImpl = new SubscriptionDAOImpl();
         try {
-            return subscriptionDAO.findAll();
+            return subscriptionDAOImpl.findAll();
         } catch (DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
         }
     }
 
+    public List<Subscription> findAllById(long id) throws ServiceTechnicalException {
+        SubscriptionDAOImpl subscriptionDAOImpl = new SubscriptionDAOImpl();
+        try {
+            return subscriptionDAOImpl.findAllByID(id);
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
+    }
     public Subscription defineSubscription(User user, BigDecimal price) throws DAOTechnicalException {
         Subscription subscription = new Subscription();
-        UserDAOImpl userDAO = new UserDAOImpl();
         subscription.setUser(user);
         subscription.setSubscriptionRegistration(LocalDate.now());
         subscription.setPrice(price);
@@ -36,18 +42,34 @@ public class SubscriptionService {
     }
 
     public void createSubscription(Subscription subscription) throws ServiceTechnicalException {
-        SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
+        SubscriptionDAOImpl subscriptionDAOImpl = new SubscriptionDAOImpl();
         try {
-            subscriptionDAO.create(subscription);
+            subscriptionDAOImpl.create(subscription);
         } catch (DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
         }
     }
+
+    public boolean checkIfSubscriptionsExist(List<Subscription> subscriptions, HashSet<PaperEdition> hashSet) throws ServiceTechnicalException {
+        boolean result = false;
+        if (subscriptions==null || subscriptions.isEmpty()) return false;
+        for (Subscription subscription: subscriptions){
+            for (Subscription subscription1: findAllById(subscription.getId())){
+                for (PaperEdition paperEdition: hashSet){
+                    if (subscription1.getPaperEdition().equals(paperEdition)){
+                        result = true;
+                    }
+                }
+            }
+        }
+        return result;
+    }
     public void createSubscriptionOnPapers(HashSet<PaperEdition> hashSet, Subscription subscription) throws ServiceTechnicalException {
-        SubscriptionDAO subscriptionDAO= new SubscriptionDAO();
+        SubscriptionDAOImpl subscriptionDAOImpl = new SubscriptionDAOImpl();
         try {
             for (PaperEdition paperEdition : hashSet) {
-                subscriptionDAO.createWithPaper(subscription, paperEdition.getId(), defineFinishDateForPaper(paperEdition.getDurationMonth()));
+                subscription.setSubscriptionFinish(defineFinishDateForPaper(paperEdition.getDurationMonth()));
+                subscriptionDAOImpl.createWithPaper(subscription, paperEdition.getId());
             }
         } catch (DAOTechnicalException e){
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
@@ -56,12 +78,13 @@ public class SubscriptionService {
 
     public LocalDate defineFinishDateForPaper(int durationMonth){
         LocalDate localDate = LocalDate.now();
-        return localDate.plusMonths(durationMonth);
+        localDate = localDate.plusMonths(durationMonth);
+        return localDate;
     }
     public List<Subscription> findAllByUserId(long id) throws ServiceTechnicalException {
-        SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
+        SubscriptionDAOImpl subscriptionDAOImpl = new SubscriptionDAOImpl();
         try {
-            return subscriptionDAO.findAllByUserID(id);
+            return subscriptionDAOImpl.findAllByUserID(id);
         } catch (DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
         }

@@ -1,5 +1,8 @@
 package com.elyashevich.subscription.validator;
 
+import com.elyashevich.subscription.exception.InputTechnicalException;
+import com.elyashevich.subscription.input.ReadDataFromFile;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +13,7 @@ import static com.elyashevich.subscription.util.RegexComponent.*;
 
 public class UserValidator {
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private static final String COUNTRY_PATH = "country\\country.txt";
     public boolean isLoginAndPasswordCorrect(String login, String password){
         boolean result = false;
         if (login!=null && !login.isEmpty() && password!=null && !password.isEmpty()) {
@@ -37,5 +40,15 @@ public class UserValidator {
         return isUserDataComponentCorrect(name, NAME_REGEX)&&
                 isUserDataComponentCorrect(surname, NAME_REGEX)&&
                     isUserDataComponentCorrect(email, EMAIL_REGEX);
+    }
+
+    public boolean isCountryExists(String country){
+        ReadDataFromFile readDataFromFile = new ReadDataFromFile();
+        try {
+            return readDataFromFile.readFromFile(COUNTRY_PATH).contains(country.toLowerCase());
+        } catch (InputTechnicalException e) {
+            LOGGER.log(Level.ERROR, e.getMessage());
+        }
+        return false;
     }
 }

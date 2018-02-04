@@ -1,6 +1,7 @@
-package com.elyashevich.subscription.proxy;
+package com.elyashevich.subscription.pool;
 
 import com.elyashevich.subscription.exception.ConnectionTechnicalException;
+import com.elyashevich.subscription.proxy.ProxyConnection;
 import com.elyashevich.subscription.util.ConnectionDB;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

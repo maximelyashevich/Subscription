@@ -1,6 +1,6 @@
 package com.elyashevich.subscription.command;
 
-import com.elyashevich.subscription.action.MailThread;
+import com.elyashevich.subscription.mail.MailThread;
 import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.servlet.Router;

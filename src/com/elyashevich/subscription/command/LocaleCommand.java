@@ -11,7 +11,6 @@ public class LocaleCommand implements ActionCommand {
     public Router execute(HttpServletRequest request) {
         Router router = new Router();
         String page = ConfigurationManager.getProperty("path.page.index");
-        System.out.println(request.getSession().getServletContext().getContextPath());
         String language = request.getParameter(PARAM_NAME_LANGUAGE);
         request.getSession().setAttribute("userLocale", language);
         router.setPagePath(page);

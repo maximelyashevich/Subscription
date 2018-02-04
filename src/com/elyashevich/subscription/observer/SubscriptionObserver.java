@@ -1,6 +1,6 @@
 package com.elyashevich.subscription.observer;
 
-import com.elyashevich.subscription.dao.SubscriptionDAO;
+import com.elyashevich.subscription.dao.impl.SubscriptionDAOImpl;
 import com.elyashevich.subscription.entity.Subscription;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import org.apache.logging.log4j.Level;
@@ -22,10 +22,10 @@ public class SubscriptionObserver implements Job {
         LOGGER.info("Subscription observer start work!");
 
         try {
-            SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
-            List<Subscription> subscriptions = subscriptionDAO.findAllWithFinishedAction();
+            SubscriptionDAOImpl subscriptionDAOImpl = new SubscriptionDAOImpl();
+            List<Subscription> subscriptions = subscriptionDAOImpl.findAllWithFinishedAction();
             for (Subscription subscription : subscriptions) {
-                subscriptionDAO.deleteBySubscriptionAndPaperId(subscription.getId(), subscription.getPaperEdition().getId());
+                subscriptionDAOImpl.deleteBySubscriptionAndPaperId(subscription.getId(), subscription.getPaperEdition().getId());
             }
             System.out.println("*");
         } catch (DAOTechnicalException e) {

@@ -26,7 +26,7 @@
 //            switch (user.getType()) {
 //                case ADMIN:
 //                    //put your redirect stuff here
-//                    res.sendRedirect(contextPath+"/jsp/admin/admin.jsp");
+//                    res.sendRedirect(contextPath+"/jsp/admin/contentAdmin.jsp");
 //                    break;
 //                case USER:
 //                    //put your redirect stuff here

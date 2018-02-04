@@ -1,24 +1,21 @@
 package com.elyashevich.subscription.command;
 
+import com.elyashevich.subscription.entity.Address;
 import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
-import com.elyashevich.subscription.service.LocaleService;
 import com.elyashevich.subscription.service.UserService;
 import com.elyashevich.subscription.servlet.Router;
+import com.elyashevich.subscription.util.TextConstant;
 import com.elyashevich.subscription.validator.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ProfileCommand implements ActionCommand {
-    private static final String FIRST_NAME = "firstName";
-    private static final String LAST_NAME = "lastName";
-    private static final String EMAIL = "email";
-    private static final String DOB = "dob";
-    private static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
     private static final String ID = "id";
     private static final String AMOUNT = "amount";
     private static final String TYPE = "type";
@@ -30,43 +27,23 @@ public class ProfileCommand implements ActionCommand {
         this.userReceiver = userReceiver;
     }
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     @Override
     public Router execute(HttpServletRequest request) throws CommandTechnicalException {
         Router router = new Router();
         String page = null;
 
-        String firstName = request.getParameter(FIRST_NAME);
-        String lastName = request.getParameter(LAST_NAME);
-//        String email = request.getParameter(EMAIL);
-//        String dob = request.getParameter(DOB);
-//        String userName = request.getParameter(LOGIN);
-//        String password = request.getParameter(PASSWORD);
-        String imagePath = path;
-//        ClientType clientType = ClientType.valueOf(request.getParameter(TYPE).toUpperCase());
-//        BigDecimal amount = new BigDecimal(request.getParameter(AMOUNT));
-        long userId;
-        if (id!=0){
-            userId = id;
-        } else{
-            userId = Long.parseLong(request.getParameter(ID));
-        }
+        String firstName = request.getParameter(TextConstant.FIRST_NAME);
+        String lastName = request.getParameter(TextConstant.LAST_NAME);
+        String country = request.getParameter(TextConstant.COUNTRY_PARAM);
+        String city = request.getParameter(TextConstant.CITY);
+        String postIndex = request.getParameter(TextConstant.POST_INDEX);
+        String detailAddress = request.getParameter(TextConstant.DETAIL_ADDRESS);
+        String dob = request.getParameter(TextConstant.DOB);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        LocalDate birthday = LocalDate.parse(dob, formatter);
+
+        long userId = Long.parseLong(request.getParameter(ID));
         UserValidator validator = new UserValidator();
         UserService userService = new UserService();
             try {
@@ -75,13 +52,15 @@ public class ProfileCommand implements ActionCommand {
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
                 }
-                user.setImagePath(imagePath);
                 user.setId(userId);
-                if (userReceiver.updateUser(user)){
+                user.setBirthday(birthday);
+                Address address = userReceiver.getAddress(country, city, postIndex, detailAddress);
+                user.setAddress(address);
+                if (userReceiver.updateUser(user, address)){
                     MailCommand.sendFromEmail(request, user.getEmail(), MessageManager.EN.getMessage("message.welcome"),
                             "Здравствуйте, "+firstName+"! Вы только что обновили свои данные в Subscription!");
-                    request.setAttribute("titleMessage", LocaleService.defineMessageManager(request).getMessage("message.registrationsuccess"));
-                    request.setAttribute("user", user);
+//                    request.setAttribute("titleMessage", LocaleService.defineMessageManager(request).getMessage("message.registrationsuccess"));
+                    request.getSession().setAttribute(TextConstant.USER_PARAM, user);
                     router.setRoute(Router.RouteType.REDIRECT);
                     page = ConfigurationManager.getProperty("path.page.user");
                 } else{

@@ -1,6 +1,7 @@
 package com.elyashevich.subscription.proxy;
 
 import com.elyashevich.subscription.exception.ConnectionTechnicalException;
+import com.elyashevich.subscription.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +15,7 @@ public class ProxyConnection implements Connection {
     private static final Logger LOGGER = LogManager.getLogger();
     private Connection connection;
 
-    ProxyConnection(Connection connection){
+    public ProxyConnection(Connection connection){
         this.connection = connection;
     }
 
@@ -67,7 +68,7 @@ public class ProxyConnection implements Connection {
         }
     }
 
-    void closeConnection() throws SQLException {
+    public void closeConnection() throws SQLException {
         connection.close();
     }
 

@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface PaperDAO {
    List<PaperEdition> findPapersByDescription(String data, ArrayList<String> criteria) throws DAOTechnicalException;
+   PaperEdition findPaperById(long id) throws DAOTechnicalException;
+   boolean deleteById(long paperId) throws DAOTechnicalException;
 }

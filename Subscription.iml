@@ -30,7 +30,6 @@
     <orderEntry type="library" name="config" level="project" />
     <orderEntry type="library" name="stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
-    <orderEntry type="library" name="commons-fileupload-1.3" level="project" />
     <orderEntry type="library" name="org.apache.commons.io" level="project" />
     <orderEntry type="library" name="c3p0-0.9.1.1" level="project" />
     <orderEntry type="library" name="quartz-2.2.1" level="project" />
@@ -38,5 +37,6 @@
     <orderEntry type="library" name="slf4j-api-1.6.6" level="project" />
     <orderEntry type="library" name="jta-1.1" level="project" />
     <orderEntry type="library" name="slf4j-simple-1.6.1" level="project" />
+    <orderEntry type="library" name="resources" level="project" />
   </component>
 </module>

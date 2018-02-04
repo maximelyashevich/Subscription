@@ -5,7 +5,7 @@ import com.elyashevich.subscription.command.ActionFactory;
 import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
-import com.elyashevich.subscription.proxy.ConnectionPool;
+import com.elyashevich.subscription.pool.ConnectionPool;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

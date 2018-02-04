@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setLocale value="en_US" scope="session" />
 <html>
 <head>
@@ -8,11 +9,11 @@
     <style>
         @import "/resource/css/header-main.css" screen;
         @import "/resource/css/footer.css" screen;
-        @import "/resource/css/mainstyle.css" screen;
+        @import "/resource/css/style-main.css" screen;
         @import "/resource/css/user-style.css" screen;
         @import "/resource/css/popup.css" screen;
     </style>
-    <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
+    <link href='<c:url value="/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<c:url value="/resource/css/bootstrap.css"/>">
@@ -31,23 +32,27 @@
         </nav>
         <div class="header-user-menu">
             <div id="parent">
-                USER
+                <ctg:userRole user="${user}"/>
             </div>
             <ul>
                 <li><a href="#" onclick="showMoreInformation()">Edit profile</a></li>
                 <li>
                     <form method="post" action="/controller">
                         <input type="hidden" name="command" value="money"/>
-                        <input type="hidden" name="currentUserId" value="${user.id}">
+                        <input type="hidden" name="UserID" value="${user.id}">
                         <button type="submit">Top up the balance</button>
                     </form>
                 </li>
-                <li><a href="controller?command=logout">Logout</a></li>
+                <li>
+                    <form action="/controller" method="post">
+                        <a href="#" onclick="parentNode.submit();">Logout</a>
+                        <input type="hidden" name="command" value="logout"/>
+                    </form>
             </ul>
         </div>
     </div>
 </header>
-<div class="container">
+<div class="container" style="min-height: 75%">
     <div id="modalUserWindow" class="modal" style="background-color: rgba(0,0,0,0.35);">
         <!-- Modal content -->
         <div id="photoModal" class="modal-content" style="margin-top: 150px;">
@@ -69,14 +74,30 @@
                 <input type="text" name="email" value="${user.email}"/></div>
                 <div class="field-wrap">
                     <label>First name:</label>
-                  <input type="text" name="firstName" value="${user.firstName}"/>
+                  <input type="text" name="first_name" value="${user.firstName}"/>
                    </div>
                  <div class="field-wrap">
                  <label>Last name:</label>
-                   <input type="text" name="lastName" value="${user.lastName}"/>
+                   <input type="text" name="last_name" value="${user.lastName}"/>
                   </div>
                 <div><label>Birthday:</label>
                     <input type="date" name="dob" min="1905-01-01" max="2018-01-01" value="${user.birthday}"/></div>
+                    <div class="field-wrap">
+                        <label>Country:</label>
+                        <input type="text" name="countryC" value="${user.address.country}"/>
+                    </div>
+                    <div class="field-wrap">
+                        <label>City:</label>
+                        <input type="text" name="city" value="${user.address.city}"/>
+                    </div>
+                    <div class="field-wrap">
+                        <label>Post index:</label>
+                        <input type="text" name="postIndex" value="${user.address.postIndex}"/>
+                    </div>
+                    <div class="field-wrap">
+                        <label>Detail address:</label>
+                        <input type="text" name="detailAddress" value="${user.address.detailAddress}"/>
+                    </div>
         <button>Save changes</button></form>
             <div id="userInformation"></div>
         </div>
@@ -85,14 +106,8 @@
         <!-- Modal content -->
         <div class="modal-content" style="height: 75%; width: 65%;">
             <div class="componentContent" id="subscriptionsTable"
-                 style="width: 100%; height: 100%; margin-left: 0;  margin-top: 7%;  overflow: auto;">
-                <%--<c:choose>--%>
-                    <%--<c:when test="${empty subscriptionForUser}">--%>
-                        <%--<br>--%>
-                        <%--${user.firstName}, your subscription list is empty.--%>
-                        <%--<br/>--%>
-                    <%--</c:when>--%>
-                    <%--<c:otherwise>--%>
+                 style="width: 100%; height: 85%; margin-left: 0;  margin-top: 7%;  overflow: auto;">
+
                         <table id="subTable" class="table-fill">
                             <thead>
                             <tr>
@@ -168,18 +183,17 @@
                     <div class="box box-info">
                         <div class="box-body">
                             <div class="col-sm-6">
-                                <div  align="center">
-                                    <form id="editForm" enctype="multipart/form-data" method="post" action="/upload">
-                                        <input id="profile-image-upload" class="hidden" type="file">
-                                        <input type="hidden" id="userID" name="userID" value="${user.id}"/>
-                                        <img src="${user.imagePath}"     class="img-circle img-responsive" width="164"
-                                             height="163" id="contactImage" onclick="photoFunctionsAndParams.addPhoto()">
+                                <div align="center">
 
+                                    <form action="/upload" enctype="multipart/form-data" method="POST">
+                                        <label for="image">
+                                            <input type="file" name="image" onchange="this.form.submit()" id="image" style="display:none;" accept="image/*" required/>
+                                            <img src="${user.imagePath}" class="img-circle img-responsive" style="width: 152px; height:138px" id="contactImage"/>
+                                        </label>
+                                        <input type="hidden" name="userID" value="${user.id}"/>
                                         <div style="color:#999;" >click here to change profile image</div>
-                                        <input type="submit" value="Save photo">
                                     </form>
                                 </div>
-
                                 <br>
                             </div>
                             <div class="col-sm-6">
@@ -203,8 +217,19 @@
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
-                            <div class="col-sm-5 col-xs-6 title " >Address:</div><div class="col-sm-7">${user.addressId}</div>
+                            <div class="col-sm-5 col-xs-6 title " >County:</div><div class="col-sm-7">${user.address.country}</div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
 
+                            <div class="col-sm-5 col-xs-6 title " >City:</div><div class="col-sm-7">${user.address.city}</div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
+
+                            <div class="col-sm-5 col-xs-6 title " >Post index:</div><div class="col-sm-7">${user.address.postIndex}</div>
+                            <div class="clearfix"></div>
+                            <div class="bot-border"></div>
+
+                            <div class="col-sm-5 col-xs-6 title " >Detail address:</div><div class="col-sm-7">${user.address.detailAddress}</div>
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
@@ -249,7 +274,6 @@
             }
         </script>
         <script src='<c:url value="${pageContext.request.contextPath}/resource/js/jquery.js"/>'></script>
-        <script src='<c:url value="${pageContext.request.contextPath}/resource/js/lib-carousel.js"/>'></script>
         <script>
             $(function() {
                 $('#profile-image1').on('click', function() {

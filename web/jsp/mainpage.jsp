@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <fmt:setLocale value="en_US" scope="session" />
 <html>
 <head>
@@ -8,9 +9,9 @@
     <title>Welcome, user</title>
     <style>
         @import "/resource/css/header-main.css" screen;
-        @import "/resource/css/own-login-styling.css" screen;
+        @import "/resource/css/signin-signup.css" screen;
         @import "/resource/css/footer.css" screen;
-        @import "/resource/css/mainstyle.css" screen;
+        @import "/resource/css/style-main.css" screen;
         @import "/resource/css/popup.css" screen;
     </style>
     <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
@@ -29,7 +30,7 @@
     <div class="header-limiter">
         <h1><a href="#"><span>Subscription</span></a></h1>
         <nav>
-            <a href="/jsp/user.jsp">Моя страница</a>
+            <a href="/jsp/user/user.jsp">Моя страница</a>
             <a href="#">Surveys</a>
             <a href="#">Reports</a>
             <a href="#">Roles</a>
@@ -45,7 +46,7 @@
                 <li>
                     <form method="post" action="/controller">
                         <input type="hidden" name="command" value="money"/>
-                        <input type="hidden" name="currentUserId" value="${user.id}">
+                        <input type="hidden" name="UserID" value="${user.id}">
                    <button type="submit">Top up the balance</button>
                     </form>
                 </li>
@@ -55,12 +56,14 @@
     </div>
 </header>
 <main style="background-color: #D5DDE5; padding: 50px 55px;">
+
     <!-- The Modal -->
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
             <span>Your order basket, dear user!</span>
+            <span>${titleMessage}</span>
             <div id="empty_basket">
             </div>
             <div id="cart_content">
@@ -92,13 +95,28 @@
                 </table>
                 <form id="subscriptionForm" name="subscriptionForm" method="post" action="/controller">
                     <input type="hidden" name="command" value="subscription"/>
-                    <input type="hidden" name="userId" value="${user.id}"/>
+                    <input type="hidden" name="userID" value="${user.id}"/>
                     <button id="paySubscription">Оплатить подписку</button>
                 </form>
                 <button id="getCredit">Взять в кредит</button>
             </div>
         </div>
     </div>
+<div id="successOrder" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>${subscription.user.firstName}, your order #${subscription.id}!</p>
+        <p>Subscription registration date: ${subscription.subscriptionRegistration}</p>
+        <p>Registration has completed successfully by address:</p>
+        <p><b>Country:</b><i> ${subscription.user.address.country};</i></p>
+        <p><b>City:</b><i> ${subscription.user.address.city}</i></p>
+        <p><b>Detail address:</b><i> ${subscription.user.address.detailAddress}</i></p>
+        <p><b>Post index: </b><i> ${subscription.user.address.postIndex}</i></p>
+        <p>Check your email, we've just sent you more detailed information.</p>
+        <p>Total price: ${subscription.price}$</p>
+        <span></span>
+    </div>
+</div>
     <div id="modalPaperWindow" class="modal">
         <!-- Modal content -->
         <div class="modal-content-order">
@@ -106,6 +124,12 @@
             <div id="paperInformation"></div>
         </div>
     </div>
+    <%--@elvariable id="flagOrder" type="java.lang.String"--%>
+    <c:if test="${flagOrder=='READY'}">
+        <script>
+            document.getElementById('successOrder').style.display="block";
+        </script>
+    </c:if>
     <div id="right_container">
         <input type="button" id="basketButton" style="
 background-color: #f1f1f1a6;
@@ -120,13 +144,13 @@ background-color: #f1f1f1a6;
             <ul class="checkbox">
                 <c:forEach items="${genres}" var="genre">
                     <li>
-                        <label for="${genre.name}" style=" position: unset;
+                        <label for="${ctg:notnull(genre).name}" style=" position: unset;
                         transform: none;
                         color: rgba(25, 25, 25, 0.75);
                         pointer-events: auto;
      font-size: 14px;">
-                            <input type="checkbox" class="checkbox" id="${genre.name}" value="${genre.name}" style="height: auto;"/>
-                                ${genre.name}
+                            <input type="checkbox" class="checkbox" id="${ctg:notnull(genre).name}" value="${ctg:notnull(genre).name}" style="height: auto;"/>
+                                ${ctg:notnull(genre).name}
                         </label>
                     </li>
                 </c:forEach>
@@ -187,18 +211,24 @@ background-color: #f1f1f1a6;
         </table>
         <div id="pagination" style="display:block;"></div>
     </div>
+
+    <script src='<c:url value="${pageContext.request.contextPath}/resource/js/jquery.js"/>'></script>
+
     <script>
         var modal = document.getElementById('myModal');
+        var modalOrder = document.getElementById('successOrder');
         var modalPaper = document.getElementById('modalPaperWindow');
         var btn = document.getElementById("basketButton");
         var span = document.getElementsByClassName("close")[0];
-        var spanPaper = document.getElementsByClassName("close")[1];
+        var spanPaper = document.getElementsByClassName("close")[2];
+        var spanOrder = document.getElementsByClassName("close")[1];
         btn.onclick = function() {
             modal.style.display = "block";
         };
         function defineDuration(idSelect, idOutput) {
             document.getElementById(idOutput).value = document.getElementById(idSelect).value;
         }
+
         function showMoreInformation(type, title, description, price, image, periodicity, age_restr, is_available) {
             var totalPaperItem='';
             modalPaper.style.display = "block";
@@ -221,6 +251,10 @@ background-color: #f1f1f1a6;
         spanPaper.onclick = function() {
             modalPaper.style.display = "none";
         };
+
+        spanOrder.onclick = function() {
+            modalOrder.style.display = "none";
+        };
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target === modal) {
@@ -228,6 +262,9 @@ background-color: #f1f1f1a6;
             }
             if (event.target === modalPaper) {
                 modalPaper.style.display = "none";
+            }
+            if (event.target === modalOrder) {
+                modalOrder.style.display = "none";
             }
         }
 
@@ -251,57 +288,57 @@ background-color: #f1f1f1a6;
             criteriaField.value=opts;
         }
     </script>
-    <%--<script>--%>
-    <%--var $table = document.getElementById("uTable"),--%>
-    <%--$tablePagination = document.getElementById("pagination"),--%>
-    <%--$n = 2,--%>
-    <%--$rowCount = $table.rows.length,--%>
-    <%--$firstRow = $table.rows[1].firstElementChild.tagName,--%>
-    <%--$hasHead = ($firstRow === "TH"),--%>
-    <%--$tr = [],--%>
-    <%--$i,$ii,$j = ($hasHead)?1:0,--%>
-    <%--// holds the first row if it has a (<TH>) & nothing if (<TD>)--%>
-    <%--$th = ($hasHead?$table.rows[(0)].outerHTML:"");--%>
-    <%--var $pageCount = Math.ceil($rowCount / $n);--%>
-    <%--if ($pageCount > 1) {--%>
-    <%--for ($i = $j,$ii = 0; $i < $rowCount; $i++, $ii++)--%>
-    <%--$tr[$ii] = $table.rows[$i].outerHTML;--%>
-    <%--$tablePagination.insertAdjacentHTML("afterend","<div id='buttons'></div>");--%>
-    <%--sort(1);--%>
-    <%--}--%>
-    <%--// ($p) is the selected page number. it will be generated when a user clicks a button--%>
-    <%--function sort($p) {--%>
-    <%--/* create ($rows) a variable to hold the group of rows--%>
-    <%--** to be displayed on the selected page,--%>
-    <%--** ($s) the start point .. the first row in each page, Do The Math--%>
-    <%--*/--%>
-    <%--var $rows = $th,$s = (($n * $p)-$n);--%>
-    <%--for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)--%>
-    <%--$rows += $tr[$i];--%>
-    <%--$table.innerHTML = $rows;--%>
-    <%--// create the pagination buttons--%>
-    <%--document.getElementById("buttons").innerHTML = pageButtons($pageCount,$p);--%>
-    <%--// CSS Stuff--%>
-    <%--document.getElementById("id"+$p).setAttribute("class","active");--%>
-    <%--}--%>
-    <%--function pageButtons($pCount,$cur) {--%>
-    <%--/* this variables will disable the "Prev" button on 1st page--%>
-    <%--and "next" button on the last one */--%>
-    <%--var $prevDis = ($cur == 1)?"disabled":"",--%>
-    <%--$nextDis = ($cur == $pCount)?"disabled":"",--%>
-    <%--/* this ($buttons) will hold every single button needed--%>
-    <%--** it will creates each button and sets the onclick attribute--%>
-    <%--** to the "sort" function with a special ($p) number..--%>
-    <%--*/--%>
-    <%--$buttons = "<input type='button' value='&lt;&lt; Prev' onclick='sort("+($cur - 1)+")' "+$prevDis+">";--%>
-    <%--for ($i=1; $i<=$pCount;$i++)--%>
-    <%--$buttons += "<input type='button' id='id"+$i+"'value='"+$i+"' onclick='sort("+$i+")'>";--%>
-    <%--$buttons += "<input type='button' value='Next &gt;&gt;' onclick='sort("+($cur + 1)+")' "+$nextDis+">";--%>
-    <%--return $buttons;--%>
-    <%--}--%>
-    <%--</script>--%>
+    <script>
+    var $table = document.getElementById("uTable"),
+    $tablePagination = document.getElementById("pagination"),
+    $n = 2,
+    $rowCount = $table.rows.length,
+    $firstRow = $table.rows[1].firstElementChild.tagName,
+    $hasHead = ($firstRow === "TH"),
+    $tr = [],
+    $i,$ii,$j = ($hasHead)?1:0,
+    // holds the first row if it has a (<TH>) & nothing if (<TD>)
+    $th = ($hasHead?$table.rows[(0)].outerHTML:"");
+    var $pageCount = Math.ceil($rowCount / $n);
+    if ($pageCount > 1) {
+    for ($i = $j,$ii = 0; $i < $rowCount; $i++, $ii++)
+    $tr[$ii] = $table.rows[$i].outerHTML;
+    $tablePagination.insertAdjacentHTML("afterend","<div id='buttons'></div>");
+    sort(1);
+    }
+    // ($p) is the selected page number. it will be generated when a user clicks a button
+    function sort($p) {
+    /* create ($rows) a variable to hold the group of rows
+    ** to be displayed on the selected page,
+    ** ($s) the start point .. the first row in each page, Do The Math
+    */
+    var $rows = $th,$s = (($n * $p)-$n);
+    for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
+    $rows += $tr[$i];
+    $table.innerHTML = $rows;
+    // create the pagination buttons
+    document.getElementById("buttons").innerHTML = pageButtons($pageCount,$p);
+    // CSS Stuff
+    document.getElementById("id"+$p).setAttribute("class","active");
+    }
+    function pageButtons($pCount,$cur) {
+    /* this variables will disable the "Prev" button on 1st page
+    and "next" button on the last one */
+    var $prevDis = ($cur == 1)?"disabled":"",
+    $nextDis = ($cur == $pCount)?"disabled":"",
+    /* this ($buttons) will hold every single button needed
+    ** it will creates each button and sets the onclick attribute
+    ** to the "sort" function with a special ($p) number..
+    */
+    $buttons = "<input type='button' value='&lt;&lt; Prev' onclick='sort("+($cur - 1)+")' "+$prevDis+">";
+    for ($i=1; $i<=$pCount;$i++)
+    $buttons += "<input type='button' id='id"+$i+"'value='"+$i+"' onclick='sort("+$i+")'>";
+    $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sort("+($cur + 1)+")' "+$nextDis+">";
+    return $buttons;
+    }
+    </script>
     <script src='<c:url value="${pageContext.request.contextPath}/resource/js/jquery.js"/>'></script>
-    <script src='<c:url value="${pageContext.request.contextPath}/resource/js/lib-carousel.js"/>'></script>
+
 </main>
 <c:import url="../jsp/common/footer.jsp" />
 </body>

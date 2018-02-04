@@ -1,16 +1,9 @@
 var photoFunctionsAndParams = {};
-
 var photo;
-
 photoFunctionsAndParams.PHOTO_INPUT_ID = "photo";
-
-
 var flag = false;
-
-
 photoFunctionsAndParams.addPhoto = function() {
     var phInput = document.getElementById("photoIdInput");
-
     if(flag){
         phInput.click();
     } else

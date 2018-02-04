@@ -1,4 +1,4 @@
-package com.elyashevich.subscription.creator;
+package com.elyashevich.subscription.mail;
 
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;

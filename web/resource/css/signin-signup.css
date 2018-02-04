@@ -10,7 +10,7 @@ html {
 main {
     margin:0;
     min-height: 100%;
-    padding: 100px 55px;
+    padding: 0 55px 25px 55px;
     overflow: auto;
 }
 
@@ -118,9 +118,6 @@ input, textarea {
     color: rgba(255, 255, 255, 0.5);
     border-radius: 0;
     -webkit-transition: border-color .25s ease, -webkit-box-shadow .25s ease;
-    transition: border-color .25s ease, -webkit-box-shadow .25s ease;
-    transition: border-color .25s ease, box-shadow .25s ease;
-    transition: border-color .25s ease, box-shadow .25s ease, -webkit-box-shadow .25s ease;
 }
 input:focus, textarea:focus {
     outline: 0;
@@ -174,23 +171,6 @@ textarea {
 .top-row > div:last-child {
     margin: 0;
 }
-
-.button-cancel{
-    border: 0;
-    width: 100%;
-    outline: none;
-    border-radius: 0;
-    padding: 15px 0;
-    font-size: 2rem;
-    font-weight: 300;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    background-color: darkslategray;
-    color: lightgray;
-    -webkit-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-    -webkit-appearance: none;
-}
 .button {
     border: 0;
     outline: none;
@@ -200,18 +180,14 @@ textarea {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .1em;
-    background-color: rgba(68, 80, 92, 0.98);
+    background-color: rgba(68, 80, 92, 0.67);
     color: #ffffff;
     -webkit-transition: all 0.5s ease;
     transition: all 0.5s ease;
     -webkit-appearance: none;
 }
 .button:hover, .button:focus {
-    background-color: rgba(68, 80, 82, 1);
-}
-
-.button-cancel:hover, .button-cancel:focus{
-    background-color: #254545;
+    background-color: rgba(60, 72, 84, 0.95);
 }
 .button-block {
     display: block;

@@ -1,6 +1,6 @@
 package com.elyashevich.subscription.service;
 
-import com.elyashevich.subscription.dao.PaperDAOImpl;
+import com.elyashevich.subscription.dao.impl.PaperDAOImpl;
 import com.elyashevich.subscription.entity.PaperEdition;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;

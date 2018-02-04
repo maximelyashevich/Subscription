@@ -22,6 +22,12 @@
                 <filter-name>encodingfilter</filter-name>
                 <url-pattern>/*</url-pattern>
         </filter-mapping>
+        <jsp-config>
+                <taglib>
+                        <taglib-uri>customtags</taglib-uri>
+                        <taglib-location>/WEB-INF/tld/custom.tld</taglib-location>
+                </taglib>
+        </jsp-config>
         <context-param>
         <param-name>mail</param-name>
         <param-value>/WEB-INF/classes/config/mail.properties</param-value>

@@ -16,14 +16,14 @@ public class User extends Entity {
     private String password;
     private ClientType type=ClientType.USER;
     private BigDecimal amount=new BigDecimal(10);
-    private long addressId;
+    private Address address;
     private boolean availability=true;
     private String imagePath;
 
     public User() {
     }
 
-    public User(String userName, String password,  ClientType type, String email, boolean availability, String firstName, String lastName, long addressId, LocalDate birthday,  BigDecimal amount ) {
+    public User(String userName, String password,  ClientType type, String email, boolean availability, String firstName, String lastName, LocalDate birthday,  BigDecimal amount ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -32,7 +32,6 @@ public class User extends Entity {
         this.password = password;
         this.type = type;
         this.amount = amount;
-        this.addressId = addressId;
         this.availability = availability;
     }
 
@@ -100,12 +99,12 @@ public class User extends Entity {
         this.amount = amount;
     }
 
-    public long getAddressId() {
-        return addressId;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddressId(long addressId) {
-        this.addressId = addressId;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getImagePath() {
@@ -137,8 +136,7 @@ public class User extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return addressId == user.addressId &&
-                availability == user.availability &&
+        return  availability == user.availability &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(birthday, user.birthday) &&
@@ -152,7 +150,7 @@ public class User extends Entity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(firstName, lastName, birthday, userName, email, password, type, amount, addressId, availability);
+        return Objects.hash(firstName, lastName, birthday, userName, email, password, type, amount, availability);
     }
 
     @Override
@@ -167,7 +165,7 @@ public class User extends Entity {
                 ", password='" + password + '\'' +
                 ", type=" + type +
                 ", amount=" + amount +
-                ", addressId=" + addressId +
+                ", addressId=" + address +
                 ", availability=" + availability +
                 '}';
     }

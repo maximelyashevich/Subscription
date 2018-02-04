@@ -1,9 +1,11 @@
-package com.elyashevich.subscription.dao;
+package com.elyashevich.subscription.dao.impl;
 
+import com.elyashevich.subscription.dao.AbstractDAO;
+import com.elyashevich.subscription.dao.PaperDAO;
 import com.elyashevich.subscription.entity.PaperEdition;
 import com.elyashevich.subscription.entity.PaperType;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
-import com.elyashevich.subscription.proxy.ConnectionPool;
+import com.elyashevich.subscription.pool.ConnectionPool;
 import com.elyashevich.subscription.proxy.ProxyConnection;
 
 import java.sql.PreparedStatement;
@@ -97,15 +99,13 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-            if (preparedStatement!=null)
             close(preparedStatement);
-            if (cn != null) {
-                close(cn);
-            }
+            close(cn);
         }
         return paperEditions;
     }
 
+    @Override
     public PaperEdition findPaperById(long id) throws DAOTechnicalException {
         PaperEdition paperEdition = null;
         ProxyConnection cn = null;
@@ -135,10 +135,11 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
         }
         return paperEdition;
     }
+    @Override
     public boolean deleteById(long paperId) throws DAOTechnicalException {
         ProxyConnection cn = null;
         PreparedStatement st = null;
-        boolean result = false;
+        boolean result;
         try {
             cn = ConnectionPool.getInstance().getConnection();
             st = cn.prepareStatement(SQL_DELETE_PAPERS_BY_ID);
