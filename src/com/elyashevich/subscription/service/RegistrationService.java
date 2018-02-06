@@ -17,4 +17,22 @@ public class RegistrationService {
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
         }
     }
+
+    public boolean findUserByLogin(String login) throws ServiceTechnicalException {
+        UserDAOImpl userDAO = new UserDAOImpl();
+        try {
+            return userDAO.findUserByLogin(login)!=null;
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
+    }
+
+    public boolean findUserByEmail(String email) throws ServiceTechnicalException {
+        UserDAOImpl userDAO = new UserDAOImpl();
+        try {
+            return userDAO.findUserByEmail(email)!=null;
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
+    }
 }

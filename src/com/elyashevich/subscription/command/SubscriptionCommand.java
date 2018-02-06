@@ -89,7 +89,7 @@ public class SubscriptionCommand implements ActionCommand {
         } catch (ServiceTechnicalException e) {
             e.printStackTrace();
         }
-
+        router.setRoute(Router.RouteType.REDIRECT);
         return router;
     }
 }

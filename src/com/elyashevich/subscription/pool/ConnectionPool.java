@@ -1,7 +1,6 @@
 package com.elyashevich.subscription.pool;
 
 import com.elyashevich.subscription.exception.ConnectionTechnicalException;
-import com.elyashevich.subscription.proxy.ProxyConnection;
 import com.elyashevich.subscription.util.ConnectionDB;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -91,7 +90,7 @@ public class ConnectionPool {
                 connection = connectionQueue.take();
                 connection.closeConnection();
             } catch (InterruptedException | SQLException e) {
-                LOGGER.log(Level.ERROR, e.getMessage());
+                LOGGER.catching(e);
             }
         }
     }

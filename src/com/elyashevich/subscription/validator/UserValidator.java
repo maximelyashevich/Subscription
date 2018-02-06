@@ -1,7 +1,5 @@
 package com.elyashevich.subscription.validator;
 
-import com.elyashevich.subscription.exception.InputTechnicalException;
-import com.elyashevich.subscription.input.ReadDataFromFile;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,39 +14,49 @@ public class UserValidator {
     private static final String COUNTRY_PATH = "country\\country.txt";
     public boolean isLoginAndPasswordCorrect(String login, String password){
         boolean result = false;
-        if (login!=null && !login.isEmpty() && password!=null && !password.isEmpty()) {
-            Pattern patternLogic = Pattern.compile(LOGIN_REGEX);
-            Pattern patternPassword = Pattern.compile(PASSWORD_REGEX);
-            Matcher matcher = patternLogic.matcher(login);
-            Matcher matcherPassword = patternPassword.matcher(password);
-            result = matcher.matches() && matcherPassword.matches();
+        LOGGER.log(Level.INFO, "Start checking login and password for correctness");
+        if (isDataCorrect(login) && isDataCorrect(password)) {
+            result = isLoginCorrect(login)&& isPasswordCorrect(password);
         }
         return result;
     }
 
-    private boolean isUserDataComponentCorrect(String data, String regex){
+    public boolean isLoginCorrect(String login){
         boolean result = false;
-        if (data!=null && !data.isEmpty()) {
-            Pattern patternName = Pattern.compile(regex);
-            Matcher matcher = patternName.matcher(data);
+        LOGGER.log(Level.INFO, "Start checking login...");
+        if (isDataCorrect(login)) {
+            Pattern patternLogic = Pattern.compile(LOGIN_REGEX);
+            Matcher matcher = patternLogic.matcher(login);
             result = matcher.matches();
         }
         return result;
     }
 
-    public boolean isUserDataCorrect(String name, String surname, String email){
-        return isUserDataComponentCorrect(name, NAME_REGEX)&&
-                isUserDataComponentCorrect(surname, NAME_REGEX)&&
-                    isUserDataComponentCorrect(email, EMAIL_REGEX);
+
+    public boolean isPasswordCorrect(String password){
+        boolean result = false;
+        LOGGER.log(Level.INFO, "Start checking password...");
+        if (isDataCorrect(password)) {
+            Pattern patternLogic = Pattern.compile(PASSWORD_REGEX);
+            Matcher matcher = patternLogic.matcher(password);
+            result = matcher.matches();
+        }
+        return result;
     }
 
-    public boolean isCountryExists(String country){
-        ReadDataFromFile readDataFromFile = new ReadDataFromFile();
-        try {
-            return readDataFromFile.readFromFile(COUNTRY_PATH).contains(country.toLowerCase());
-        } catch (InputTechnicalException e) {
-            LOGGER.log(Level.ERROR, e.getMessage());
+    public boolean isPostIndexCorrect(String postIndex){
+        boolean result = false;
+        LOGGER.log(Level.INFO, "Start checking login and password for correctness...");
+        if (isDataCorrect(postIndex)) {
+            Pattern patternLogic = Pattern.compile(POST_INDEX);
+            Matcher matcher = patternLogic.matcher(postIndex);
+            result = matcher.matches();
         }
-        return false;
+        return result;
+    }
+
+    public boolean isDataCorrect(String data){
+        LOGGER.log(Level.INFO, "Start checking data for correctness...");
+        return data!=null && !data.isEmpty();
     }
 }

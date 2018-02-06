@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ConnectionDB {
-    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("resources/database");
+    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("resource/database");
     private static String url = resourceBundle.getString("db.url");
     private static String user = resourceBundle.getString("db.user");
     private static String pass = resourceBundle.getString("db.password");

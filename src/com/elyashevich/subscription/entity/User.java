@@ -1,6 +1,6 @@
 package com.elyashevich.subscription.entity;
 
-import com.elyashevich.subscription.command.client.ClientType;
+import com.elyashevich.subscription.command.ClientType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

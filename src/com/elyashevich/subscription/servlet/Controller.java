@@ -38,6 +38,7 @@ public class Controller extends HttpServlet {
             request.setAttribute("exceptionMessage", e.getMessage());
             request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
         }
+        assert router != null;
         String page = router.getPagePath();
         if (page != null) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);

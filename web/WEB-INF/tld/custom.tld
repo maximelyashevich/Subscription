@@ -11,7 +11,7 @@
 
     <tag>
         <name>userRole</name>
-        <tag-class>com.elyashevich.subscription.customtag.UserRoleTag</tag-class>
+        <tag-class>com.elyashevich.subscription.tag.UserRoleTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>user</name>
@@ -22,7 +22,7 @@
     </tag>
     <function>
         <name>notnull</name>
-        <function-class>com.elyashevich.subscription.customtag.NotNullTag</function-class>
+        <function-class>com.elyashevich.subscription.tag.NotNullTag</function-class>
         <function-signature>com.elyashevich.subscription.entity.Genre notNull(java.lang.Object)</function-signature>
     </function>
 </taglib>

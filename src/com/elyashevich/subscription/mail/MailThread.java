@@ -1,6 +1,5 @@
 package com.elyashevich.subscription.mail;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,11 +7,9 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-
 
 public class MailThread extends Thread {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -28,33 +25,24 @@ public class MailThread extends Thread {
         this.properties = properties;
     }
     private void init() {
-// объект почтовой сессии
         Session mailSession = (new SessionCreator(properties)).createSession();
         mailSession.setDebug(true);
         message = new MimeMessage(mailSession);
         try {
-            ///
             message.setFrom(new InternetAddress(mailSession.getProperties().getProperty("mail.smtp.name")));
-            //!
             message.setSubject(mailSubject);
             message.setContent(mailText, "text/html; charset=utf-8");
             message.setRecipient(Message.RecipientType. TO, new InternetAddress(sendToEmail));
-        } catch (AddressException e) {
-            LOGGER.log(Level.ERROR, "Некорректный адрес:" + sendToEmail + " " + e);
-// in log file
         } catch (MessagingException e) {
-            LOGGER.log(Level.ERROR, "Ошибка формирования сообщения" + e);
-// in log file
+            LOGGER.catching(e);
         }
     }
     public void run() {
         init();
         try {
-// отправка почтового сообщения
             Transport.send(message);
         } catch (MessagingException e) {
-            LOGGER.log(Level.ERROR, "Ошибка при отправлении сообщения" + e);
-// in log file
+            LOGGER.catching(e);
         }
     }
 }

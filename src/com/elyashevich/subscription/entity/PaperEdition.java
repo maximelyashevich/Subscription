@@ -11,8 +11,8 @@ public class PaperEdition extends Entity{
     private String description;
     private int publishingPeriodicity;
     private int ageRestriction;
-    private boolean availability;
-    private String imagePath;
+    private boolean availability=true;
+    private String imagePath="\\resource\\image\\periodical.jpg";
     private int durationMonth = 3;
     public PaperEdition() {
     }

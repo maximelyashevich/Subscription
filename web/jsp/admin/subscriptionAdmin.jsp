@@ -5,19 +5,21 @@
   Time: 5:04
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
-<fmt:setLocale value="en_US" scope="session" />
+<%--@elvariable id="userLocale" type="java.lang.String"--%>
+<fmt:setLocale value="${userLocale}" />
+<fmt:setBundle basename="resource.pagecontent" var="rb"/>
 <html>
 <head>
-    <title>Admin page. Subscription</title>
+    <title><fmt:message key="label.subscriptionS" bundle="${rb}"/></title>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css'>
     <style>
         @import "/resource/css/signin-signup.css" screen;
-        @import "/resource/css/style-main.css" screen;
-        @import "/resource/css/admin-style.css" screen;
+        @import "/resource/css/main.css" screen;
+        @import "/resource/css/admin.css" screen;
         @import "/resource/font/google-api.css" screen;
     </style>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
@@ -31,15 +33,16 @@
         <table id="sTable" class="table-fill">
             <thead>
             <tr>
-                <th class="text-left">Subscription ID</th>
-                <th class="text-left">User ID</th>
-                <th class="text-left">User name</th>
-                <th class="text-left">User surname</th>
-                <th class="text-left">Registration date</th>
-                <th class="text-left">Price</th>
+                <th class="text-center"><fmt:message key="label.subscriptionS" bundle="${rb}"/> ID</th>
+                <th class="text-center"><fmt:message key="label.user" bundle="${rb}"/> ID</th>
+                <th class="text-center"><fmt:message key="label.first_name" bundle="${rb}"/></th>
+                <th class="text-center"><fmt:message key="label.last_name" bundle="${rb}"/></th>
+                <th class="text-center"><fmt:message key="label.registrationDate" bundle="${rb}"/></th>
+                <th class="text-center"><fmt:message key="label.price" bundle="${rb}"/></th>
             </tr>
             </thead>
             <tbody class="table-hover">
+            <%--@elvariable id="subscriptions" type="java.util.List"--%>
             <c:forEach items="${subscriptions}" var="subscription">
                 <tr>
                     <td class="text-left">${subscription.id}</td>
@@ -64,7 +67,6 @@
         $hasHead = ($firstRow === "TH"),
         $tr = [],
         $i,$ii,$j = ($hasHead)?1:0,
-// holds the first row if it has a (<TH>) & nothing if (<TD>)
         $th = ($hasHead?$table.rows[(0)].outerHTML:"");
     var $pageCount = Math.ceil($rowCount / $n);
     if ($pageCount > 1) {
@@ -74,33 +76,20 @@
         sort(1);
     }
     function sort($p) {
-        /* create ($rows) a variable to hold the group of rows
-        ** to be displayed on the selected page,
-        ** ($s) the start point .. the first row in each page, Do The Math
-        */
         var $rows = $th,$s = (($n * $p)-$n);
         for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
             $rows += $tr[$i];
         $table.innerHTML = $rows;
-        // create the pagination buttons
         document.getElementById("buttons").innerHTML = pageButtons($pageCount,$p);
-        // CSS Stuff
         document.getElementById("id"+$p).setAttribute("class","active");
     }
-    // ($p) is the selected page number. it will be generated when a user clicks a button
 
     function pageButtons($pCount,$cur) {
-        /* this variables will disable the "Prev" button on 1st page
-           and "next" button on the last one */
-        var $prevDis = ($cur == 1)?"disabled":"",
-            $nextDis = ($cur == $pCount)?"disabled":"",
-            /* this ($buttons) will hold every single button needed
-            ** it will creates each button and sets the onclick attribute
-            ** to the "sort" function with a special ($p) number..
-            */
+        var $prevDis = ($cur === 1)?"disabled":"",
+            $nextDis = ($cur === $pCount)?"disabled":"",
             $buttons = "<input type='button' value='&lt;&lt; Prev' onclick='sort("+($cur - 1)+")' "+$prevDis+">";
         for ($i=1; $i<=$pCount;$i++)
-            $buttons += "<input type='button' id='id"+$i+"'value='"+$i+"' onclick='sort("+$i+")'>";
+            $buttons += "<input type='button' id='id"+$i+"' value='"+$i+"' onclick='sort("+$i+")'>";
         $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sort("+($cur + 1)+")' "+$nextDis+">";
         return $buttons;
     }

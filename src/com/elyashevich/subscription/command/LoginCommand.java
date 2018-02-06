@@ -27,6 +27,8 @@ public class LoginCommand implements ActionCommand {
         Router router = new Router();
         LocaleService localeService = new LocaleService();
         PaperService service = new PaperService();
+
+
         GenreService genreService = new GenreService();
         CreditService creditService = new CreditService();
         Object userLocale = request.getSession().getAttribute(TextConstant.USER_LOCALE);
@@ -38,7 +40,7 @@ public class LoginCommand implements ActionCommand {
             try {
                 User user = userReceiver.findUserWithEncryption(login, password);
                 if (user != null) {
-                    LOGGER.log(Level.INFO, "successful");
+                    LOGGER.log(Level.INFO, "Hello");
                     request.getSession().setAttribute(TextConstant.USER_PARAM, user);
                     request.setAttribute(TextConstant.IMAGE_PATH, user.getImagePath());
 
@@ -46,6 +48,7 @@ public class LoginCommand implements ActionCommand {
                     request.getSession().setAttribute(TextConstant.USERS_PARAM, userReceiver.findAll());
                     request.getSession().setAttribute(TextConstant.SUBSCRIPTIONS_PARAM, subscriptionService.findAll());
                     request.getSession().setAttribute(TextConstant.PAPERS_PARAM, service.findAll());
+                    request.getSession().setAttribute(TextConstant.PAPERS_RESTRICTION_PARAM, service.findAllWithRestriction(user));
                     request.getSession().setAttribute(TextConstant.GENRES_PARAM, genreService.findAll());
                     request.getSession().setAttribute(TextConstant.CREDITS_PARAM, creditService.findAll());
                     request.getSession().setAttribute(TextConstant.CREDITS_FOR_USER_PARAM, creditService.findAllByUserId(user.getId()));

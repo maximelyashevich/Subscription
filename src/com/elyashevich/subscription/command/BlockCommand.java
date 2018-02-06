@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BlockCommand implements ActionCommand {
     private UserService userService;
 
-    public BlockCommand(UserService userService){
+    BlockCommand(UserService userService){
         this.userService = userService;
     }
     @Override
@@ -29,8 +29,6 @@ public class BlockCommand implements ActionCommand {
                 router.setRoute(Router.RouteType.REDIRECT);
                 request.getSession().setAttribute(TextConstant.USERS_PARAM, userService.findAll());
                 page = ConfigurationManager.getProperty("path.page.admin");
-                String buttonValue=user.isAvailability()?TextConstant.BLOCK_PARAM:TextConstant.UNBLOCK_PARAM;
-                request.getSession().setAttribute("blockParam", buttonValue);
                 router.setPagePath(page);
             }
             else{
@@ -40,7 +38,6 @@ public class BlockCommand implements ActionCommand {
         } catch (ServiceTechnicalException e) {
             throw new CommandTechnicalException(e.getMessage(), e.getCause());
         }
-
         return router;
     }
 }

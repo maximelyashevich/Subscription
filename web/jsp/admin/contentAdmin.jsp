@@ -5,53 +5,94 @@
   Time: 5:04
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
-<fmt:setLocale value="en_US" scope="session" />
+<%--@elvariable id="userLocale" type="String"--%>
+<fmt:setLocale value="${userLocale}" />
+<fmt:setBundle basename="resource.pagecontent" var="rb"/>
 <html>
 <head>
-    <title>Admin page. Content</title>
+    <title><fmt:message key="label.adminContent" bundle="${rb}"/></title>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css'>
     <style>
         @import "/resource/css/signin-signup.css" screen;
-        @import "/resource/css/style-main.css" screen;
-        @import "/resource/css/admin-style.css" screen;
+        @import "/resource/css/main.css" screen;
+        @import "/resource/css/admin.css" screen;
         @import "/resource/font/google-api.css" screen;
     </style>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="/resource/js/adminStyle.js"></script>
 </head>
 <body>
 <c:import url="/jsp/admin/common/headerAdmin.jsp" />
 <main style="padding: 50px 0; background: url('/resource/image/background/3.jpg') no-repeat;">
     <c:import url="/jsp/admin/common/sidebar.jsp" />
+    <div id="modalPaperWindow" class="modal" style="display:none;">
+        <div class="modal-content-order">
+            <span class="close">&times;</span>
+            <div id="paperInformation"></div>
+        </div>
+    </div>
     <div class="content" id="paperTable">
         <table id="pTable" class="table-fill">
             <thead>
             <tr>
-                <th class="text-left">Image</th>
-                <th class="text-left">Title</th>
-                <th class="text-left">Type</th>
-                <th class="text-left">Periodicity</th>
-                <th class="text-left">Age restriction</th>
-                <th class="text-left">Availability</th>
-                <th class="text-left">Price</th>
+                <th class="text-center"><em class="fa fa-cog"></em></th>
+                <th class="text-left"><fmt:message key="label.option" bundle="${rb}"/></th>
+                <th class="text-left"><fmt:message key="label.image" bundle="${rb}"/></th>
+                <th class="text-left"><fmt:message key="label.name" bundle="${rb}"/></th>
+                <th class="text-left"><fmt:message key="label.typePaper" bundle="${rb}"/></th>
+                <th class="text-left"><fmt:message key="label.periodicityPaper" bundle="${rb}"/></th>
+                <th class="text-left"><fmt:message key="label.ageRestriction" bundle="${rb}"/></th>
+                <th class="text-left"><fmt:message key="label.availability" bundle="${rb}"/></th>
+                <th class="text-left"><fmt:message key="label.price" bundle="${rb}"/></th>
             </tr>
             </thead>
             <tbody class="table-hover">
-            <c:forEach items="${papers}" var="paper">
-                <tr onclick="window.location.href='/jsp/main.jsp'; return false">
-                    <td class="text-left">
-                        <img src="${paper.imagePath}" width="100" height="75" alt=""></td>
+            <%--@elvariable id="papers" type="java.util.ArrayList"--%>
+            <c:forEach items="${papers}" var="paper" varStatus="status">
+                <tr>
+                    <td class="text-left"><a class="btn btn-default" href="#" onclick="showMoreInformation(
+                            '<c:out value="${paper.type}"/>',
+                            '<c:out value="${paper.title}"/>',
+                            '<c:out value="${paper.description}"/>',
+                            '<c:out value="${paper.price}"/>',
+                            '<c:out value="${paper.publishingPeriodicity}"/>',
+                            '<c:out value="${paper.ageRestriction}"/>',
+                            '<c:out value="${paper.id}"/>')"><em class="fa fa-pencil"></em></a>
+                    </td>
+                      <td>
+                          <form action="${pageContext.request.contextPath}/upload" style="width: 150px; margin-right: -30px;" enctype="multipart/form-data" method="POST">
+                              <input type="file" name="image" id="image" style="width: 80%; font-size: 12px;" accept="image/*" required/>
+                              <input type="hidden" name="secret" value="paper">
+                              <input type="hidden" name="paperID" value="${paper.id}"/>
+                              <button style="width: 80%; margin-top: 5px; margin-left: -20%;"><fmt:message key="label.send" bundle="${rb}"/></button>
+                          </form>
+                      </td>
+                       <td>
+                         <img src="${paper.imagePath}" style="position: inherit;width: 145px; height:115px;" id="contactImage"/>
+                    </td>
                     <td class="text-left">${paper.title}</td>
                     <td class="text-left">${paper.type}</td>
                     <%--<td class="text-left">${paper.description}</td>--%>
                     <td class="text-left">${paper.publishingPeriodicity}</td>
                     <td class="text-left">${paper.ageRestriction}</td>
-                    <td class="text-left">${paper.availability}</td>
+                    <td class="text-center">
+                        <form method="post" action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="hide_paper">
+                            <input type="hidden" name="paperID" value="${paper.id}"/>
+                            <c:choose>
+                                <c:when test="${paper.availability=='true'}">
+                                    <input type="submit" style="width: 100%; background-color:rgba(42,51,64,0.78);color: #dae2e9;font-size: 12px;border-width: 1px;" value="block"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <input type="submit" style="width: 100%; background-color:rgba(42,51,64,0.78);color: #dae2e9;font-size: 12px;border-width: 1px;" value="unblock"/>
+                                </c:otherwise>
+                            </c:choose>
+                        </form>
+                    </td>
                     <td class="text-left">${paper.price}</td>
                 </tr>
             </c:forEach>
@@ -61,7 +102,46 @@
     </div>
     <div id="pagination"></div>
     <script>
-    var $table = document.getElementById('pTable'),
+        var modalPaper = document.getElementById('modalPaperWindow');
+        var spanPaper = document.getElementsByClassName("close")[0];
+        function showMoreInformation(type, title, description, price, periodicity, age_restr, paperID) {
+            var totalPaperItem='';
+            modalPaper.style.display = "block";
+            totalPaperItem+=' <form method="POST" action="/controller">' +
+                '            <input type="hidden" name="command" value="update_paper">' +
+                '<input type="hidden" name="paperID" value="'+paperID+'">'+
+                '<div style="color: black">' +
+               '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
+                '<label style="color:black"><fmt:message key="label.name" bundle="${rb}"/>:</label>'+
+            '<input type="text" name="paperTitle" style="float: left;margin-left: 150px;width: 70%;" value="'+title.replace(/"/g,"")+'"/></div>'+
+               '<div class="field-wrap" style="margin: 10px; height: 20px;">'+
+                '<label style="color:black"><fmt:message key="label.typePaper" bundle="${rb}"/>:</label>'+
+            '<input type="text" name="type" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+type+'"/></div>'+
+                '<div class="field-wrap" style="margin: 10px;">' +
+                '<textarea name="description" rows="4" cols="50" style="color:darkslategray; font-size:18px; margin-top: 0px; margin-bottom: 0px;  height: 100px; border: 1px solid #a0b3b0;">'+
+                description+'</textarea></div>'+
+                '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
+                '<label style="color:black"><fmt:message key="label.ageRestriction" bundle="${rb}"/>:</label>'+
+                '<input type="text" name="restriction" style="float: left; margin-left: 175px; margin-top: 5px; width: 65%;" value="'+age_restr+'"/></div>'+
+                '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
+                '<label style="color:black"><fmt:message key="label.periodicityPaper" bundle="${rb}"/>:</label>'+
+                '<input type="text" name="period" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+periodicity+'"/></div>'+
+                '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
+                '<label style="color:black"><fmt:message key="label.price" bundle="${rb}"/> ($):</label>'+
+            '<input type="text" name="price" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+price+'"/></div>'+
+            '<div class="field-wrap" style="margin: 10px;">' +
+                '<button>Save changes</button></div></form>';
+            document.getElementById("paperInformation").innerHTML = totalPaperItem;
+        }
+        spanPaper.onclick = function() {
+            modalPaper.style.display = "none";
+        };
+        window.onclick = function(event) {
+            if (event.target === modalPaper) {
+                modalPaper.style.display = "none";
+            }
+        };
+        var $table = document.getElementById('pTable'),
         $tablePagination = document.getElementById("pagination"),
         $n = 4,
         $rowCount = $table.rows.length,
@@ -69,7 +149,6 @@
         $hasHead = ($firstRow === "TH"),
         $tr = [],
         $i,$ii,$j = ($hasHead)?1:0,
-// holds the first row if it has a (<TH>) & nothing if (<TD>)
         $th = ($hasHead?$table.rows[(0)].outerHTML:"");
     var $pageCount = Math.ceil($rowCount / $n);
     if ($pageCount > 1) {
@@ -79,33 +158,19 @@
         sort(1);
     }
     function sort($p) {
-        /* create ($rows) a variable to hold the group of rows
-        ** to be displayed on the selected page,
-        ** ($s) the start point .. the first row in each page, Do The Math
-        */
         var $rows = $th,$s = (($n * $p)-$n);
         for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
             $rows += $tr[$i];
         $table.innerHTML = $rows;
-        // create the pagination buttons
         document.getElementById("buttons").innerHTML = pageButtons($pageCount,$p);
-        // CSS Stuff
         document.getElementById("id"+$p).setAttribute("class","active");
     }
-    // ($p) is the selected page number. it will be generated when a user clicks a button
-
     function pageButtons($pCount,$cur) {
-        /* this variables will disable the "Prev" button on 1st page
-           and "next" button on the last one */
-        var $prevDis = ($cur == 1)?"disabled":"",
-            $nextDis = ($cur == $pCount)?"disabled":"",
-            /* this ($buttons) will hold every single button needed
-            ** it will creates each button and sets the onclick attribute
-            ** to the "sort" function with a special ($p) number..
-            */
+        var $prevDis = ($cur === 1)?"disabled":"",
+            $nextDis = ($cur === $pCount)?"disabled":"",
             $buttons = "<input type='button' value='&lt;&lt; Prev' onclick='sort("+($cur - 1)+")' "+$prevDis+">";
         for ($i=1; $i<=$pCount;$i++)
-            $buttons += "<input type='button' id='id"+$i+"'value='"+$i+"' onclick='sort("+$i+")'>";
+            $buttons += "<input type='button' id='id"+$i+"' value='"+$i+"' onclick='sort("+$i+")'>";
         $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sort("+($cur + 1)+")' "+$nextDis+">";
         return $buttons;
     }

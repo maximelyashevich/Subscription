@@ -5,7 +5,7 @@ import com.elyashevich.subscription.dao.AddressDAO;
 import com.elyashevich.subscription.entity.Address;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.pool.ConnectionPool;
-import com.elyashevich.subscription.proxy.ProxyConnection;
+import com.elyashevich.subscription.pool.ProxyConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

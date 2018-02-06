@@ -3,6 +3,7 @@ package com.elyashevich.subscription.entity;
 import java.util.Objects;
 
 public class Genre extends Entity {
+    private long id;
     private String name;
 
     public Genre(String name) {
@@ -11,6 +12,14 @@ public class Genre extends Entity {
 
     public String getName() {
         return name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -34,7 +43,8 @@ public class Genre extends Entity {
     @Override
     public String toString() {
         return "Genre{" +
-                "name='" + name + '\'' +
+                "id='"+id+
+                " ,name='" + name + '\'' +
                 '}';
     }
 }

@@ -6,7 +6,7 @@ import com.elyashevich.subscription.entity.PaperEdition;
 import com.elyashevich.subscription.entity.Subscription;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.pool.ConnectionPool;
-import com.elyashevich.subscription.proxy.ProxyConnection;
+import com.elyashevich.subscription.pool.ProxyConnection;
 
 import java.sql.*;
 import java.util.ArrayList;

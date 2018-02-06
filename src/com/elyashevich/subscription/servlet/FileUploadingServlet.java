@@ -6,6 +6,7 @@ import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
 import com.elyashevich.subscription.service.LocaleService;
+import com.elyashevich.subscription.service.PaperService;
 import com.elyashevich.subscription.service.UserService;
 import com.elyashevich.subscription.util.TextConstant;
 
@@ -42,7 +43,7 @@ public class FileUploadingServlet extends HttpServlet {
             break;
         }
 
-        ActionCommand command = new PictureUpdateCommand(fileName, new UserService());
+        ActionCommand command = new PictureUpdateCommand(fileName, new UserService(), new PaperService());
         LocaleService localeService = new LocaleService();
         MessageManager messageManager = localeService.defineMessageManager(userLocale);
         try {
@@ -69,7 +70,7 @@ public class FileUploadingServlet extends HttpServlet {
         System.out.println("content-disposition header= " + contentDisp);
         String[] tokens = contentDisp.split(";");
         for (String token : tokens) {
-            if (token.trim().startsWith("filename")) {
+            if (token.trim().startsWith(TextConstant.FILENAME)) {
                 return token.substring(token.indexOf("=") + 2, token.length() - 1);
             }
         }

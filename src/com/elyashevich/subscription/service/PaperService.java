@@ -2,6 +2,8 @@ package com.elyashevich.subscription.service;
 
 import com.elyashevich.subscription.dao.impl.PaperDAOImpl;
 import com.elyashevich.subscription.entity.PaperEdition;
+import com.elyashevich.subscription.entity.PaperType;
+import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 
@@ -12,9 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class PaperService {
-    ////////
-    ////!!!CHANGE NAME OF FIND_ALL()!!!
-    ////////
+
     public List<PaperEdition> findAll() throws ServiceTechnicalException {
         PaperDAOImpl paperDAOImpl = new PaperDAOImpl();
         try {
@@ -24,16 +24,27 @@ public class PaperService {
         }
     }
 
-//    public static void main(String[] args) {
-//        LocalDate localDateTime = LocalDate.now();
-//        localDateTime = localDateTime.plusMonths(3);
-//        System.out.println(localDateTime);
-//        System.out.println(localDateTime.format(DateTimeFormatter.ofPattern("uuuu-MM-dd HH-mm-ss")));
-//    }
+    public List<PaperEdition> findAllWithRestriction(User user) throws ServiceTechnicalException {
+        PaperDAOImpl paperDAOImpl = new PaperDAOImpl();
+        try {
+            return paperDAOImpl.findAllWithRestriction(user);
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
+    }
 
+    public static void main(String[] args) {
+        PaperService paperService = new PaperService();
+        try {
+            System.out.println(new UserService().findUserByID(11));
+            System.out.println(paperService.findAllByDescription(new UserService().findUserByID(49), "", null));
+        } catch (ServiceTechnicalException e) {
+            e.printStackTrace();
+        }
+    }
     public HashSet<PaperEdition> addPaperToSet(HashSet<PaperEdition> hashSet, PaperEdition paperEdition){
         if (hashSet==null){
-            hashSet = new HashSet<PaperEdition>();
+            hashSet = new HashSet<>();
             hashSet.add(paperEdition);
         } else{
             if (hashSet.contains(paperEdition)){
@@ -44,9 +55,38 @@ public class PaperService {
         return hashSet;
     }
 
+    public PaperEdition getPaper(PaperType type, String title, String description, int period, BigDecimal price, int ageRestriction){
+        PaperEdition paperEdition = new PaperEdition();
+
+        paperEdition.setType(type);
+        paperEdition.setTitle(title);
+        paperEdition.setDescription(description);
+        paperEdition.setPublishingPeriodicity(period);
+        paperEdition.setPrice(price);
+        paperEdition.setAgeRestriction(ageRestriction);
+        return paperEdition;
+    }
+
+    public boolean createPaperEdition(PaperEdition paperEdition, String[] genreName) throws ServiceTechnicalException {
+        PaperDAOImpl paperDAO = new PaperDAOImpl();
+        try {
+            return paperDAO.create(paperEdition, genreName);
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
+    }
+
+    public boolean updatePaperEdition(PaperEdition paperEdition) throws ServiceTechnicalException {
+        PaperDAOImpl paperDAO = new PaperDAOImpl();
+        try {
+            return paperDAO.update(paperEdition);
+        } catch (DAOTechnicalException e) {
+            throw new ServiceTechnicalException(e.getMessage(), e.getCause());
+        }
+    }
     public HashSet<PaperEdition> removePaperFromSet(HashSet<PaperEdition> hashSet, PaperEdition paperEdition){
         if (hashSet==null){
-            hashSet = new HashSet<PaperEdition>();
+            hashSet = new HashSet<>();
         } else{
             hashSet.remove(paperEdition);
         }
@@ -79,7 +119,7 @@ public class PaperService {
         }
     }
 
-    public List<PaperEdition> findAllByDescription(String data, String dataCriteria) throws ServiceTechnicalException {
+    public List<PaperEdition> findAllByDescription(User user, String data, String dataCriteria) throws ServiceTechnicalException {
         PaperDAOImpl paperDAOImpl = new PaperDAOImpl();
         if (dataCriteria==null){
             dataCriteria="";
@@ -88,7 +128,7 @@ public class PaperService {
             data="";
         }
         try {
-            return paperDAOImpl.findPapersByDescription(data, defineGenreList(dataCriteria));
+            return paperDAOImpl.findPapersByDescription(user, data, defineGenreList(dataCriteria));
         } catch (DAOTechnicalException e) {
             throw new ServiceTechnicalException(e.getMessage(), e.getCause());
         }

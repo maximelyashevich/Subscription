@@ -42,6 +42,7 @@ public class BasketDeleteCommand implements ActionCommand {
         } catch (ServiceTechnicalException e) {
             throw new CommandTechnicalException(e.getMessage(), e.getCause());
         }
+        router.setRoute(Router.RouteType.REDIRECT);
         return router;
     }
 }
