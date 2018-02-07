@@ -1,15 +1,10 @@
 package com.elyashevich.subscription.tag;
 
 import com.elyashevich.subscription.entity.Genre;
+import com.elyashevich.subscription.util.TextConstant;
 
 public class NotNullTag {
     public static Genre notNull(Object ob) {
-        Genre res = null;
-        if (ob == null) {
-            res = new Genre("без жанра");
-        } else {
-            res = (Genre) ob;
-        }
-        return res;
+        return ob == null ? new Genre(TextConstant.WITHOUT_GENRE) : (Genre) ob;
     }
 }

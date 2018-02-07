@@ -18,13 +18,12 @@
     <link rel='stylesheet prefetch' href='<c:url value="/resource/css/stylecdnj.css"/>'>
     <style>
         @import "/resource/css/header.css" screen;
-        @import "/resource/css/signin-signup.css" screen;
+        @import "/resource/css/signin.css" screen;
         @import "/resource/css/main.css" screen;
     </style>
     <link href='<c:url value="/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/adminStyle.js"></script>
 </head>
 <body>
 <header class="header-main" style="height: 85px">
@@ -42,7 +41,7 @@
                 <li>
                     <form method="post" action="${pageContext.request.contextPath}/controller">
                         <input type="hidden" name="command" value="money"/>
-                        <input type="hidden" name="UserID" value="${user.id}">
+                        <input type="hidden" name="userID" value="${user.id}">
                         <button type="submit"><fmt:message key="label.balance" bundle="${rb}"/></button>
                     </form>
                 </li>

@@ -51,8 +51,8 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-                close(preparedStatement);
-                close(cn);
+            close(preparedStatement);
+            close(cn);
         }
         return paperEditions;
     }
@@ -90,17 +90,17 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
     }
 
     @Override
-    public boolean create(PaperEdition paperEdition) throws DAOTechnicalException {
+    public boolean create(PaperEdition paperEdition) {
         return false;
     }
 
-        @Override
+    @Override
     public boolean create(PaperEdition paperEdition, String[] genreNames) throws DAOTechnicalException {
         boolean flag;
 
         ProxyConnection connection = null;
         PreparedStatement preparedStatement = null;
-        try{
+        try {
             GenreDAO genreDAO = new GenreDAOImpl();
             connection = ConnectionPool.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT_PAPER, Statement.RETURN_GENERATED_KEYS);
@@ -114,23 +114,22 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
             preparedStatement.executeUpdate();
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            if(rs.next()){
+            if (rs.next()) {
                 paperEdition.setId(rs.getInt(1));
             }
-            for (String genreName: genreNames){
+            for (String genreName : genreNames) {
                 insertGenreToPaper(genreDAO.findByDescription(genreName), paperEdition);
             }
             flag = true;
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
-        }
-        finally {
+        } finally {
             close(preparedStatement);
             close(connection);
         }
         return flag;
     }
+
     @Override
     public boolean update(PaperEdition paperEdition) throws DAOTechnicalException {
         ProxyConnection cn = null;
@@ -146,9 +145,9 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
             st.setBigDecimal(5, paperEdition.getPrice());
             st.setInt(6, paperEdition.getAgeRestriction());
             st.setString(7, paperEdition.getImagePath());
-            st.setInt(8, paperEdition.isAvailability()?1:0);
+            st.setInt(8, paperEdition.isAvailability() ? 1 : 0);
             st.setLong(9, paperEdition.getId());
-            result = st.executeUpdate()>0;
+            result = st.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
@@ -167,22 +166,22 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
         try {
             cn = ConnectionPool.getInstance().getConnection();
             sql.append(" description LIKE ? AND papers ");
-            if (criteria.size()>1) {
+            if (criteria.size() > 1) {
                 for (int i = 0; i < criteria.size() - 1; i++) {
                     sql.append(" LIKE ? AND papers ");
                 }
                 sql.append(" LIKE ?");
-            }else{
+            } else {
                 sql.append(" LIKE ?");
             }
             sql.append(" AND availability=1 ").append(" AND ageR<=(YEAR(CURRENT_DATE)-YEAR(?))-(DATE_FORMAT(CURRENT_DATE, '%m%d')<DATE_FORMAT(?, '%m%d'))");
             preparedStatement = cn.prepareStatement(sql.toString());
-            preparedStatement.setString(1, "%"+data+"%");
-            for (int i=0; i<criteria.size(); i++){
-                preparedStatement.setString(i+2, "%"+criteria.get(i)+"%");
+            preparedStatement.setString(1, "%" + data + "%");
+            for (int i = 0; i < criteria.size(); i++) {
+                preparedStatement.setString(i + 2, "%" + criteria.get(i) + "%");
             }
-            preparedStatement.setDate(criteria.size()+2, Date.valueOf(user.getBirthday()));
-            preparedStatement.setDate(criteria.size()+3, Date.valueOf(user.getBirthday()));
+            preparedStatement.setDate(criteria.size() + 2, Date.valueOf(user.getBirthday()));
+            preparedStatement.setDate(criteria.size() + 3, Date.valueOf(user.getBirthday()));
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 paperEditions.add(findPaperById(resultSet.getLong(1)));
@@ -221,11 +220,12 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-                close(st);
-                close(cn);
+            close(st);
+            close(cn);
         }
         return paperEdition;
     }
+
     @Override
     public boolean deleteById(long paperId) throws DAOTechnicalException {
         ProxyConnection cn = null;
@@ -235,7 +235,7 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
             cn = ConnectionPool.getInstance().getConnection();
             st = cn.prepareStatement(SQL_DELETE_PAPERS_BY_ID);
             st.setLong(1, paperId);
-            result = st.executeUpdate()>0;
+            result = st.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getMessage(), e.getCause());
         } finally {
@@ -246,29 +246,24 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
     }
 
     @Override
-    public boolean insertGenreToPaper(Genre genre, PaperEdition paperEdition) throws DAOTechnicalException {
-        boolean flag;
+    public void insertGenreToPaper(Genre genre, PaperEdition paperEdition) throws DAOTechnicalException {
 
         ProxyConnection connection = null;
         PreparedStatement preparedStatement = null;
 
-        try{
+        try {
             connection = ConnectionPool.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(SQL_INSERT_PAPER_WITH_GENRE);
             preparedStatement.setLong(1, genre.getId());
             preparedStatement.setLong(2, paperEdition.getId());
 
             preparedStatement.executeUpdate();
-            flag = true;
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
-        }
-        finally {
+        } finally {
             close(preparedStatement);
             close(connection);
         }
-        return flag;
     }
 
 }

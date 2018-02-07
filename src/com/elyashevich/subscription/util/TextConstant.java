@@ -2,17 +2,13 @@ package com.elyashevich.subscription.util;
 
 public final class TextConstant {
     public static final String EMPTY_STRING = "";
-    public static final String SPACE = " ";
-    public static final String NEWLINE_CHARACTER = "\n";
-    public static final String TAB_CHARACTER = "\t";
+    public static final String SEPARATOR = ";";
     public static final String NUMBER_ONE = "1";
     public static final String NUMBER_TWO = "2";
     public static final String NUMBER_THREE = "3";
     public static final String RU_PARAM = "ru_RU";
     public static final String EN_PARAM = "en_US";
-    public static final String TO = "to";
-    public static final String SUBJECT = "subject";
-    public static final String BODY = "body";
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
     public static final String MAIL = "mail";
     public static final String COMMAND_PARAM = "command";
     public static final String WRONG_ACTION = "wrongAction";
@@ -30,6 +26,7 @@ public final class TextConstant {
     public static final String USER_ID = "userID";
     public static final String PAPER_ID = "paperID";
     public static final String SUCCESS = "message.registrationsuccess";
+    public static final String SUCCESS_OPERATION = "message.successOperation";
     public static final String ERROR_MESSAGE_PARAM = "errorLoginPassMessage";
     public static final String USER_PARAM = "user";
     public static final String PAPER_PARAM = "paper";
@@ -54,6 +51,28 @@ public final class TextConstant {
     public static final String SUBSCRIPTIONS_FOR_USER_PARAM = "subscriptionsForUser";
     public static final String TITLE_PARAM = "titleMessage";
     public static final String TITLE_PARAM_REGISTRATION = "titleMessageR";
+    public static final String TITLE_ADD_TO_BASKET = "titleAdd";
     public static final String RADIO_BUTTON = "myRadio";
-    public static final String CHECH_BUTTON = "checkBox";
+    public static final String CHECK_BUTTON = "checkBox";
+    public static final String TITLE_UPDATE = "updateTitle";
+    public static final String BASKET_SET = "basketSet";
+    public static final String QUANTITY_SET = "quantity";
+    public static final String FINAL_PRICE = "finalPrice";
+    public static final String ID = "paperEditionId";
+    public static final String DURATION_PERIOD = "durationQuantity";
+    public static final String PREFIX_IMAGE_USER = "\\resource\\image\\user\\";
+    public static final String PREFIX_IMAGE_PAPER = "\\resource\\image\\";
+    public static final String SEARCH = "searchData";
+    public static final String CRITERIA = "criteria";
+    public static final String TITLE_SUBSCRIPTION = "titleMessageS";
+    public static final String SUBSCRIPTION = "subscription";
+    public static final String FLAG_ORDER = "flagOrder";
+    public static final String READY_VALUE = "READY";
+    public static final String NOT_READY_VALUE = "NOT_READY";
+    public static final String EXCEPTION_CAUSE = "exceptionCause";
+    public static final String EXCEPTION_MESSAGE = "exceptionMessage";
+    public static final String NULL_PAGE = "nullPage";
+    public static final String WITHOUT_GENRE = "без жанра";
+    public static final String ADMINISTRATOR = "ADMINISTRATOR";
+    public static final String TITLE_UPDATE_PAPER = "uPaper";
 }

@@ -1,15 +1,11 @@
 package com.elyashevich.subscription.command;
 
-import com.elyashevich.subscription.service.PaperService;
-import com.elyashevich.subscription.service.RegistrationService;
-import com.elyashevich.subscription.service.SubscriptionService;
-import com.elyashevich.subscription.service.UserService;
+import com.elyashevich.subscription.service.*;
 
 public enum CommandType {
     LOGIN(new LoginCommand(new UserService())),
     LOGOUT(new LogoutCommand()),
     REGISTRATION(new RegistrationCommand(new RegistrationService())),
-    MAIL(new MailCommand()),
     LANGUAGE(new LocaleCommand()),
     PROFILE(new ProfileCommand(new UserService())),
     SEARCH(new SearchCommand(new PaperService())),

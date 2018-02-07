@@ -21,7 +21,8 @@
 <body>
 <ul class="sidebar-menu">
     <li><span class="nav-section-title"></span></li>
-    <li class="have-children"><a href="#"><span class="fa fa-briefcase"></span><fmt:message key="label.content" bundle="${rb}"/></a>
+    <li class="have-children">
+        <a href="#"><span class="fa fa-briefcase"></span><fmt:message key="label.content" bundle="${rb}"/></a>
         <ul>
             <li><a href="#" onclick="location.replace('/jsp/admin/contentAdmin.jsp')"><fmt:message key="label.viewPapers" bundle="${rb}"/></a></li>
         </ul>
@@ -36,7 +37,7 @@
             <li><a href="#" onclick="location.replace('/jsp/admin/subscriptionAdmin.jsp')"><fmt:message key="label.view" bundle="${rb}"/></a></li>
         </ul>
     </li>
-    <li class="have-children"><a href="#"><span class="fa fa-options"></span><fmt:message key="label.option" bundle="${rb}"/></a>
+    <li class="have-children"><a href="#"><span class="fa fa-cog"></span><fmt:message key="label.option" bundle="${rb}"/></a>
         <ul>
             <li><a href="#" onclick="location.replace('/jsp/admin/addPaperAdmin.jsp')"><fmt:message key="label.addPaper" bundle="${rb}"/></a></li>
         </ul>

@@ -8,6 +8,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--@elvariable id="userLocale" type="java.lang.String"--%>
 <fmt:setLocale value="${userLocale}" />
 <fmt:setBundle basename="resource.pagecontent" var="rb"/>
 <html>
@@ -22,9 +23,7 @@
         <div class="header-limiter">
             <h1><a href="#"><span><fmt:message key="label.subscription" bundle="${ rb }"/></span></a></h1>
             <nav>
-                <a href="#"><fmt:message key="label.home" bundle="${ rb }"/></a>
-                <a href="#" class="selected"><fmt:message key="label.contact" bundle="${ rb }"/></a>
-                <a href="#"><fmt:message key="label.about" bundle="${ rb }"/></a>
+                <a href="${pageContext.request.contextPath}/jsp/login/contact.jsp" class="selected"><fmt:message key="label.contact" bundle="${ rb }"/></a>
             </nav>
             <ul>
                 <li class="tab active"><a href="${pageContext.request.contextPath}/jsp/login/login.jsp">

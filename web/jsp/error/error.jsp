@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-<c:import url="/jsp/common/headerLogin.jsp" />
+<c:import url="/jsp/login/common/headerLogin.jsp" />
 <%--@elvariable id="user" type="com.elyashevich.subscription.entity.User"--%>
 <div class="whiteback" style="font-size: 21px">
     <b>Request from ${pageContext.errorData.requestURI} is failed</b>

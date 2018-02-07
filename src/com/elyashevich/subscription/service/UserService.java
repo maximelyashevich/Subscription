@@ -7,17 +7,12 @@ import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.DAOTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.util.Encryption;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class UserService {
-    private static final Logger LOGGER = LogManager.getLogger();
-    private static final String REG_EX_JSP = "/jsp.+";
 
     public User findUserWithEncryption(String login, String password) throws ServiceTechnicalException {
         UserDAOImpl userDAO = new UserDAOImpl();
@@ -47,14 +42,19 @@ public class UserService {
         }
     }
 
-    public User getUser(String date, String firstName, String lastName, String email, String login, String password){
+    public void setUserFeatures(User user, String firstName, String lastName, long userId, LocalDate birthday, String country, String city, String detailAddress, String postIndex){
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setId(userId);
+        user.setBirthday(birthday);
+        Address address = getAddress(country, city, postIndex, detailAddress);
+        user.setAddress(address);
+    }
+
+    public User getUser(LocalDate date, String firstName, String lastName, String email, String login, String password){
         User user = new User();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        LocalDate birthday = LocalDate.parse(date, formatter);
-
-        user.setBirthday(birthday);
+        user.setBirthday(date);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);

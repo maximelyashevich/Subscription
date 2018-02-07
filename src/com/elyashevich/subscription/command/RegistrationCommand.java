@@ -6,17 +6,17 @@ import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
-import com.elyashevich.subscription.service.DefaultService;
-import com.elyashevich.subscription.service.LocaleService;
-import com.elyashevich.subscription.service.RegistrationService;
-import com.elyashevich.subscription.service.UserService;
+import com.elyashevich.subscription.service.*;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.util.TextConstant;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class RegistrationCommand implements ActionCommand {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -33,6 +33,8 @@ public class RegistrationCommand implements ActionCommand {
         UserService userService = new UserService();
         DefaultService defaultService = new DefaultService();
         LocaleService localeService = new LocaleService();
+        MailService mailService = new MailService();
+        ServletContext context = request.getServletContext();
         LOGGER.log(Level.INFO, "Starting registration...");
         Object userLocale = request.getSession().getAttribute(TextConstant.USER_LOCALE);
 
@@ -46,10 +48,13 @@ public class RegistrationCommand implements ActionCommand {
         String city = request.getParameter(TextConstant.CITY);
         String postIndex = request.getParameter(TextConstant.POST_INDEX);
         String detailAddress = request.getParameter(TextConstant.DETAIL_ADDRESS);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TextConstant.DATE_PATTERN);
+
+        LocalDate birthday = LocalDate.parse(dob, formatter);
 
         MessageManager messageManager = localeService.defineMessageManager(userLocale);
-        String titleMessage = defaultService.defineTitleMessage(firstName, lastName, detailAddress, userName, password, postIndex, country, city, dob);
-        request.setAttribute(TextConstant.TITLE_PARAM_REGISTRATION, localeService.defineMessageManager(userLocale).getMessage(titleMessage));
+        String titleMessage = defaultService.defineTitleMessage(birthday, firstName, lastName, detailAddress, userName, password, postIndex, country, city, dob);
+        request.getSession().setAttribute(TextConstant.TITLE_PARAM_REGISTRATION, localeService.defineMessageManager(userLocale).getMessage(titleMessage));
         page = ConfigurationManager.getProperty("path.page.registration");
         if (TextConstant.SUCCESS.equals(titleMessage)) {
             try {
@@ -61,21 +66,22 @@ public class RegistrationCommand implements ActionCommand {
                     request.getSession().setAttribute(TextConstant.TITLE_PARAM_REGISTRATION, messageManager.getMessage("message.emailEx"));
                 }
                 if (!registrationReceiver.findUserByLogin(userName) && !registrationReceiver.findUserByEmail(email)){
-                    User user = userService.getUser(dob, firstName, lastName, email, userName, password);
+                    User user = userService.getUser(birthday, firstName, lastName, email, userName, password);
                     Address address = userService.getAddress(country, city, postIndex, detailAddress);
                     if (registrationReceiver.createUserWithEncryption(user, address)) {
-                        MailCommand.sendFromEmail(request, email, messageManager.getMessage("message.welcome"),
-                                "Здравствуйте, " + firstName + "! Мы очень рады, что Вы решили попробовать Subscription!");
-                        request.getSession().setAttribute(TextConstant.TITLE_PARAM, localeService.defineMessageManager(userLocale).getMessage("message.registrationsuccess"));
+                        LOGGER.log(Level.INFO, "Try to send message to user email...");
+                        mailService.sendFromEmail(context, email, messageManager.getMessage("message.welcome"),
+                                messageManager.getMessage("message.hello") + firstName + messageManager.getMessage("message.glad"));
+                        request.getSession().setAttribute(TextConstant.TITLE_PARAM, messageManager.getMessage("message.registrationsuccess"));
                         page = ConfigurationManager.getProperty("path.page.login");
                         LOGGER.log(Level.INFO, "Successful registration!");
+                        LOGGER.log(Level.INFO, "Successful message sending.");
                     } else {
                         request.getSession().setAttribute(TextConstant.ERROR_MESSAGE_PARAM, messageManager.getMessage("message.loginerror"));
                         LOGGER.log(Level.INFO, "Registration has been failed.");
                     }
                 }
             } catch (ServiceTechnicalException e) {
-                LOGGER.catching(e);
                 throw new CommandTechnicalException(e.getMessage(), e.getCause());
             }
         }
@@ -83,5 +89,4 @@ public class RegistrationCommand implements ActionCommand {
         router.setPagePath(page);
         return router;
     }
-
 }

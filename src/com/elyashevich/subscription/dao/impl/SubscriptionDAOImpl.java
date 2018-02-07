@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements SubscriptionDAO{
+public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements SubscriptionDAO {
     private static final String SQL_SELECT_ALL_SUBSCRIPTIONS = "SELECT id FROM subscription_db.subscription";
     private static final String SQL_SELECT_ALL_SUBSCRIPTIONS_BY_ID = "SELECT subscription.id, user_id, papers.id, registration_date, finish_date, subscription.price " +
             "FROM subscription_db.subscription " +
@@ -31,6 +31,7 @@ public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements Su
             "WHERE subscription_id = ? and papers_id=?";
     private static final String SQL_CREATE_SUBSCRIPTION = "INSERT INTO subscription(user_id, registration_date, price) VALUES(?, ?, ?);";
     private static final String SQL_CREATE_SUBSCRIPTION_PAPER = "INSERT INTO subscription_papers(subscription_id, papers_id, finish_date) VALUES(?, ?, ?);";
+
     @Override
     public List<Subscription> findAll() throws DAOTechnicalException {
         List<Subscription> subscriptions = new ArrayList<>();
@@ -47,8 +48,8 @@ public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements Su
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-                close(st);
-                close(cn);
+            close(st);
+            close(cn);
         }
         return subscriptions;
     }
@@ -76,15 +77,15 @@ public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements Su
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-                close(st);
-                close(cn);
+            close(st);
+            close(cn);
         }
         return subscriptions;
     }
 
     @Override
     public List<Subscription> findAllByID(long id) throws DAOTechnicalException {
-        List<Subscription> subscriptions= new ArrayList<>();
+        List<Subscription> subscriptions = new ArrayList<>();
         ProxyConnection cn = null;
         PreparedStatement st = null;
         try {
@@ -104,8 +105,8 @@ public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements Su
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-                close(st);
-                close(cn);
+            close(st);
+            close(cn);
         }
         return subscriptions;
     }
@@ -122,13 +123,13 @@ public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements Su
             ResultSet resultSet = st.executeQuery();
 
             while (resultSet.next()) {
-                    subscriptions.addAll(findAllByID(resultSet.getLong(1)));
+                subscriptions.addAll(findAllByID(resultSet.getLong(1)));
             }
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-                close(st);
-                close(cn);
+            close(st);
+            close(cn);
         }
         return subscriptions;
     }
@@ -148,13 +149,12 @@ public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements Su
             st = cn.prepareStatement(SQL_DELETE_SUBSCRIPTION_BY_ID_AND_PAPERS_ID);
             st.setLong(1, subscriptionId);
             st.setLong(2, paperId);
-            //result = st.executeUpdate()>0;
-            System.out.println("->Deleted!");
+            result = st.executeUpdate()>0;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-                close(st);
-                close(cn);
+            close(st);
+            close(cn);
         }
         return result;
     }
@@ -171,7 +171,7 @@ public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements Su
         ProxyConnection connection = null;
         PreparedStatement preparedStatement = null;
 
-        try{
+        try {
             connection = ConnectionPool.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(SQL_CREATE_SUBSCRIPTION, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, subscription.getUser().getId());
@@ -179,45 +179,38 @@ public class SubscriptionDAOImpl extends AbstractDAO<Subscription> implements Su
             preparedStatement.setBigDecimal(3, subscription.getPrice());
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            if(rs.next()){
+            if (rs.next()) {
                 subscription.setId(rs.getInt(1));
             }
             flag = true;
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
-        }
-        finally {
-                close(preparedStatement);
-                close(connection);
+        } finally {
+            close(preparedStatement);
+            close(connection);
         }
         return flag;
     }
 
     @Override
-    public boolean createWithPaper(Subscription subscription, long paperId) throws DAOTechnicalException {
-        boolean flag;
+    public void createWithPaper(Subscription subscription, long paperId) throws DAOTechnicalException {
 
         ProxyConnection connection = null;
         PreparedStatement preparedStatement = null;
 
-        try{
+        try {
             connection = ConnectionPool.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(SQL_CREATE_SUBSCRIPTION_PAPER);
             preparedStatement.setLong(1, subscription.getId());
             preparedStatement.setLong(2, paperId);
             preparedStatement.setDate(3, Date.valueOf(subscription.getSubscriptionFinish()));
             preparedStatement.executeUpdate();
-            flag = true;
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
+        } finally {
+            close(preparedStatement);
+            close(connection);
         }
-        finally {
-                close(preparedStatement);
-                close(connection);
-        }
-        return flag;
     }
 
     @Override

@@ -14,6 +14,7 @@
 <fmt:setBundle basename="resource.pagecontent" var="rb"/>
 <html>
 <head>
+    <title><fmt:message key="label.mySubscriptions" bundle="${rb}"/></title>
     <style>
         @import "/resource/css/header.css" screen;
         @import "/resource/css/footer.css" screen;

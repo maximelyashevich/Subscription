@@ -1,6 +1,7 @@
 package com.elyashevich.subscription.service;
 
 import com.elyashevich.subscription.manager.MessageManager;
+import com.elyashevich.subscription.util.RegexComponent;
 import com.elyashevich.subscription.util.TextConstant;
 
 import java.util.regex.Matcher;
@@ -25,7 +26,7 @@ public class LocaleService {
 
     public String definePath(String path){
         String page = null;
-        Pattern p = Pattern.compile("/jsp.+");
+        Pattern p = Pattern.compile(RegexComponent.JSP_PATH_REGEX);
         Matcher m = p.matcher(path);
         if (m.find()){
             page = m.group();

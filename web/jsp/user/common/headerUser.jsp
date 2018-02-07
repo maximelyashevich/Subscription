@@ -36,7 +36,7 @@
             <a href="${pageContext.request.contextPath}/jsp/main/main.jsp"><fmt:message key="label.mainPage" bundle="${rb}"/></a>
         </nav>
         <div class="header-user-menu" style="margin-right: 16%;">
-            <div id="parent" style="padding: 5% 0;">
+            <div id="parent" style="padding: 5% 0; z-index: 9999999;">
                 <%--@elvariable id="user" type="com.elyashevich.subscription.entity.User"--%>
                 <ctg:userRole user="${user}"/>
                 <img src="${user.imagePath}" style="border-radius: 50%; position: absolute; top: 6px; height: 26px; z-index: 9999; width: 28px; right: 10px;" alt="User Image">
@@ -45,7 +45,7 @@
                 <li>
                     <form method="post" action="${pageContext.request.contextPath}/controller">
                         <input type="hidden" name="command" value="money"/>
-                        <input type="hidden" name="UserID" value="${user.id}">
+                        <input type="hidden" name="userID" value="${user.id}">
                         <button type="submit"><fmt:message key="label.balance" bundle="${rb}"/></button>
                     </form>
                 </li>

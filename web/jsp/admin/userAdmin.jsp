@@ -17,7 +17,7 @@
     <title><fmt:message key="label.admin" bundle="${rb}"/>.<fmt:message key="label.user" bundle="${rb}"/></title>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css'>
     <style>
-        @import "/resource/css/signin-signup.css" screen;
+        @import "/resource/css/signin.css" screen;
         @import "/resource/css/main.css" screen;
         @import "/resource/css/admin.css" screen;
         @import "/resource/font/google-api.css" screen;

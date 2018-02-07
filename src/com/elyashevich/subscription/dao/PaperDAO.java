@@ -9,11 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface PaperDAO {
-   List<PaperEdition> findPapersByDescription(User user, String data, ArrayList<String> criteria) throws DAOTechnicalException;
-   PaperEdition findPaperById(long id) throws DAOTechnicalException;
-   boolean deleteById(long paperId) throws DAOTechnicalException;
+    List<PaperEdition> findPapersByDescription(User user, String data, ArrayList<String> criteria) throws DAOTechnicalException;
 
-   List<PaperEdition> findAllWithRestriction(User user) throws DAOTechnicalException;
-   boolean insertGenreToPaper(Genre genre, PaperEdition paperEdition) throws DAOTechnicalException;
-   boolean create(PaperEdition paperEdition, String[] genreNames) throws DAOTechnicalException;
+    PaperEdition findPaperById(long id) throws DAOTechnicalException;
+
+    boolean deleteById(long paperId) throws DAOTechnicalException;
+
+    List<PaperEdition> findAllWithRestriction(User user) throws DAOTechnicalException;
+
+    void insertGenreToPaper(Genre genre, PaperEdition paperEdition) throws DAOTechnicalException;
+
+    boolean create(PaperEdition paperEdition, String[] genreNames) throws DAOTechnicalException;
 }

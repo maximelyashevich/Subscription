@@ -1,3 +1,4 @@
+<%--@elvariable id="titleMessageR" type="java.lang.String"--%>
 <%--@elvariable id="nullPage" type="java.lang.String"--%>
 <%--@elvariable id="wrongAction" type="java.lang.String"--%>
 <%--@elvariable id="errorLoginPassMessage" type="java.lang.String"--%>
@@ -11,14 +12,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Log In</title>
+    <title><fmt:message key="label.signup" bundle="${rb}"/></title>
     <style>
-        @import "/resource/css/signin-signup.css" screen;
+        @import "/resource/css/signin.css" screen;
     </style>
     <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
 </head>
 <body translate="no">
-<c:import url="../common/headerLogin.jsp" />
+<c:import url="common/headerLogin.jsp" />
 <main style="   background: url('/resource/image/background/3.jpg') no-repeat;">
     <div class="form">
         <h1><fmt:message key="label.signup_for_free" bundle="${ rb }"/></h1>
@@ -38,7 +39,7 @@
                         <fmt:message key="label.first_name" bundle="${rb}"/><span class="req">*</span>
                     </label>
                     <input type="text" name="first_name" id="first_name" required
-                           title="<fmt:message key="label.inputFirstName" bundle="${ rb }"/>"/>
+                           title="<fmt:message key="label.inputFirstName" bundle="${rb}"/>"/>
                 </div>
                 <div class="field-wrap">
                     <label>
@@ -53,7 +54,7 @@
                 <div>
                     <fmt:message key="label.birthday" bundle="${ rb }"/>
                 </div>
-                <input type="date" name="dob" id="dob" min="1905-01-01" max="<?php echo date('Y-m-d');?>" required title="">
+                <input type="date" name="dob" id="dob" min="1905-01-01" required title="">
             </div>
             <div class="top-row">
                 <div class="field-wrap">

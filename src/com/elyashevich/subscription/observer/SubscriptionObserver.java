@@ -1,14 +1,12 @@
 package com.elyashevich.subscription.observer;
 
-import com.elyashevich.subscription.dao.impl.SubscriptionDAOImpl;
 import com.elyashevich.subscription.entity.Subscription;
-import com.elyashevich.subscription.exception.DAOTechnicalException;
-import org.apache.logging.log4j.Level;
+import com.elyashevich.subscription.exception.ServiceTechnicalException;
+import com.elyashevich.subscription.service.SubscriptionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.List;
 
@@ -18,18 +16,18 @@ public class SubscriptionObserver implements Job {
 
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
         LOGGER.info("Subscription observer start work!");
 
         try {
-            SubscriptionDAOImpl subscriptionDAOImpl = new SubscriptionDAOImpl();
-            List<Subscription> subscriptions = subscriptionDAOImpl.findAllWithFinishedAction();
+            SubscriptionService subscriptionService = new SubscriptionService();
+            List<Subscription> subscriptions = subscriptionService.findAllWithFinishedAction();
             for (Subscription subscription : subscriptions) {
-                subscriptionDAOImpl.deleteBySubscriptionAndPaperId(subscription.getId(), subscription.getPaperEdition().getId());
+                subscriptionService.deleteBySubscriptionAndPaperId(subscription.getId(), subscription.getPaperEdition().getId());
+                LOGGER.info("Subscription "+subscription.getId()+" has been deleted!");
             }
-            System.out.println("*");
-        } catch (DAOTechnicalException e) {
-            LOGGER.log(Level.ERROR, e.getMessage());
+        }catch (ServiceTechnicalException e) {
+            LOGGER.catching(e);
         }
     }
 }

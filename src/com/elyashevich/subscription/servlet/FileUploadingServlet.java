@@ -22,9 +22,9 @@ import java.io.File;
 import java.io.IOException;
 
 @WebServlet("/upload")
-@MultipartConfig(fileSizeThreshold=1024*1024*10,
-        maxFileSize=1024*1024*50,
-        maxRequestSize=1024*1024*100)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10,
+        maxFileSize = 1024 * 1024 * 50,
+        maxRequestSize = 1024 * 1024 * 100)
 public class FileUploadingServlet extends HttpServlet {
 
     private static final String UPLOAD_DIR = "resource\\image\\user";
@@ -32,8 +32,10 @@ public class FileUploadingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         Object userLocale = request.getSession().getAttribute(TextConstant.USER_LOCALE);
+        LocaleService localeService = new LocaleService();
+        MessageManager messageManager = localeService.defineMessageManager(userLocale);
 
-        String applicationPath = request.getServletContext().getRealPath("");
+        String applicationPath = request.getServletContext().getRealPath(TextConstant.EMPTY_STRING);
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
 
         String fileName = null;
@@ -44,8 +46,6 @@ public class FileUploadingServlet extends HttpServlet {
         }
 
         ActionCommand command = new PictureUpdateCommand(fileName, new UserService(), new PaperService());
-        LocaleService localeService = new LocaleService();
-        MessageManager messageManager = localeService.defineMessageManager(userLocale);
         try {
             Router router = command.execute(request);
             if (router.getPagePath() != null) {
@@ -53,27 +53,25 @@ public class FileUploadingServlet extends HttpServlet {
                 dispatcher.forward(request, response);
             } else {
                 String page = ConfigurationManager.getProperty("path.page.index");
-                request.getSession().setAttribute("nullPage",
-                        messageManager.getMessage("message.nullPage"));
+                request.getSession().setAttribute(TextConstant.NULL_PAGE, messageManager.getMessage("message.nullPage"));
                 response.sendRedirect(request.getContextPath() + page);
             }
         } catch (CommandTechnicalException e) {
-            request.getSession().setAttribute("exceptionCause", e.getCause().toString());
-            request.getSession().setAttribute("exceptionMessage", e.getMessage());
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            request.getSession().setAttribute(TextConstant.EXCEPTION_CAUSE, e.getCause().toString());
+            request.getSession().setAttribute(TextConstant.EXCEPTION_MESSAGE, e.getMessage());
+            request.getRequestDispatcher(ConfigurationManager.getProperty("path.page.error")).forward(request, response);
         }
     }
 
 
     private String getFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
-        System.out.println("content-disposition header= " + contentDisp);
-        String[] tokens = contentDisp.split(";");
+        String[] tokens = contentDisp.split(TextConstant.SEPARATOR);
         for (String token : tokens) {
             if (token.trim().startsWith(TextConstant.FILENAME)) {
                 return token.substring(token.indexOf("=") + 2, token.length() - 1);
             }
         }
-        return "";
+        return TextConstant.EMPTY_STRING;
     }
 }

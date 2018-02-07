@@ -3,12 +3,14 @@ package com.elyashevich.subscription.mail;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.Properties;
+
 public class SessionCreator {
     private String smtpHost;
     private String smtpPort;
     private String userName;
     private String userPassword;
     private Properties sessionProperties;
+
     SessionCreator(Properties configProperties) {
         smtpHost = configProperties.getProperty("mail.smtp.host");
         smtpPort = configProperties.getProperty("mail.smtp.port");
@@ -23,9 +25,10 @@ public class SessionCreator {
         sessionProperties.put("mail.smtp.auth", "true");
         sessionProperties.put("mail.smtp.port", smtpPort);
     }
+
     public Session createSession() {
 
-        return Session. getDefaultInstance(sessionProperties,
+        return Session.getDefaultInstance(sessionProperties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(userName, userPassword);

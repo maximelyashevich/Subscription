@@ -1,3 +1,8 @@
+<%--@elvariable id="titleAdd" type="java.lang.String"--%>
+<%--@elvariable id="nullPage" type="java.lang.String"--%>
+<%--@elvariable id="wrongAction" type="java.lang.String"--%>
+<%--@elvariable id="errorLoginPassMessage" type="java.lang.String"--%>
+<%--@elvariable id="users" type="java.util.ArrayList"--%>
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -9,9 +14,9 @@
 <head>
     <title><fmt:message key="label.addPaper" bundle="${rb}"/></title>
     <style>
-        @import "/resource/css/signin-signup.css" screen;
+        @import "/resource/css/signin.css" screen;
         @import "/resource/css/main.css" screen;
-        @import "/resource/css/signin-signup.css" screen;
+        @import "/resource/css/signin.css" screen;
         @import "/resource/css/admin.css" screen;
         @import "/resource/font/google-api.css" screen;
     </style>
@@ -26,13 +31,20 @@
     <div class="form" style="margin-left: 20%; margin-top: 0">
         <form method="POST" action="${pageContext.request.contextPath}/controller">
             <input type="hidden" name="command" value="add_new_paper">
+            <input type="hidden" name="users" value="${users}">
+            <h2>${titleAdd}</h2>
+            <h2>
+                ${errorLoginPassMessage}
+                ${wrongAction}
+                ${nullPage}
+            </h2>
             <div class="field-wrap" style="font-size: 25px; text-align: center;">
                 <fmt:message key="label.addPaper" bundle="${rb}"/></div>
                     <div class="field-wrap">
                         <p style="width: 450px; margin-bottom: -5px;"><fmt:message key="label.selectTypeOfFuturePaper" bundle="${rb}"/>:</p>
                         <label for="radioChoice1" style="float: left; width: 30%;"><fmt:message key="label.magazine" bundle="${rb}"/></label>
                         <input type="radio" id="radioChoice1"
-                               name="myRadio" value="1" style="height: 15px; float: left; width: 20px; margin: 10px 22% 0;">
+                               name="myRadio" value="1" checked="checked" style="height: 15px; float: left; width: 20px; margin: 10px 22% 0;">
                         <label for="radioChoice2" style="float: left;  margin-left: 150px;"><fmt:message key="label.newspaper" bundle="${rb}"/></label>
                         <input type="radio" id="radioChoice2"
                                name="myRadio" value="2" style="height: 15px; margin: 10px 30px -20px; width: 20px; float: left;">
@@ -45,7 +57,7 @@
                     <fmt:message key="label.name" bundle="${rb}"/>
                     <span class="req">*</span>
                 </label>
-                <input type="text" name="paperTitle" required title=""/>
+                <input type="text" name="paperTitle" required title="<fmt:message key="label.paperTitle" bundle="${ rb }"/>"/>
             </div>
             <div class="field-wrap">
                 <fmt:message key="label.descriptionD" bundle="${rb}"/>
@@ -66,14 +78,14 @@
                     <fmt:message key="label.priceExample" bundle="${rb}"/>
                     <span class="req">*</span>
                 </label>
-                <input type="text" name="price" required title=""/>
+                <input type="text" name="price" required pattern="^-?[0-9]+(?:\.[0-9]{1,5})?" title=" <fmt:message key="label.moneyIn" bundle="${rb}"/>"/>
             </div>
             <div class="field-wrap">
                 <label>
                     <fmt:message key="label.ageRExample" bundle="${rb}"/>
                     <span class="req">*</span>
                 </label>
-                <input type="text" name="restriction" required title=""/>
+                <input type="text" name="restriction" required pattern="[0-9]{1,2}" title="<fmt:message key="label.restrictionIn" bundle="${rb}"/>"/>
             </div>
             <div class="field-wrap">
                 <p style="width: 450px; margin-bottom: 15px;"><fmt:message key="label.selectGenresFuture" bundle="${rb}"/>:</p>

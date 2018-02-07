@@ -1,3 +1,4 @@
+<%--@elvariable id="uPaper" type="java.lang.String"--%>
 <%--
   Created by IntelliJ IDEA.
   User: Максим
@@ -17,7 +18,7 @@
     <title><fmt:message key="label.adminContent" bundle="${rb}"/></title>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css'>
     <style>
-        @import "/resource/css/signin-signup.css" screen;
+        @import "/resource/css/signin.css" screen;
         @import "/resource/css/main.css" screen;
         @import "/resource/css/admin.css" screen;
         @import "/resource/font/google-api.css" screen;
@@ -85,10 +86,10 @@
                             <input type="hidden" name="paperID" value="${paper.id}"/>
                             <c:choose>
                                 <c:when test="${paper.availability=='true'}">
-                                    <input type="submit" style="width: 100%; background-color:rgba(42,51,64,0.78);color: #dae2e9;font-size: 12px;border-width: 1px;" value="block"/>
+                                    <input type="submit" style="width: 100%; background-color:rgba(42,51,64,0.78);color: #dae2e9;font-size: 12px;border-width: 1px;" value="<fmt:message key="label.hide" bundle='${ rb }' />"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <input type="submit" style="width: 100%; background-color:rgba(42,51,64,0.78);color: #dae2e9;font-size: 12px;border-width: 1px;" value="unblock"/>
+                                    <input type="submit" style="width: 100%; background-color:rgba(42,51,64,0.78);color: #dae2e9;font-size: 12px;border-width: 1px;" value="<fmt:message key="label.show" bundle='${ rb }' />"/>
                                 </c:otherwise>
                             </c:choose>
                         </form>
@@ -110,25 +111,30 @@
             totalPaperItem+=' <form method="POST" action="/controller">' +
                 '            <input type="hidden" name="command" value="update_paper">' +
                 '<input type="hidden" name="paperID" value="'+paperID+'">'+
+                    ' <h2>${uPaper}</h2>' +
                 '<div style="color: black">' +
                '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
                 '<label style="color:black"><fmt:message key="label.name" bundle="${rb}"/>:</label>'+
-            '<input type="text" name="paperTitle" style="float: left;margin-left: 150px;width: 70%;" value="'+title.replace(/"/g,"")+'"/></div>'+
+            '<input type="text" name="paperTitle" style="float: left;margin-left: 150px;width: 70%;" value="'+title.replace(/"/g,"")+'" required title="<fmt:message key="label.paperTitle" bundle='${ rb }' />"/></div>'+
                '<div class="field-wrap" style="margin: 10px; height: 20px;">'+
                 '<label style="color:black"><fmt:message key="label.typePaper" bundle="${rb}"/>:</label>'+
-            '<input type="text" name="type" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+type+'"/></div>'+
+            '<input type="text" name="type" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+type+'" required pattern="^(magazine|newspaper|book)$" title="<fmt:message key="label.paperTypeIn" bundle='${ rb }' />"/></div>'+
                 '<div class="field-wrap" style="margin: 10px;">' +
-                '<textarea name="description" rows="4" cols="50" style="color:darkslategray; font-size:18px; margin-top: 0px; margin-bottom: 0px;  height: 100px; border: 1px solid #a0b3b0;">'+
+                '<textarea name="description" rows="4" cols="50" style="color:darkslategray; font-size:18px; margin-top: 0px; margin-bottom: 0px;  height: 100px; border: 1px solid #a0b3b0;" required ' +
+                ' title="<fmt:message key="label.descriptionD" bundle='${ rb }' />">'+
                 description+'</textarea></div>'+
                 '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
                 '<label style="color:black"><fmt:message key="label.ageRestriction" bundle="${rb}"/>:</label>'+
-                '<input type="text" name="restriction" style="float: left; margin-left: 175px; margin-top: 5px; width: 65%;" value="'+age_restr+'"/></div>'+
+                '<input type="text" name="restriction" style="float: left; margin-left: 175px; margin-top: 5px; width: 65%;" value="'+age_restr+'" ' +
+                'required pattern="[0-9]{1,2}" title="<fmt:message key="label.restrictionIn" bundle='${ rb }' />"/></div>'+
                 '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
                 '<label style="color:black"><fmt:message key="label.periodicityPaper" bundle="${rb}"/>:</label>'+
-                '<input type="text" name="period" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+periodicity+'"/></div>'+
+                '<input type="text" name="period" style="float: left;margin-left: 200px; width: 60%; margin-top: 5px;" value="'+periodicity+'" ' +
+                'required pattern="[1-5]{1}" title="<fmt:message key="label.periodicityIn" bundle='${ rb }' />"/></div>'+
                 '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
                 '<label style="color:black"><fmt:message key="label.price" bundle="${rb}"/> ($):</label>'+
-            '<input type="text" name="price" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+price+'"/></div>'+
+            '<input type="text" name="price" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+price+'" ' +
+                'required pattern="-?[0-9]+(?:\\.[0-9]{1,5})?" title="<fmt:message key="label.moneyIn" bundle='${ rb }' />"/></div>'+
             '<div class="field-wrap" style="margin: 10px;">' +
                 '<button>Save changes</button></div></form>';
             document.getElementById("paperInformation").innerHTML = totalPaperItem;

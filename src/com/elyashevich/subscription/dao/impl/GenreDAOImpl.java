@@ -34,21 +34,21 @@ public class GenreDAOImpl extends AbstractDAO<Genre> implements GenreDAO {
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
-                close(st);
-                close(cn);
+            close(st);
+            close(cn);
         }
         return genres;
     }
 
     @Override
-    public Genre findByDescription(String data) throws DAOTechnicalException{
+    public Genre findByDescription(String data) throws DAOTechnicalException {
         Genre genre = new Genre(data);
         ProxyConnection cn = null;
         PreparedStatement preparedStatement = null;
         try {
             cn = ConnectionPool.getInstance().getConnection();
             preparedStatement = cn.prepareStatement(SQL_SELECT_GENRE_BY_DESCRIPTION);
-            preparedStatement.setString(1, "%"+data+"%");
+            preparedStatement.setString(1, "%" + data + "%");
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -74,7 +74,7 @@ public class GenreDAOImpl extends AbstractDAO<Genre> implements GenreDAO {
     }
 
     @Override
-    public boolean create(Genre entity) throws DAOTechnicalException {
+    public boolean create(Genre entity) {
         return false;
     }
 

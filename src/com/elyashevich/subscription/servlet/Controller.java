@@ -6,6 +6,9 @@ import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
 import com.elyashevich.subscription.pool.ConnectionPool;
+import com.elyashevich.subscription.util.TextConstant;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,16 +18,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name="controller",urlPatterns={"/controller/*"})
+@WebServlet(name = "controller", urlPatterns = {"/controller/*"})
+
 public class Controller extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger();
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
+
     private void processRequest(HttpServletRequest request,
                                 HttpServletResponse response)
             throws ServletException, IOException {
@@ -34,15 +41,16 @@ public class Controller extends HttpServlet {
         try {
             router = command.execute(request);
         } catch (CommandTechnicalException e) {
-            request.setAttribute("exceptionCause", e.getCause());
-            request.setAttribute("exceptionMessage", e.getMessage());
-            request.getRequestDispatcher("/jsp/error.jsp").forward(request, response);
+            LOGGER.catching(e);
+            request.setAttribute(TextConstant.EXCEPTION_CAUSE, e.getCause());
+            request.setAttribute(TextConstant.EXCEPTION_MESSAGE, e.getMessage());
+            request.getRequestDispatcher(ConfigurationManager.getProperty("path.page.error")).forward(request, response);
         }
         assert router != null;
         String page = router.getPagePath();
         if (page != null) {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            switch (router.getRoute()){
+            switch (router.getRoute()) {
                 case FORWARD:
                     dispatcher.forward(request, response);
                     break;
@@ -52,12 +60,12 @@ public class Controller extends HttpServlet {
             }
         } else {
             page = ConfigurationManager.getProperty("path.page.index");
-            request.getSession().setAttribute("nullPage", MessageManager.EN.getMessage("message.nullpage"));
+            request.getSession().setAttribute(TextConstant.NULL_PAGE, MessageManager.EN.getMessage("message.nullpage"));
             response.sendRedirect(request.getContextPath() + page);
-              }
+        }
     }
-    public void destroy(){
 
+    public void destroy() {
         ConnectionPool.getInstance().destroyConnection();
     }
 }

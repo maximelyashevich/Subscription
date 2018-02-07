@@ -1,7 +1,7 @@
 <%--@elvariable id="subscription" type="com.elyashevich.subscription.entity.Subscription"--%>
 <%--@elvariable id="user" type="com.elyashevich.subscription.entity.User"--%>
 <%--@elvariable id="finalPrice" type="java.math.BigDecimal"--%>
-<%--@elvariable id="titleMessage" type="java.lang.String"--%>
+<%--@elvariable id="titleMessageS" type="java.lang.String"--%>
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -12,9 +12,9 @@
 <html>
 <head>
     <link rel='stylesheet prefetch' href='<c:url value="/resource/css/stylecdnj.css"/>'>
-    <title><fmt:message key="label.welcomeUser" bundle="${rb}"/></title>
+    <title><fmt:message key="label.mainPage" bundle="${rb}"/></title>
     <style>
-        @import "/resource/css/signin-signup.css" screen;
+        @import "/resource/css/signin.css" screen;
         @import "/resource/css/footer.css" screen;
         @import "/resource/css/main.css" screen;
         @import "/resource/css/popup.css" screen;
@@ -36,7 +36,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <span><fmt:message key="label.orderBasket" bundle="${rb}"/></span>
-            <span>${titleMessage}</span>
+            <span>${titleMessageS}</span>
             <div id="empty_basket">
             </div>
             <div id="cart_content">
@@ -141,9 +141,9 @@ background-color: #f1f1f1a6;
         <table id="uTable">
             <tbody>
             <%--@elvariable id="rPapers" type="java.util.ArrayList"--%>
-            <c:forEach begin="0" end="${rPapers.size()/4}" varStatus="loop">
+            <c:forEach begin="0" end="${rPapers.size()/3}" varStatus="loop">
                 <tr>
-                    <c:forEach items="${rPapers}" var="paper" varStatus="status" begin="${loop.index*4}" end="${loop.index*4+3}" step="1">
+                    <c:forEach items="${rPapers}" var="paper" varStatus="status" begin="${loop.index*3}" end="${loop.index*3+2}" step="1">
                         <td class="item_box text-center">
                             <img id="${status.index}" class="text-center" src="${paper.imagePath}">
                             <a href="#" onclick="showMoreInformation(

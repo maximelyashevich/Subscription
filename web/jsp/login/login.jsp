@@ -13,12 +13,12 @@
 <head>
     <title>Log In</title>
     <style>
-        @import "/resource/css/signin-signup.css" screen;
+        @import "/resource/css/signin.css" screen;
     </style>
     <link href='<c:url value="${pageContext.request.contextPath}/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
    </head>
 <body translate="no">
-<c:import url="../common/headerLogin.jsp" />
+<c:import url="common/headerLogin.jsp" />
 <main style="   background: url('/resource/image/background/3.jpg') no-repeat;">
     <div class="form">
                 <h1><fmt:message key="label.welcome" bundle="${ rb }"/></h1>

@@ -1,3 +1,7 @@
+<%--@elvariable id="nullPage" type="java.lang.String"--%>
+<%--@elvariable id="wrongAction" type="java.lang.String"--%>
+<%--@elvariable id="errorLoginPassMessage" type="java.lang.String"--%>
+<%--@elvariable id="updateTitle" type="java.lang.String"--%>
 <%--@elvariable id="user" type="com.elyashevich.subscription.entity.User"--%>
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -8,7 +12,7 @@
 <fmt:setBundle basename="resource.pagecontent" var="rb"/>
 <html>
 <head>
-    <title><fmt:message key="label.welcomeUser" bundle="${rb}"/></title>
+    <title><fmt:message key="label.myPage" bundle="${rb}"/></title>
     <style>
         @import "/resource/css/main.css" screen;
         @import "/resource/css/user-style.css" screen;
@@ -29,32 +33,38 @@
                 <input type="hidden" name="command" value="profile"/>
                     <input type="hidden" name="amount" value="${user.amount}"/>
                     <input type="hidden" name="type" value="${user.type}"/>
-                    <input type="hidden" name="id" value="${user.id}"/>
+                    <input type="hidden" name="userID" value="${user.id}"/>
+                    <h2>${updateTitle}</h2>
+                    <h2>
+                        ${errorLoginPassMessage}
+                        ${wrongAction}
+                        ${nullPage}
+                    </h2>
                     <div class="field-wrap">
                     <label><fmt:message key="label.firstName" bundle="${rb}"/></label>
-                  <input type="text" name="first_name" value="${user.firstName}" title="<fmt:message key="label.firstName" bundle="${rb}"/>"/>
+                  <input type="text" name="first_name" value="${user.firstName}" required title="<fmt:message key="label.firstName" bundle="${rb}"/>"/>
                    </div>
                  <div class="field-wrap">
                  <label><fmt:message key="label.lastName" bundle="${rb}"/></label>
-                   <input type="text" name="last_name" value="${user.lastName}" title="<fmt:message key="label.lastName" bundle="${rb}"/>"/>
+                   <input type="text" name="last_name" value="${user.lastName}" required title="<fmt:message key="label.lastName" bundle="${rb}"/>"/>
                   </div>
                 <div><label><fmt:message key="label.birthday" bundle="${rb}"/>:</label>
-                    <input type="date" name="dob" min="1905-01-01" max="2018-01-01" value="${user.birthday}" title="<fmt:message key="label.birthday" bundle="${rb}"/>"/></div>
+                    <input type="date" name="dob" min="1905-01-01" value="${user.birthday}" required title="<fmt:message key="label.birthday" bundle="${rb}"/>"/></div>
                     <div class="field-wrap">
                         <label><fmt:message key="label.country" bundle="${rb}"/>:</label>
-                        <input type="text" name="countryC" value="${user.address.country}" title="<fmt:message key="label.country" bundle="${rb}"/>"/>
+                        <input type="text" name="countryC" value="${user.address.country}" required title="<fmt:message key="label.country" bundle="${rb}"/>"/>
                     </div>
                     <div class="field-wrap">
                         <label><fmt:message key="label.city" bundle="${rb}"/>:</label>
-                        <input type="text" name="city" value="${user.address.city}" title="<fmt:message key="label.city" bundle="${rb}"/>"/>
+                        <input type="text" name="city" value="${user.address.city}" required title="<fmt:message key="label.city" bundle="${rb}"/>"/>
                     </div>
                     <div class="field-wrap">
                         <label><fmt:message key="label.postIndex" bundle="${rb}"/>:</label>
-                        <input type="text" name="postIndex" value="${user.address.postIndex}" title="<fmt:message key="label.postIndex" bundle="${rb}"/>"/>
+                        <input type="text" name="postIndex" value="${user.address.postIndex}" required pattern="^[\w_]{6,12}$" title="<fmt:message key="label.postTitle" bundle="${rb}"/>"/>
                     </div>
                     <div class="field-wrap">
                         <label><fmt:message key="label.detailAddress" bundle="${rb}"/>:</label>
-                        <input type="text" name="detailAddress" value="${user.address.detailAddress}" title="<fmt:message key="label.detailAddress" bundle="${rb}"/>"/>
+                        <input type="text" name="detailAddress" value="${user.address.detailAddress}" required title="<fmt:message key="label.detailAddress" bundle="${rb}"/>"/>
                     </div>
         <button><fmt:message key="label.saveChanges" bundle="${rb}"/></button></form>
             <div id="userInformation"></div>

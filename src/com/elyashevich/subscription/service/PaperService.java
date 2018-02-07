@@ -33,15 +33,15 @@ public class PaperService {
         }
     }
 
-    public static void main(String[] args) {
-        PaperService paperService = new PaperService();
-        try {
-            System.out.println(new UserService().findUserByID(11));
-            System.out.println(paperService.findAllByDescription(new UserService().findUserByID(49), "", null));
-        } catch (ServiceTechnicalException e) {
-            e.printStackTrace();
-        }
+    public void setPaperFeatures(PaperEdition paperEdition, PaperType paperType, String description, String paperTitle, BigDecimal priceReal, int restrictionInt, int periodInt){
+        paperEdition.setType(paperType);
+        paperEdition.setDescription(description);
+        paperEdition.setTitle(paperTitle);
+        paperEdition.setPrice(priceReal);
+        paperEdition.setAgeRestriction(restrictionInt);
+        paperEdition.setPublishingPeriodicity(periodInt);
     }
+
     public HashSet<PaperEdition> addPaperToSet(HashSet<PaperEdition> hashSet, PaperEdition paperEdition){
         if (hashSet==null){
             hashSet = new HashSet<>();

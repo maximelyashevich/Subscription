@@ -13,12 +13,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO{
+public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO {
     private static final String INSERT_ADDRESS = "INSERT INTO ADDRESS(country, post_index, city, detail_address) VALUES (?,?,?,?)";
     private static final String SQL_SELECT_ADDRESS_BY_ID = "SELECT country, post_index, city, detail_address, id FROM ADDRESS WHERE id=?";
     private static final String UPDATE_ADDRESS = "UPDATE address SET country=?, post_index=?, city=?, detail_address=?  where id=?";
+
     @Override
-    public List findAll() throws DAOTechnicalException {
+    public List findAll() {
         return null;
     }
 
@@ -33,7 +34,7 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO{
     }
 
     @Override
-    public boolean create(Address entity) throws DAOTechnicalException {
+    public boolean create(Address entity) {
         return false;
     }
 
@@ -70,7 +71,7 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO{
         ProxyConnection connection = null;
         PreparedStatement preparedStatement = null;
 
-        try{
+        try {
             connection = ConnectionPool.getInstance().getConnection();
             preparedStatement = connection.prepareStatement(INSERT_ADDRESS, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, address.getCountry());
@@ -79,14 +80,12 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO{
             preparedStatement.setString(4, address.getDetailAddress());
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            if(rs.next()){
+            if (rs.next()) {
                 address.setId(rs.getInt(1));
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
-        }
-        finally {
+        } finally {
             close(preparedStatement);
             close(connection);
         }
@@ -106,7 +105,7 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO{
             st.setString(3, address.getCity());
             st.setString(4, address.getDetailAddress());
             st.setLong(5, address.getId());
-            result = st.executeUpdate()>0;
+            result = st.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DAOTechnicalException(e.getCause());
         } finally {
