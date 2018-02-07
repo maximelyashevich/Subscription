@@ -41,13 +41,13 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO {
     @Override
     public Address findAddressById(long id) throws DAOTechnicalException {
         Address address = null;
-        ProxyConnection cn = null;
-        PreparedStatement st = null;
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
         try {
-            cn = ConnectionPool.getInstance().getConnection();
-            st = cn.prepareStatement(SQL_SELECT_ADDRESS_BY_ID);
-            st.setLong(1, id);
-            ResultSet resultSet = st.executeQuery();
+            connection = ConnectionPool.getInstance().defineConnection();
+            statement = connection.prepareStatement(SQL_SELECT_ADDRESS_BY_ID);
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 address = new Address(
                         resultSet.getString(1),
@@ -58,10 +58,10 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO {
                 address.setId(resultSet.getLong(5));
             }
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getCause());
+            throw new DAOTechnicalException("exception in AddressDAOImpl",e.getCause());
         } finally {
-            close(st);
-            close(cn);
+            close(statement);
+            close(connection);
         }
         return address;
     }
@@ -72,7 +72,7 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = ConnectionPool.getInstance().getConnection();
+            connection = ConnectionPool.getInstance().defineConnection();
             preparedStatement = connection.prepareStatement(INSERT_ADDRESS, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, address.getCountry());
             preparedStatement.setString(2, address.getPostIndex());
@@ -84,7 +84,7 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO {
                 address.setId(rs.getInt(1));
             }
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getCause());
+            throw new DAOTechnicalException("exception in AddressDAOImpl", e.getCause());
         } finally {
             close(preparedStatement);
             close(connection);
@@ -94,23 +94,23 @@ public class AddressDAOImpl extends AbstractDAO<Address> implements AddressDAO {
 
     @Override
     public boolean update(Address address) throws DAOTechnicalException {
-        ProxyConnection cn = null;
-        PreparedStatement st = null;
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
         boolean result;
         try {
-            cn = ConnectionPool.getInstance().getConnection();
-            st = cn.prepareStatement(UPDATE_ADDRESS);
-            st.setString(1, address.getCountry());
-            st.setString(2, address.getPostIndex());
-            st.setString(3, address.getCity());
-            st.setString(4, address.getDetailAddress());
-            st.setLong(5, address.getId());
-            result = st.executeUpdate() > 0;
+            connection = ConnectionPool.getInstance().defineConnection();
+            statement = connection.prepareStatement(UPDATE_ADDRESS);
+            statement.setString(1, address.getCountry());
+            statement.setString(2, address.getPostIndex());
+            statement.setString(3, address.getCity());
+            statement.setString(4, address.getDetailAddress());
+            statement.setLong(5, address.getId());
+            result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DAOTechnicalException(e.getCause());
+            throw new DAOTechnicalException("exception in AddressDAOImpl", e.getCause());
         } finally {
-            close(st);
-            close(cn);
+            close(statement);
+            close(connection);
         }
         return result;
     }

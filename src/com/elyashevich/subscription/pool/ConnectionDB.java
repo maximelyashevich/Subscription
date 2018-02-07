@@ -1,4 +1,4 @@
-package com.elyashevich.subscription.util;
+package com.elyashevich.subscription.pool;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/jsp/main/*"},
+@WebFilter(urlPatterns = {"/jsp/main/*", "/jsp/user/*"},
         initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
 public class PageRedirectUserSecurityFilter implements Filter{
     private String indexPath;

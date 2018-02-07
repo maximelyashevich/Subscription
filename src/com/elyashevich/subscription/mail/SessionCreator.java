@@ -5,15 +5,13 @@ import javax.mail.Session;
 import java.util.Properties;
 
 public class SessionCreator {
-    private String smtpHost;
-    private String smtpPort;
     private String userName;
     private String userPassword;
     private Properties sessionProperties;
 
     SessionCreator(Properties configProperties) {
-        smtpHost = configProperties.getProperty("mail.smtp.host");
-        smtpPort = configProperties.getProperty("mail.smtp.port");
+        String smtpHost = configProperties.getProperty("mail.smtp.host");
+        String smtpPort = configProperties.getProperty("mail.smtp.port");
         userName = configProperties.getProperty("mail.user.name");
         userPassword = configProperties.getProperty("mail.user.password");
         sessionProperties = new Properties();

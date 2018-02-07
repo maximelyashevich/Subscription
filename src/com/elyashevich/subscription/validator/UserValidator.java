@@ -55,7 +55,7 @@ public class UserValidator {
         return result;
     }
 
-    public boolean isDataCorrect(LocalDate localDate){
+    public boolean isDateCorrect(LocalDate localDate){
         return localDate!=null && localDate.isBefore(LocalDate.now());
     }
 

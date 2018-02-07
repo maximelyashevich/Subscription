@@ -23,7 +23,7 @@
 </head>
 <body translate="no">
 <c:import url="common/headerLogin.jsp" />
-<main style="   background: url('/resource/image/background/3.jpg') no-repeat;">
+<main style="   background: url('/resource/image/background/3.jpg') no-repeat; min-height: 450px;">
     <div class="row" id="userProfile" style="margin-right: -15px; margin-left: 250px; margin-top: 125px;">
         <div class="col-md-7 ">
             <div class="panel panel-default">

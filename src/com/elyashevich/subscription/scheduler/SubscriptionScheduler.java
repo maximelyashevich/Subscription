@@ -1,4 +1,4 @@
-package com.elyashevich.subscription.observer;
+package com.elyashevich.subscription.scheduler;
 
 import com.elyashevich.subscription.entity.Subscription;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
@@ -10,10 +10,11 @@ import org.quartz.JobExecutionContext;
 
 import java.util.List;
 
-public class SubscriptionObserver implements Job {
+public class SubscriptionScheduler implements Job {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private static final String SUBSCRIPTION = "Subscription ";
+    private static final String DELETED_MESSAGE = " has been deleted!";
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
@@ -24,9 +25,9 @@ public class SubscriptionObserver implements Job {
             List<Subscription> subscriptions = subscriptionService.findAllWithFinishedAction();
             for (Subscription subscription : subscriptions) {
                 subscriptionService.deleteBySubscriptionAndPaperId(subscription.getId(), subscription.getPaperEdition().getId());
-                LOGGER.info("Subscription "+subscription.getId()+" has been deleted!");
+                LOGGER.info(SUBSCRIPTION + subscription.getId() + DELETED_MESSAGE);
             }
-        }catch (ServiceTechnicalException e) {
+        } catch (ServiceTechnicalException e) {
             LOGGER.catching(e);
         }
     }

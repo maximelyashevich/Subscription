@@ -65,6 +65,7 @@ public final class TextConstant {
     public static final String SEARCH = "searchData";
     public static final String CRITERIA = "criteria";
     public static final String TITLE_SUBSCRIPTION = "titleMessageS";
+    public static final String LIKE_COMPONENT_SQL = "%";
     public static final String SUBSCRIPTION = "subscription";
     public static final String FLAG_ORDER = "flagOrder";
     public static final String READY_VALUE = "READY";

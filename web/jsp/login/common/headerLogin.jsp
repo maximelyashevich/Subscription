@@ -25,7 +25,7 @@
             <nav>
                 <a href="${pageContext.request.contextPath}/jsp/login/contact.jsp" class="selected"><fmt:message key="label.contact" bundle="${ rb }"/></a>
             </nav>
-            <ul>
+            <ul style="margin-top: 10px;">
                 <li class="tab active"><a href="${pageContext.request.contextPath}/jsp/login/login.jsp">
                     <fmt:message key="label.title" bundle="${ rb }"/>
                 </a></li>

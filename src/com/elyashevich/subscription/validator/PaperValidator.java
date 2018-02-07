@@ -34,6 +34,7 @@ public class PaperValidator {
         boolean result = false;
         LOGGER.log(Level.INFO, "Checking paperType...");
         if (isPaperDataCorrect(paperType)) {
+            paperType = paperType.toLowerCase();
             Pattern patternLogic = Pattern.compile(PAPER_TYPE_REGEX);
             Matcher matcher = patternLogic.matcher(paperType);
             result = matcher.matches();

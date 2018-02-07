@@ -20,7 +20,7 @@ public class DefaultService {
         if (!validator.isPasswordCorrect(password)) {
                 result = "message.passwordIn";
             }
-       if (!validator.isDataCorrect(date))   {
+       if (!validator.isDateCorrect(date))   {
             result = "message.dateIn";
         }
         if (!validator.isPostIndexCorrect(postIndex)) {
@@ -36,7 +36,7 @@ public class DefaultService {
                 !validator.isUserDataCorrect(detailAddress)) {
             result = "message.errorData";
         }
-        if (!validator.isDataCorrect(date))   {
+        if (!validator.isDateCorrect(date))   {
             result = "message.dateIn";
         }
         if (!validator.isPostIndexCorrect(postIndex)) {
@@ -48,7 +48,6 @@ public class DefaultService {
     public String checkPaperType(String paperType){
         String result = TextConstant.SUCCESS_OPERATION;
         PaperValidator validator = new PaperValidator();
-        paperType=paperType.toLowerCase();
         if (!validator.isPaperDataCorrect(paperType)) {
             result = "message.errorData";
         }

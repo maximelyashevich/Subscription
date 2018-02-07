@@ -9,7 +9,7 @@
             <name>subscription-job</name>
             <group>subscription-group</group>
             <description>Deleting finished subscriptions</description>
-            <job-class>com.elyashevich.subscription.observer.SubscriptionObserver</job-class>
+            <job-class>com.elyashevich.subscription.scheduler.SubscriptionScheduler</job-class>
         </job>
         <trigger>
             <cron>
