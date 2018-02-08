@@ -76,7 +76,7 @@
                         <fmt:message key="label.postIndex" bundle="${rb}"/>
                         <span class="req">*</span>
                     </label>
-                    <input type="text" name="postIndex" id="postIndex" pattern="^[\w_]{6,12}$" required title="<fmt:message key="label.postTitle" bundle="${rb}"/>"/>
+                    <input type="text" name="postIndex" id="postIndex" pattern="[\d]{5,12}$" required title="<fmt:message key="label.postTitle" bundle="${rb}"/>"/>
                 </div>
             </div>
             <div class="field-wrap">

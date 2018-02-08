@@ -2,6 +2,7 @@ package com.elyashevich.subscription.util;
 
 public final class TextConstant {
     public static final String EMPTY_STRING = "";
+    public static final String SPACE = " ";
     public static final String SEPARATOR = ";";
     public static final String NUMBER_ONE = "1";
     public static final String NUMBER_TWO = "2";

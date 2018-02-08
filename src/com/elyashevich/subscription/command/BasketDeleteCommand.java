@@ -35,7 +35,7 @@ public class BasketDeleteCommand implements ActionCommand {
 
         HashSet<PaperEdition> hashSet = (HashSet<PaperEdition>) request.getSession().getAttribute(BASKET_SET);
         long paperId = Long.parseLong(request.getParameter(ID));
-
+        System.out.println(paperId);
         try {
             paperEdition = paperReceiver.findPaperById(paperId);
             hashSet = paperReceiver.removePaperFromSet(hashSet, paperEdition);

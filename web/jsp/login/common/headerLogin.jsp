@@ -21,7 +21,7 @@
 <header>
     <header class="header-main" style="height: 85px">
         <div class="header-limiter">
-            <h1><a href="#"><span><fmt:message key="label.subscription" bundle="${ rb }"/></span></a></h1>
+            <h1><a href="${pageContext.request.contextPath}/jsp/login/login.jsp"><span><fmt:message key="label.subscription" bundle="${ rb }"/></span></a></h1>
             <nav>
                 <a href="${pageContext.request.contextPath}/jsp/login/contact.jsp" class="selected"><fmt:message key="label.contact" bundle="${ rb }"/></a>
             </nav>

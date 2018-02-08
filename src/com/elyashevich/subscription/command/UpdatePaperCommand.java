@@ -30,7 +30,6 @@ public class UpdatePaperCommand implements ActionCommand {
     public Router execute(HttpServletRequest request) throws CommandTechnicalException {
         Router router = new Router();
         String page = ConfigurationManager.getProperty("path.page.admin");
-        ;
         PaperEdition paperEdition;
 
         LocaleService localeService = new LocaleService();

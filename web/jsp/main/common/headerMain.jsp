@@ -21,18 +21,17 @@
         @import "/resource/css/signin.css" screen;
         @import "/resource/css/main.css" screen;
     </style>
-    <link href='<c:url value="/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
-    <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+    <link href='<c:url value="/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <header class="header-main" style="height: 85px">
     <div class="header-limiter" style="float: left;">
-        <h1><a href="#"><span>Subscription</span></a></h1>
+        <h1><a href="${pageContext.request.contextPath}/jsp/main/main.jsp"><span>Subscription</span></a></h1>
         <nav style="margin-top: 15px;">
             <a href="${pageContext.request.contextPath}/jsp/user/user.jsp"><fmt:message key="label.myPage" bundle="${rb}"/></a>
         </nav>
-        <div class="header-user-menu" style="margin-right: -115%;">
+        <div class="header-user-menu" style="margin-right: -85%;">
             <div id="parent" style="padding: 5% 0;">
                 <ctg:userRole user="${user}"/>
                 <img src="${user.imagePath}" style="border-radius: 50%; position: absolute; top: 6px; height: 26px; z-index: 9999; width: 28px; right: 10px;" alt="User Image">

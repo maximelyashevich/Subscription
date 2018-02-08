@@ -34,29 +34,34 @@
     <div class="modal-content" style="height: 75%; width: 65%;">
         <div class="componentContent" id="subscriptionsTable"
              style="width: 100%; height: 85%; margin-left: 0;  margin-top: 7%;  overflow: auto;">
-            <table id="subTable" class="table-fill">
-                <thead>
-                <tr>
-                    <th class="text-center"><fmt:message key="label.subscriptionS" bundle="${rb}"/> ID</th>
-                    <th class="text-center"><fmt:message key="label.paperTitle" bundle="${rb}"/></th>
-                    <th class="text-center"><fmt:message key="label.sStart" bundle="${rb}"/></th>
-                    <th class="text-center"><fmt:message key="label.sFinish" bundle="${rb}"/></th>
-                    <th class="text-center"><fmt:message key="label.price" bundle="${rb}"/></th>
-                </tr>
-                </thead>
-                <tbody class="table-hover">
-                <%--@elvariable id="subscriptionsForUser" type="java.util.ArrayList"--%>
-                <c:forEach items="${subscriptionsForUser}" var="subscription">
-                    <tr>
-                        <td class="text-center">${subscription.id}</td>
-                        <td class="text-center">${subscription.paperEdition.title}</td>
-                        <td class="text-center">${subscription.subscriptionRegistration}</td>
-                        <td class="text-center">${subscription.subscriptionFinish}</td>
-                        <td class="text-center">${subscription.price}$</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+            <c:choose>
+                <c:when test="${subscriptionsForUser.size()==0}">
+                    <fmt:message key="label.emptySubscriptions" bundle="${rb}"/>
+                </c:when>
+                <c:otherwise>
+                    <table id="subTable" class="table-fill">
+                        <thead>
+                        <tr>
+                            <th class="text-center"><fmt:message key="label.nOrder" bundle="${rb}"/></th>
+                            <th class="text-center"><fmt:message key="label.paperTitle" bundle="${rb}"/></th>
+                            <th class="text-center"><fmt:message key="label.sStart" bundle="${rb}"/></th>
+                            <th class="text-center"><fmt:message key="label.sFinish" bundle="${rb}"/></th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-hover">
+                            <%--@elvariable id="subscriptionsForUser" type="java.util.ArrayList"--%>
+                        <c:forEach items="${subscriptionsForUser}" var="subscription">
+                            <tr>
+                                <td class="text-center">${subscription.id}</td>
+                                <td class="text-center">${subscription.paperEdition.title}</td>
+                                <td class="text-center">${subscription.subscriptionRegistration}</td>
+                                <td class="text-center">${subscription.subscriptionFinish}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
 </div>

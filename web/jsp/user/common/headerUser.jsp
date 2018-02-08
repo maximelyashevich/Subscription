@@ -29,14 +29,14 @@
 <body>
 <header class="header-main" style="float: left; height: 85px">
     <div class="header-limiter">
-        <h1><a href="#"><span>Subscription</span></a></h1>
+        <h1><a href="${pageContext.request.contextPath}/jsp/main/main.jsp"><span>Subscription</span></a></h1>
         <nav>
             <a href="${pageContext.request.contextPath}/jsp/user/user.jsp" ><fmt:message key="label.myProfile" bundle="${rb}"/></a>
             <a href="${pageContext.request.contextPath}/jsp/user/subscriptions.jsp"><fmt:message key="label.mySubscriptions" bundle="${rb}"/></a>
             <a href="${pageContext.request.contextPath}/jsp/main/main.jsp"><fmt:message key="label.mainPage" bundle="${rb}"/></a>
         </nav>
-        <div class="header-user-menu" style="margin-right: 16%;">
-            <div id="parent" style="padding: 5% 0; z-index: 9999999;">
+        <div class="header-user-menu" style="margin-right: 16%; z-index: 99999999;">
+            <div id="parent" style="padding: 5% 0;">
                 <%--@elvariable id="user" type="com.elyashevich.subscription.entity.User"--%>
                 <ctg:userRole user="${user}"/>
                 <img src="${user.imagePath}" style="border-radius: 50%; position: absolute; top: 6px; height: 26px; z-index: 9999; width: 28px; right: 10px;" alt="User Image">

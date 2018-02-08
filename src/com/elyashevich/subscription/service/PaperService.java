@@ -88,6 +88,8 @@ public class PaperService {
         if (hashSet==null){
             hashSet = new HashSet<>();
         } else{
+            System.out.println(hashSet);
+            System.out.println(paperEdition);
             hashSet.remove(paperEdition);
         }
         return hashSet;

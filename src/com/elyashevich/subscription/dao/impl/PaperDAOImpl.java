@@ -266,7 +266,7 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOTechnicalException("Exception in PaperDAOImpl", e.getCause());
+            throw new DAOTechnicalException("Exception in PaperDAOImpl",e.getCause());
         } finally {
             close(preparedStatement);
             close(connection);

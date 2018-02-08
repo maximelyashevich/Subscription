@@ -60,7 +60,7 @@
                     </div>
                     <div class="field-wrap">
                         <label><fmt:message key="label.postIndex" bundle="${rb}"/>:</label>
-                        <input type="text" name="postIndex" value="${user.address.postIndex}" required pattern="^[\w_]{6,12}$" title="<fmt:message key="label.postTitle" bundle="${rb}"/>"/>
+                        <input type="text" name="postIndex" value="${user.address.postIndex}" required pattern="[\d]{5,12}$" title="<fmt:message key="label.postTitle" bundle="${rb}"/>"/>
                     </div>
                     <div class="field-wrap">
                         <label><fmt:message key="label.detailAddress" bundle="${rb}"/>:</label>

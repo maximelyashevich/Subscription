@@ -68,7 +68,7 @@
             <div class="field-wrap">
                 <fmt:message key="label.publishingPeriodicity" bundle="${rb}"/>:
                 <select class="select-lang" name="period" style="float: left; width: 45px;  margin: -25px 63% 0; height: 30px;" title="<fmt:message key="label.selectlang" bundle="${ rb }"/>">
-                    <c:forEach begin="1" end="10" varStatus="loop">
+                    <c:forEach begin="1" end="9" varStatus="loop">
                         <option value="${loop.index}">${loop.index}</option>
                     </c:forEach>
                 </select>

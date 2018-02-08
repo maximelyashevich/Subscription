@@ -19,11 +19,12 @@
         @import "/resource/css/header.css" screen;
         @import "/resource/css/main.css" screen;
     </style>
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
 </head>
 <body>
 <header class="header-main" style="height: 85px;">
     <div class="header-limiter" style="float: left;">
-        <h1><a href="#"><span>Subscription</span></a></h1>
+        <h1><a href="/jsp/admin/contentAdmin.jsp"><span>Subscription</span></a></h1>
         <div class="header-user-menu" style="margin-top:5px; margin-right: -235%;">
             <div id="parent" style="padding: 5% 0;">
                 <ctg:userRole user="${user}"/>

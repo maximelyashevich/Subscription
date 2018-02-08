@@ -65,7 +65,7 @@ public class ProfileCommand implements ActionCommand {
                 if (userReceiver.updateUser(user, user.getAddress())) {
                     LOGGER.log(Level.INFO, "Try to send message to user email...");
                     mailService.sendFromEmail(context, user.getEmail(), messageManager.getMessage("message.welcome"),
-                            messageManager.getMessage("message.hello") + firstName + messageManager.getMessage("message.update"));
+                            messageManager.getMessage("message.hello") + TextConstant.SPACE+ firstName +", " + messageManager.getMessage("message.update"));
                     request.getSession().setAttribute(TextConstant.USER_PARAM, user);
                     request.getSession().setAttribute(TextConstant.TITLE_UPDATE, TextConstant.EMPTY_STRING);
                     LOGGER.log(Level.INFO, "Successful updating!");

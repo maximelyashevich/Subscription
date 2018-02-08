@@ -21,7 +21,6 @@
     </style>
     <link href='<c:url value="/resource/font/1.css"/>' rel='stylesheet' type='text/css'>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
-    <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
     <script>
         window.console = window.console || function(t) {};
         if (document.location.search.match(/type=embed/gi)) {
@@ -55,9 +54,7 @@
                             <form id="basketForm" name="basketForm" method="post" action="${pageContext.request.contextPath}/controller">
                                 <input type="hidden" name="command" value="delete_paper_item"/>
                                 <input type="hidden" name="paperEditionId" value="${basketElement.id}"/>
-                            <a href="#" onClick="document.forms['basketForm'].submit();" style="color: #c14340f5; font-weight: 800">
-                                X
-                                </a>
+                                <button type="submit" style="color: #c14340f5; background-color: #9ea7af2b; font-weight: 800">X</button>
                             </form>
                         </td>
                     </tr>
@@ -77,6 +74,7 @@
     </div>
 <div id="successOrder" class="modal">
     <div class="modal-content">
+
         <span class="close">&times;</span>
         <p>${subscription.user.firstName}, <fmt:message key="label.yourOrder" bundle="${rb}"/> #${subscription.id}!</p>
         <p><fmt:message key="label.dr" bundle="${rb}"/> ${subscription.subscriptionRegistration}</p>
@@ -87,7 +85,6 @@
         <p><b><fmt:message key="label.postIndex" bundle="${rb}"/> </b><i> ${subscription.user.address.postIndex}</i></p>
         <p><fmt:message key="label.checkEmail" bundle="${rb}"/> </p>
         <p><fmt:message key="label.totalPrice" bundle="${rb}"/> ${subscription.price}$</p>
-        <span></span>
     </div>
 </div>
     <div id="modalPaperWindow" class="modal">
@@ -101,6 +98,8 @@
         <script>
             document.getElementById('successOrder').style.display="block";
         </script>
+        <%--@elvariable id="notReady" type="java.lang.String"--%>
+        <c:set var="flagOrder" value="${notReady}" scope="request"/>
     </c:if>
     <div id="right_container">
         <input type="button" id="basketButton" style="

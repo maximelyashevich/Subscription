@@ -118,7 +118,7 @@
             '<input type="text" name="paperTitle" style="float: left;margin-left: 150px;width: 70%;" value="'+title.replace(/"/g,"")+'" required title="<fmt:message key="label.paperTitle" bundle='${ rb }' />"/></div>'+
                '<div class="field-wrap" style="margin: 10px; height: 20px;">'+
                 '<label style="color:black"><fmt:message key="label.typePaper" bundle="${rb}"/>:</label>'+
-            '<input type="text" name="type" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+type+'" required pattern="^(magazine|newspaper|book)$" title="<fmt:message key="label.paperTypeIn" bundle='${ rb }' />"/></div>'+
+            '<input type="text" name="type" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+type+'" required pattern="^([Mm][Aa][Gg][Aa][Zz][Ii][Nn][Ee]|[Nn][Ee][Ww][Ss][Pp][Aa][Pp][Ee][Rr]|[Bb][Oo][Oo][Kk])$" title="<fmt:message key="label.paperTypeIn" bundle='${ rb }' />"/></div>'+
                 '<div class="field-wrap" style="margin: 10px;">' +
                 '<textarea name="description" rows="4" cols="50" style="color:darkslategray; font-size:18px; margin-top: 0px; margin-bottom: 0px;  height: 100px; border: 1px solid #a0b3b0;" required ' +
                 ' title="<fmt:message key="label.descriptionD" bundle='${ rb }' />">'+
@@ -130,7 +130,7 @@
                 '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
                 '<label style="color:black"><fmt:message key="label.periodicityPaper" bundle="${rb}"/>:</label>'+
                 '<input type="text" name="period" style="float: left;margin-left: 200px; width: 60%; margin-top: 5px;" value="'+periodicity+'" ' +
-                'required pattern="[1-5]{1}" title="<fmt:message key="label.periodicityIn" bundle='${ rb }' />"/></div>'+
+                'required pattern="[1-9]{1}" title="<fmt:message key="label.periodicityIn" bundle='${ rb }' />"/></div>'+
                 '<div class="field-wrap" style="margin: 10px; height: 20px;">' +
                 '<label style="color:black"><fmt:message key="label.price" bundle="${rb}"/> ($):</label>'+
             '<input type="text" name="price" style="float: left;margin-left: 150px;width: 70%; margin-top: 5px;" value="'+price+'" ' +

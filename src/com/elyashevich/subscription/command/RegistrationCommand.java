@@ -71,7 +71,7 @@ public class RegistrationCommand implements ActionCommand {
                     if (registrationReceiver.createUserWithEncryption(user, address)) {
                         LOGGER.log(Level.INFO, "Try to send message to user email...");
                         mailService.sendFromEmail(context, email, messageManager.getMessage("message.welcome"),
-                                messageManager.getMessage("message.hello") + firstName + messageManager.getMessage("message.glad"));
+                                messageManager.getMessage("message.hello") +TextConstant.SPACE+ firstName +", "+ messageManager.getMessage("message.glad"));
                         request.getSession().setAttribute(TextConstant.TITLE_PARAM, messageManager.getMessage("message.registrationsuccess"));
                         page = ConfigurationManager.getProperty("path.page.login");
                         LOGGER.log(Level.INFO, "Successful registration!");
