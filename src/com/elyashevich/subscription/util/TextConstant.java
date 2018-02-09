@@ -77,4 +77,5 @@ public final class TextConstant {
     public static final String WITHOUT_GENRE = "без жанра";
     public static final String ADMINISTRATOR = "ADMINISTRATOR";
     public static final String TITLE_UPDATE_PAPER = "uPaper";
+    public static final String DEFAULT_GENRE = "Семья. Дом. Быт. Досуг";
 }

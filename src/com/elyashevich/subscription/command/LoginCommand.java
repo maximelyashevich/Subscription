@@ -5,7 +5,7 @@ import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
-import com.elyashevich.subscription.service.*;
+import com.elyashevich.subscription.service.impl.*;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.util.TextConstant;
 import com.elyashevich.subscription.validator.UserValidator;
@@ -16,10 +16,10 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 public class LoginCommand implements ActionCommand {
-    private UserService userReceiver;
+    private UserServiceImpl userReceiver;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public LoginCommand(UserService userReceiver) {
+    LoginCommand(UserServiceImpl userReceiver) {
         this.userReceiver = userReceiver;
     }
 
@@ -28,13 +28,13 @@ public class LoginCommand implements ActionCommand {
         Router router = new Router();
         String page = ConfigurationManager.getProperty("path.page.login");
 
-        GenreService genreService = new GenreService();
-        LocaleService localeService = new LocaleService();
-        PaperService service = new PaperService();
+        GenreServiceImpl genreServiceImpl = new GenreServiceImpl();
+        LocaleServiceImpl localeServiceImpl = new LocaleServiceImpl();
+        PaperServiceImpl service = new PaperServiceImpl();
         UserValidator validator = new UserValidator();
 
         Object userLocale = request.getSession().getAttribute(TextConstant.USER_LOCALE);
-        MessageManager messageManager = localeService.defineMessageManager(userLocale);
+        MessageManager messageManager = localeServiceImpl.defineMessageManager(userLocale);
 
         LOGGER.log(Level.INFO, "Login command is activated...");
 
@@ -48,13 +48,14 @@ public class LoginCommand implements ActionCommand {
                     request.getSession().setAttribute(TextConstant.USER_PARAM, user);
                     request.setAttribute(TextConstant.IMAGE_PATH, user.getImagePath());
 
-                    SubscriptionService subscriptionService = new SubscriptionService();
+                    SubscriptionServiceImpl subscriptionServiceImpl = new SubscriptionServiceImpl();
+                    request.getSession().setAttribute(TextConstant.FLAG_ORDER, TextConstant.NOT_READY_VALUE);
                     request.getSession().setAttribute(TextConstant.USERS_PARAM, userReceiver.findAll());
-                    request.getSession().setAttribute(TextConstant.SUBSCRIPTIONS_PARAM, subscriptionService.findAll());
+                    request.getSession().setAttribute(TextConstant.SUBSCRIPTIONS_PARAM, subscriptionServiceImpl.findAll());
                     request.getSession().setAttribute(TextConstant.PAPERS_PARAM, service.findAll());
                     request.getSession().setAttribute(TextConstant.PAPERS_RESTRICTION_PARAM, service.findAllWithRestriction(user));
-                    request.getSession().setAttribute(TextConstant.GENRES_PARAM, genreService.findAll());
-                    request.getSession().setAttribute(TextConstant.SUBSCRIPTIONS_FOR_USER_PARAM, subscriptionService.findAllByUserId(user.getId()));
+                    request.getSession().setAttribute(TextConstant.GENRES_PARAM, genreServiceImpl.findAll());
+                    request.getSession().setAttribute(TextConstant.SUBSCRIPTIONS_FOR_USER_PARAM, subscriptionServiceImpl.findAllByUserId(user.getId()));
                     switch (user.getType()) {
                         case ADMIN:
                             page = ConfigurationManager.getProperty("path.page.admin");
@@ -76,7 +77,7 @@ public class LoginCommand implements ActionCommand {
                 throw new CommandTechnicalException(e.getMessage(), e.getCause());
             }
         } else {
-            request.setAttribute(TextConstant.TITLE_PARAM, localeService.defineMessageManager(userLocale).getMessage("message.loginerror"));
+            request.setAttribute(TextConstant.TITLE_PARAM, localeServiceImpl.defineMessageManager(userLocale).getMessage("message.loginerror"));
         }
         router.setPagePath(page);
         return router;

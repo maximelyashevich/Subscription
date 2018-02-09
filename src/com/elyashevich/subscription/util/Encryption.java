@@ -1,5 +1,6 @@
 package com.elyashevich.subscription.util;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +23,7 @@ public class Encryption {
                 result.append(Integer.toHexString(0xff & aDigested));
             }
         } catch (NoSuchAlgorithmException ex) {
-            LOGGER.catching(ex);
+            LOGGER.catching(Level.INFO, ex);
         }
         return result.toString();
     }

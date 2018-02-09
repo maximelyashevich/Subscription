@@ -4,7 +4,7 @@ import com.elyashevich.subscription.entity.PaperEdition;
 import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
-import com.elyashevich.subscription.service.PaperService;
+import com.elyashevich.subscription.service.impl.PaperServiceImpl;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.util.TextConstant;
 import org.apache.logging.log4j.Level;
@@ -14,11 +14,11 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 public class HidePaperCommand implements ActionCommand {
-    private PaperService paperService;
+    private PaperServiceImpl paperServiceImpl;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    HidePaperCommand(PaperService paperService) {
-        this.paperService = paperService;
+    HidePaperCommand(PaperServiceImpl paperServiceImpl) {
+        this.paperServiceImpl = paperServiceImpl;
     }
 
     @Override
@@ -32,10 +32,10 @@ public class HidePaperCommand implements ActionCommand {
         long paperId = Long.parseLong(request.getParameter(TextConstant.PAPER_ID));
 
         try {
-            paperEdition = paperService.findPaperById(paperId);
+            paperEdition = paperServiceImpl.findPaperById(paperId);
             paperEdition.setAvailability(!paperEdition.isAvailability());
-            if (paperService.updatePaperEdition(paperEdition)) {
-                request.getSession().setAttribute(TextConstant.PAPERS_PARAM, paperService.findAll());
+            if (paperServiceImpl.updatePaperEdition(paperEdition)) {
+                request.getSession().setAttribute(TextConstant.PAPERS_PARAM, paperServiceImpl.findAll());
             } else {
                 LOGGER.log(Level.INFO, "Paper edition hiding has been failed.");
             }

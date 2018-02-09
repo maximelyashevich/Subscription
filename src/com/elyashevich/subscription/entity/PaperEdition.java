@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class PaperEdition extends Entity{
-    private long id;
     private PaperType type;
     private String title;
     private BigDecimal price;
@@ -26,14 +25,6 @@ public class PaperEdition extends Entity{
         this.ageRestriction = ageRestriction;
         this.availability = availability;
         this.imagePath = imagePath;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public PaperType getType() {
@@ -131,7 +122,7 @@ public class PaperEdition extends Entity{
     @Override
     public String toString() {
         return "\n\tPaperEdition{" +
-                "id= "+id +
+                "id= "+getId() +
                 ", type=" + type +
                 ", title='" + title + '\'' +
                 ", price=" + price +

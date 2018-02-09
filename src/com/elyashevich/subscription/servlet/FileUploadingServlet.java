@@ -5,10 +5,13 @@ import com.elyashevich.subscription.command.PictureUpdateCommand;
 import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
-import com.elyashevich.subscription.service.LocaleService;
-import com.elyashevich.subscription.service.PaperService;
-import com.elyashevich.subscription.service.UserService;
+import com.elyashevich.subscription.service.impl.LocaleServiceImpl;
+import com.elyashevich.subscription.service.impl.PaperServiceImpl;
+import com.elyashevich.subscription.service.impl.UserServiceImpl;
 import com.elyashevich.subscription.util.TextConstant;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,14 +29,14 @@ import java.io.IOException;
         maxFileSize = 1024 * 1024 * 50,
         maxRequestSize = 1024 * 1024 * 100)
 public class FileUploadingServlet extends HttpServlet {
-
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final String UPLOAD_DIR = "resource\\image\\user";
 
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         Object userLocale = request.getSession().getAttribute(TextConstant.USER_LOCALE);
-        LocaleService localeService = new LocaleService();
-        MessageManager messageManager = localeService.defineMessageManager(userLocale);
+        LocaleServiceImpl localeServiceImpl = new LocaleServiceImpl();
+        MessageManager messageManager = localeServiceImpl.defineMessageManager(userLocale);
 
         String applicationPath = request.getServletContext().getRealPath(TextConstant.EMPTY_STRING);
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
@@ -45,7 +48,7 @@ public class FileUploadingServlet extends HttpServlet {
             break;
         }
 
-        ActionCommand command = new PictureUpdateCommand(fileName, new UserService(), new PaperService());
+        ActionCommand command = new PictureUpdateCommand(fileName, new UserServiceImpl(), new PaperServiceImpl());
         try {
             Router router = command.execute(request);
             if (router.getPagePath() != null) {
@@ -57,6 +60,7 @@ public class FileUploadingServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + page);
             }
         } catch (CommandTechnicalException e) {
+            LOGGER.catching(Level.ERROR, e);
             request.getSession().setAttribute(TextConstant.EXCEPTION_CAUSE, e.getCause().toString());
             request.getSession().setAttribute(TextConstant.EXCEPTION_MESSAGE, e.getMessage());
             request.getRequestDispatcher(ConfigurationManager.getProperty("path.page.error")).forward(request, response);

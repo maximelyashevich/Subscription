@@ -24,7 +24,7 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
     private static final String SQL_INSERT_PAPER = "INSERT INTO papers(type, title, description, publishing_periodicity, price, age_restriction) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_PAPER = "UPDATE papers SET type=?, title=?, description=?, publishing_periodicity=?, price=?, age_restriction=?, image_path=?, is_available=?  WHERE id=?";
     private static final String SQL_INSERT_PAPER_WITH_GENRE = "INSERT INTO genres_papers(genre_id, papers_id) VALUES(?, ?)";
-    private static final String SQL_SELECT_PAPERS_BY_GENRES = "SELECT SUBSCRIPTION_DB.papers.id, description, " +
+    private static final String SQL_SELECT_PAPERS_BY_GENRES = "SELECT SUBSCRIPTION_DB.papers.id, description, title, " +
             "GROUP_CONCAT(DISTINCT genres.name ORDER BY genres.name SEPARATOR ',') AS 'papers', " +
             "papers.is_available as 'availability', papers.age_restriction as 'ageR'," +
             "papers.age_restriction as 'ageR' FROM SUBSCRIPTION_DB.PAPERS " +
@@ -35,10 +35,10 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
             "GROUP BY PAPERS.id " +
             "HAVING ";
 
-    private static final String DESCRIPTION_PAPER_LIKE = " description LIKE ? AND papers ";
-    private static final String PAPER_LIKE = " LIKE ? AND papers ";
+    private static final String DESCRIPTION_PAPER_LIKE = "(title LIKE ? OR description LIKE ?) AND (papers ";
+    private static final String PAPER_LIKE = " LIKE ? OR papers ";
     private static final String LIKE_SQL = " LIKE ?";
-    private static final String AVAILABILITY_SQL = " AND availability=1 ";
+    private static final String AVAILABILITY_SQL = " ) AND availability=1 ";
     private static final String AGE_SQL = " AND ageR<=(YEAR(CURRENT_DATE)-YEAR(?))-(DATE_FORMAT(CURRENT_DATE, '%m%d')<DATE_FORMAT(?, '%m%d'))";
 
     @Override
@@ -184,11 +184,12 @@ public class PaperDAOImpl extends AbstractDAO<PaperEdition> implements PaperDAO 
             sql.append(AVAILABILITY_SQL).append(AGE_SQL);
             preparedStatement = connection.prepareStatement(sql.toString());
             preparedStatement.setString(1, TextConstant.LIKE_COMPONENT_SQL + data + TextConstant.LIKE_COMPONENT_SQL);
+            preparedStatement.setString(2, TextConstant.LIKE_COMPONENT_SQL + data + TextConstant.LIKE_COMPONENT_SQL);
             for (int i = 0; i < criteria.size(); i++) {
-                preparedStatement.setString(i + 2, TextConstant.LIKE_COMPONENT_SQL + criteria.get(i) + TextConstant.LIKE_COMPONENT_SQL);
+                preparedStatement.setString(i + 3, TextConstant.LIKE_COMPONENT_SQL + criteria.get(i) + TextConstant.LIKE_COMPONENT_SQL);
             }
-            preparedStatement.setDate(criteria.size() + 2, Date.valueOf(user.getBirthday()));
             preparedStatement.setDate(criteria.size() + 3, Date.valueOf(user.getBirthday()));
+            preparedStatement.setDate(criteria.size() + 4, Date.valueOf(user.getBirthday()));
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 paperEditions.add(findPaperById(resultSet.getLong(1)));

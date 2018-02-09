@@ -63,7 +63,7 @@ public class Controller extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + page);
             }
         } catch (CommandTechnicalException e) {
-            LOGGER.catching(e);
+            LOGGER.catching(Level.ERROR, e);
             request.getSession().setAttribute(TextConstant.EXCEPTION_CAUSE, e.getCause());
             request.getSession().setAttribute(TextConstant.EXCEPTION_MESSAGE, e.getMessage());
             request.getRequestDispatcher(ConfigurationManager.getProperty("path.page.error")).forward(request, response);

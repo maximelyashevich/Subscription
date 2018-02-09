@@ -1,7 +1,7 @@
 package com.elyashevich.subscription.command;
 
 import com.elyashevich.subscription.manager.MessageManager;
-import com.elyashevich.subscription.service.LocaleService;
+import com.elyashevich.subscription.service.impl.LocaleServiceImpl;
 import com.elyashevich.subscription.util.TextConstant;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -14,9 +14,9 @@ public class ActionFactory {
     public ActionCommand defineCommand(HttpServletRequest request) {
         ActionCommand current = new EmptyCommand();
         String action = request.getParameter(TextConstant.COMMAND_PARAM);
-        LocaleService localeService = new LocaleService();
+        LocaleServiceImpl localeServiceImpl = new LocaleServiceImpl();
         Object userLocale = request.getSession().getAttribute(TextConstant.USER_LOCALE);
-        MessageManager messageManager = localeService.defineMessageManager(userLocale);
+        MessageManager messageManager = localeServiceImpl.defineMessageManager(userLocale);
         if (action == null || action.isEmpty()) {
             return current;
         }
@@ -24,7 +24,7 @@ public class ActionFactory {
             CommandType currentEnum = CommandType.valueOf(action.toUpperCase());
             current = currentEnum.getCurrentCommand();
         } catch (IllegalArgumentException e) {
-            LOGGER.catching(e);
+            LOGGER.catching(Level.ERROR, e);
             request.setAttribute(TextConstant.WRONG_ACTION, action
                     +  messageManager.getMessage("message.wrongaction"));
         }

@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Subscription extends Entity{
-    private long id;
     private User user;
     private LocalDate subscriptionRegistration;
     private LocalDate subscriptionFinish;
@@ -41,14 +40,6 @@ public class Subscription extends Entity{
         this.price = price;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public void setUser(User user) {
         this.user = user;
     }
@@ -74,7 +65,7 @@ public class Subscription extends Entity{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subscription that = (Subscription) o;
-        return id == that.id &&
+        return getId() == that.getId() &&
                 Objects.equals(subscriptionRegistration, that.subscriptionRegistration) &&
                 Objects.equals(subscriptionFinish, that.subscriptionFinish) &&
                 Objects.equals(price, that.price);
@@ -83,13 +74,13 @@ public class Subscription extends Entity{
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, subscriptionRegistration, subscriptionFinish, price);
+        return Objects.hash(getId(), subscriptionRegistration, subscriptionFinish, price);
     }
 
     @Override
     public String toString() {
         return "Subscription{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", user=" + user +
                 ", paperEdition"+paperEdition+
                 ", subscriptionRegistration=" + subscriptionRegistration +

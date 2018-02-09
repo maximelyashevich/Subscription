@@ -4,7 +4,7 @@ import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
-import com.elyashevich.subscription.service.UserService;
+import com.elyashevich.subscription.service.impl.UserServiceImpl;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.util.TextConstant;
 import org.apache.logging.log4j.Level;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 
 public class MoneyCommand implements ActionCommand {
-    private UserService userReceiver;
+    private UserServiceImpl userReceiver;
     private static final int MIN_AMOUNT = 10;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    MoneyCommand(UserService userReceiver) {
+    MoneyCommand(UserServiceImpl userReceiver) {
         this.userReceiver = userReceiver;
     }
 
@@ -33,7 +33,7 @@ public class MoneyCommand implements ActionCommand {
 
         String page = ConfigurationManager.getProperty("path.page.user");
         long userId = Long.parseLong(request.getParameter(TextConstant.USER_ID));
-
+        request.getSession().setAttribute(TextConstant.FLAG_ORDER, TextConstant.NOT_READY_VALUE);
         try {
             user = userReceiver.findUserById(userId);
             user = userReceiver.updateUserAmount(user, user.getAmount().add(new BigDecimal(MIN_AMOUNT)));

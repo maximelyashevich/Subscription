@@ -3,7 +3,6 @@ package com.elyashevich.subscription.entity;
 import java.util.Objects;
 
 public class Address extends Entity{
-    private long id;
     private String country;
     private String postIndex;
     private String city;
@@ -17,14 +16,6 @@ public class Address extends Entity{
         this.postIndex = postIndex;
         this.city = city;
         this.detailAddress = detailAddress;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getCountry() {
@@ -64,7 +55,7 @@ public class Address extends Entity{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return id == address.id &&
+        return getId() == address.getId() &&
                 Objects.equals(country, address.country) &&
                 Objects.equals(postIndex, address.postIndex) &&
                 Objects.equals(city, address.city) &&
@@ -74,13 +65,13 @@ public class Address extends Entity{
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, country, postIndex, city, detailAddress);
+        return Objects.hash(getId(), country, postIndex, city, detailAddress);
     }
 
     @Override
     public String toString() {
         return "Address{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", country='" + country + '\'' +
                 ", postIndex='" + postIndex + '\'' +
                 ", city='" + city + '\'' +

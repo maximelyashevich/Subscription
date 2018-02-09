@@ -2,7 +2,8 @@ package com.elyashevich.subscription.scheduler;
 
 import com.elyashevich.subscription.entity.Subscription;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
-import com.elyashevich.subscription.service.SubscriptionService;
+import com.elyashevich.subscription.service.impl.SubscriptionServiceImpl;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
@@ -21,14 +22,14 @@ public class SubscriptionScheduler implements Job {
         LOGGER.info("Subscription observer start work!");
 
         try {
-            SubscriptionService subscriptionService = new SubscriptionService();
-            List<Subscription> subscriptions = subscriptionService.findAllWithFinishedAction();
+            SubscriptionServiceImpl subscriptionServiceImpl = new SubscriptionServiceImpl();
+            List<Subscription> subscriptions = subscriptionServiceImpl.findAllWithFinishedAction();
             for (Subscription subscription : subscriptions) {
-                subscriptionService.deleteBySubscriptionAndPaperId(subscription.getId(), subscription.getPaperEdition().getId());
+                subscriptionServiceImpl.deleteBySubscriptionAndPaperId(subscription.getId(), subscription.getPaperEdition().getId());
                 LOGGER.info(SUBSCRIPTION + subscription.getId() + DELETED_MESSAGE);
             }
         } catch (ServiceTechnicalException e) {
-            LOGGER.catching(e);
+            LOGGER.catching(Level.ERROR, e);
         }
     }
 }

@@ -7,5 +7,6 @@ public final class RegexComponent {
     public static final String MONEY_REGEX = "^-?[0-9]+(?:\\.[0-9]{1,5})?";
     public static final String RESTRICTION_REGEX = "[0-9]{1,2}";
     public static final String JSP_PATH_REGEX = "/jsp.+";
+    public static final String TABULATION_CONTROL = "[\n\r]";
     public static final String PAPER_TYPE_REGEX = "^([Mm][Aa][Gg][Aa][Zz][Ii][Nn][Ee]|[Nn][Ee][Ww][Ss][Pp][Aa][Pp][Ee][Rr]|[Bb][Oo][Oo][Kk])$";
 }

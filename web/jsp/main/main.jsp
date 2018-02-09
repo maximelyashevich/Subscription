@@ -74,7 +74,6 @@
     </div>
 <div id="successOrder" class="modal">
     <div class="modal-content">
-
         <span class="close">&times;</span>
         <p>${subscription.user.firstName}, <fmt:message key="label.yourOrder" bundle="${rb}"/> #${subscription.id}!</p>
         <p><fmt:message key="label.dr" bundle="${rb}"/> ${subscription.subscriptionRegistration}</p>
@@ -99,7 +98,6 @@
             document.getElementById('successOrder').style.display="block";
         </script>
         <%--@elvariable id="notReady" type="java.lang.String"--%>
-        <c:set var="flagOrder" value="${notReady}" scope="request"/>
     </c:if>
     <div id="right_container">
         <input type="button" id="basketButton" style="

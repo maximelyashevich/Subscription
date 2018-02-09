@@ -106,6 +106,13 @@
         var modalPaper = document.getElementById('modalPaperWindow');
         var spanPaper = document.getElementsByClassName("close")[0];
         function showMoreInformation(type, title, description, price, periodicity, age_restr, paperID) {
+            alert(type);
+            alert(title);
+            alert(description);
+            alert(price);
+            alert(periodicity);
+            alert(age_restr);
+            alert(paperID);
             var totalPaperItem='';
             modalPaper.style.display = "block";
             totalPaperItem+=' <form method="POST" action="/controller">' +

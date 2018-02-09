@@ -1,5 +1,6 @@
 package com.elyashevich.subscription.mail;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +37,7 @@ public class MailThread extends Thread {
             message.setContent(mailText, "text/html; charset=utf-8");
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(sendToEmail));
         } catch (MessagingException e) {
-            LOGGER.catching(e);
+            LOGGER.catching(Level.ERROR, e);
         }
     }
 
@@ -45,7 +46,7 @@ public class MailThread extends Thread {
         try {
             Transport.send(message);
         } catch (MessagingException e) {
-            LOGGER.catching(e);
+            LOGGER.catching(Level.ERROR, e);
         }
     }
 }

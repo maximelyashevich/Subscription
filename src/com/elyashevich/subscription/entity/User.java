@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class User extends Entity {
-    private long id;
     private String firstName;
     private String lastName;
     private LocalDate birthday;
@@ -123,14 +122,6 @@ public class User extends Entity {
         this.availability = availability;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -156,7 +147,7 @@ public class User extends Entity {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id+
+                "id=" + getId()+
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthday=" + birthday +

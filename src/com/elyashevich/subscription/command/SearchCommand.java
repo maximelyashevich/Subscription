@@ -4,7 +4,7 @@ import com.elyashevich.subscription.entity.User;
 import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
-import com.elyashevich.subscription.service.PaperService;
+import com.elyashevich.subscription.service.impl.PaperServiceImpl;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.util.TextConstant;
 import org.apache.logging.log4j.Level;
@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SearchCommand implements ActionCommand {
     private static final Logger LOGGER = LogManager.getLogger();
-    private PaperService paperReceiver;
+    private PaperServiceImpl paperReceiver;
 
-    SearchCommand(PaperService paperReceiver) {
+    SearchCommand(PaperServiceImpl paperReceiver) {
         this.paperReceiver = paperReceiver;
     }
 

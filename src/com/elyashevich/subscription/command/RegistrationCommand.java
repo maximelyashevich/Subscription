@@ -6,7 +6,7 @@ import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
 import com.elyashevich.subscription.manager.MessageManager;
-import com.elyashevich.subscription.service.*;
+import com.elyashevich.subscription.service.impl.*;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.util.TextConstant;
 import org.apache.logging.log4j.Level;
@@ -20,9 +20,9 @@ import java.time.format.DateTimeFormatter;
 
 public class RegistrationCommand implements ActionCommand {
     private static final Logger LOGGER = LogManager.getLogger();
-    private RegistrationService registrationReceiver;
+    private RegistrationServiceImpl registrationReceiver;
 
-    RegistrationCommand(RegistrationService registrationReceiver) {
+    RegistrationCommand(RegistrationServiceImpl registrationReceiver) {
         this.registrationReceiver = registrationReceiver;
     }
 
@@ -30,10 +30,10 @@ public class RegistrationCommand implements ActionCommand {
     public Router execute(HttpServletRequest request) throws CommandTechnicalException {
         Router router = new Router();
         String page;
-        UserService userService = new UserService();
-        DefaultService defaultService = new DefaultService();
-        LocaleService localeService = new LocaleService();
-        MailService mailService = new MailService();
+        UserServiceImpl userServiceImpl = new UserServiceImpl();
+        DefaultServiceImpl defaultServiceImpl = new DefaultServiceImpl();
+        LocaleServiceImpl localeServiceImpl = new LocaleServiceImpl();
+        MailServiceImpl mailServiceImpl = new MailServiceImpl();
         ServletContext context = request.getServletContext();
         LOGGER.log(Level.INFO, "Starting registration...");
         Object userLocale = request.getSession().getAttribute(TextConstant.USER_LOCALE);
@@ -52,9 +52,9 @@ public class RegistrationCommand implements ActionCommand {
 
         LocalDate birthday = LocalDate.parse(dob, formatter);
 
-        MessageManager messageManager = localeService.defineMessageManager(userLocale);
-        String titleMessage = defaultService.defineTitleMessage(birthday, firstName, lastName, detailAddress, userName, password, postIndex, country, city, dob);
-        request.getSession().setAttribute(TextConstant.TITLE_PARAM_REGISTRATION, localeService.defineMessageManager(userLocale).getMessage(titleMessage));
+        MessageManager messageManager = localeServiceImpl.defineMessageManager(userLocale);
+        String titleMessage = defaultServiceImpl.checkTitleMessage(birthday, firstName, lastName, detailAddress, userName, password, postIndex, country, city);
+        request.getSession().setAttribute(TextConstant.TITLE_PARAM_REGISTRATION, localeServiceImpl.defineMessageManager(userLocale).getMessage(titleMessage));
         page = ConfigurationManager.getProperty("path.page.registration");
         if (TextConstant.SUCCESS.equals(titleMessage)) {
             try {
@@ -66,11 +66,11 @@ public class RegistrationCommand implements ActionCommand {
                     request.getSession().setAttribute(TextConstant.TITLE_PARAM_REGISTRATION, messageManager.getMessage("message.emailEx"));
                 }
                 if (!registrationReceiver.findUserByLogin(userName) && !registrationReceiver.findUserByEmail(email)){
-                    User user = userService.getUser(birthday, firstName, lastName, email, userName, password);
-                    Address address = userService.getAddress(country, city, postIndex, detailAddress);
+                    User user = userServiceImpl.defineUser(birthday, firstName, lastName, email, userName, password);
+                    Address address = userServiceImpl.getAddress(country, city, postIndex, detailAddress);
                     if (registrationReceiver.createUserWithEncryption(user, address)) {
                         LOGGER.log(Level.INFO, "Try to send message to user email...");
-                        mailService.sendFromEmail(context, email, messageManager.getMessage("message.welcome"),
+                        mailServiceImpl.sendFromEmail(context, email, messageManager.getMessage("message.welcome"),
                                 messageManager.getMessage("message.hello") +TextConstant.SPACE+ firstName +", "+ messageManager.getMessage("message.glad"));
                         request.getSession().setAttribute(TextConstant.TITLE_PARAM, messageManager.getMessage("message.registrationsuccess"));
                         page = ConfigurationManager.getProperty("path.page.login");

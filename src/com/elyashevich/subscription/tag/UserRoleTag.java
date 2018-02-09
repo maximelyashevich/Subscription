@@ -21,11 +21,7 @@ public class UserRoleTag extends TagSupport {
         try {
             String to;
             if (user!=null) {
-                if (ClientType.ADMIN == user.getType()) {
-                    to = TextConstant.ADMINISTRATOR;
-                } else {
-                    to = user.getFirstName();
-                }
+                to = ClientType.ADMIN == user.getType() ? TextConstant.ADMINISTRATOR : user.getFirstName();
                 pageContext.getOut().write(to);
             }
         } catch (IOException e) {

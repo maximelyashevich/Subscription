@@ -4,7 +4,7 @@ import com.elyashevich.subscription.entity.PaperEdition;
 import com.elyashevich.subscription.exception.CommandTechnicalException;
 import com.elyashevich.subscription.exception.ServiceTechnicalException;
 import com.elyashevich.subscription.manager.ConfigurationManager;
-import com.elyashevich.subscription.service.PaperService;
+import com.elyashevich.subscription.service.impl.PaperServiceImpl;
 import com.elyashevich.subscription.servlet.Router;
 import com.elyashevich.subscription.util.TextConstant;
 import org.apache.logging.log4j.Level;
@@ -18,11 +18,11 @@ import static com.elyashevich.subscription.util.TextConstant.BASKET_SET;
 import static com.elyashevich.subscription.util.TextConstant.ID;
 
 public class BasketCommand implements ActionCommand {
-    private PaperService paperReceiver;
+    private PaperServiceImpl paperReceiver;
     private static final int MONTH_QUANTITY = 3;
     private static final Logger LOGGER = LogManager.getLogger();
 
-    BasketCommand(PaperService paperReceiver) {
+    BasketCommand(PaperServiceImpl paperReceiver) {
         this.paperReceiver = paperReceiver;
     }
 
@@ -38,13 +38,14 @@ public class BasketCommand implements ActionCommand {
         String durationString = request.getParameter(TextConstant.DURATION_PERIOD);
         long paperId = Long.parseLong(request.getParameter(ID));
         int durationPeriod = durationString != null ? Integer.parseInt(durationString) : MONTH_QUANTITY;
-
+        request.getSession().setAttribute(TextConstant.FLAG_ORDER, TextConstant.NOT_READY_VALUE);
         try {
             paperEdition = paperReceiver.findPaperById(paperId);
             paperEdition.setDurationMonth(durationPeriod);
             paperReceiver.defineProductPrice(paperEdition, durationPeriod);
             hashSet = paperReceiver.addPaperToSet(hashSet, paperEdition);
             request.getSession().setAttribute(BASKET_SET, hashSet);
+            request.getSession().setAttribute(TextConstant.TITLE_SUBSCRIPTION, TextConstant.EMPTY_STRING);
             request.getSession().setAttribute(TextConstant.FINAL_PRICE, paperReceiver.defineFinalPrice(hashSet));
             request.getSession().setAttribute(TextConstant.QUANTITY_SET, hashSet != null ? hashSet.size() : 0);
             LOGGER.log(Level.INFO, "Successful adding paper edition to the basket.");
