@@ -53,10 +53,10 @@ public class Address extends Entity{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Address)) return false;
+        if (!super.equals(o)) return false;
         Address address = (Address) o;
-        return getId() == address.getId() &&
-                Objects.equals(country, address.country) &&
+        return Objects.equals(country, address.country) &&
                 Objects.equals(postIndex, address.postIndex) &&
                 Objects.equals(city, address.city) &&
                 Objects.equals(detailAddress, address.detailAddress);
@@ -65,7 +65,7 @@ public class Address extends Entity{
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), country, postIndex, city, detailAddress);
+        return Objects.hash(super.hashCode(), country, postIndex, city, detailAddress);
     }
 
     @Override

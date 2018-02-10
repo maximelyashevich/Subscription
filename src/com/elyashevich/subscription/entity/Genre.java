@@ -23,7 +23,8 @@ public class Genre extends Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Genre)) return false;
+        if (!super.equals(o)) return false;
         Genre genre = (Genre) o;
         return Objects.equals(name, genre.name);
     }
@@ -31,7 +32,7 @@ public class Genre extends Entity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(name);
+        return Objects.hash(super.hashCode(), name);
     }
 
     @Override

@@ -102,13 +102,15 @@ public class PaperEdition extends Entity{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof PaperEdition)) return false;
+        if (!super.equals(o)) return false;
         PaperEdition that = (PaperEdition) o;
         return publishingPeriodicity == that.publishingPeriodicity &&
                 ageRestriction == that.ageRestriction &&
                 availability == that.availability &&
                 type == that.type &&
                 Objects.equals(title, that.title) &&
+                Objects.equals(price, that.price) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(imagePath, that.imagePath);
     }
@@ -116,7 +118,7 @@ public class PaperEdition extends Entity{
     @Override
     public int hashCode() {
 
-        return Objects.hash(type, title, description, publishingPeriodicity, ageRestriction, availability, imagePath);
+        return Objects.hash(super.hashCode(), type, title, price, description, publishingPeriodicity, ageRestriction, availability, imagePath);
     }
 
     @Override

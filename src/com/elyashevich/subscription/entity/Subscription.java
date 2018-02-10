@@ -63,10 +63,10 @@ public class Subscription extends Entity{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Subscription)) return false;
+        if (!super.equals(o)) return false;
         Subscription that = (Subscription) o;
-        return getId() == that.getId() &&
-                Objects.equals(subscriptionRegistration, that.subscriptionRegistration) &&
+        return Objects.equals(subscriptionRegistration, that.subscriptionRegistration) &&
                 Objects.equals(subscriptionFinish, that.subscriptionFinish) &&
                 Objects.equals(price, that.price);
     }
@@ -74,7 +74,7 @@ public class Subscription extends Entity{
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), subscriptionRegistration, subscriptionFinish, price);
+        return Objects.hash(super.hashCode(), subscriptionRegistration, subscriptionFinish, price);
     }
 
     @Override

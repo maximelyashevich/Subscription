@@ -125,9 +125,10 @@ public class User extends Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User)) return false;
+        if (!super.equals(o)) return false;
         User user = (User) o;
-        return  availability == user.availability &&
+        return availability == user.availability &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(birthday, user.birthday) &&
@@ -135,13 +136,15 @@ public class User extends Entity {
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
                 type == user.type &&
-                Objects.equals(amount, user.amount);
+                Objects.equals(amount, user.amount) &&
+                Objects.equals(address, user.address) &&
+                Objects.equals(imagePath, user.imagePath);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(firstName, lastName, birthday, userName, email, password, type, amount, availability);
+        return Objects.hash(super.hashCode(), firstName, lastName, birthday, userName, email, password, type, amount, address, availability, imagePath);
     }
 
     @Override
